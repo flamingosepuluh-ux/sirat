@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <!-- Bootstrap JS Bundle (WAJIB untuk tab berfungsi) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <style>
@@ -66,6 +65,8 @@
         .badge-custom { padding: 8px 15px; border-radius: 20px; font-weight: 600; font-size: 12px; }
         .badge-serah-terima { background: #e3f2fd; color: #1976d2; }
         .badge-pembelian { background: #fff3e0; color: #f57c00; }
+        .btn-view { background: #ff9800; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-right: 5px; }
+        .btn-view:hover { background: #f57c00; }
         .btn-print { background: #2196f3; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; }
         .btn-print:hover { background: #1976d2; }
         .hidden { display: none !important; }
@@ -73,6 +74,15 @@
         .alert-custom { position: fixed; top: 20px; right: 20px; z-index: 10000; min-width: 300px; animation: slideIn 0.3s ease-out; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         .btn-light { cursor: pointer; }
+        
+        /* View Modal Styles */
+        .view-modal .modal-content { border-radius: 15px; border: none; }
+        .view-modal .modal-header { background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); color: white; border-radius: 15px 15px 0 0; }
+        .view-modal .modal-title { font-weight: 600; }
+        .view-modal .btn-close { filter: invert(1); }
+        .detail-row { padding: 10px 0; border-bottom: 1px solid #eee; }
+        .detail-label { font-weight: 600; color: var(--primary-green); }
+        .signature-preview-large { max-width: 200px; border: 2px solid #e0e0e0; border-radius: 8px; padding: 5px; background: white; }
     </style>
 </head>
 <body>
@@ -221,6 +231,29 @@
         </div>
     </div>
 
+    <!-- View Detail Modal -->
+    <div class="modal fade view-modal" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewModalLabel"><i class="fas fa-file-alt"></i> Detail Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="viewContent">
+                        <!-- Content will be filled by JavaScript -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary" onclick="printCurrentView()">
+                        <i class="fas fa-print"></i> Cetak PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="signatureModal" class="signature-modal">
         <div class="signature-modal-content">
             <button class="btn-close-modal" onclick="closeSignatureModal()"><i class="fas fa-times"></i></button>
@@ -253,9 +286,8 @@
         const db = getFirestore(app);
 
         let currentUser = null, currentSigner = '', modalSignaturePad = null, currentSignatureType = '';
-        let allTransactions = [], logoBase64 = null;
+        let allTransactions = [], logoBase64 = null, currentViewTransaction = null;
 
-        // Load logo dari file eksternal
         async function loadLogo() {
             try {
                 const response = await fetch('logo-raj.png');
@@ -268,7 +300,6 @@
                 reader.readAsDataURL(blob);
             } catch (error) {
                 console.error('❌ Error loading logo:', error);
-                console.log('💡 Gunakan Live Server untuk menghindari CORS error');
             }
         }
 
@@ -383,7 +414,6 @@
             }
         });
 
-        // Event listener untuk tab Data Transaksi - PASTI BERFUNGSI
         document.addEventListener('DOMContentLoaded', function() {
             const dataTabEl = document.getElementById('data-tab');
             if (dataTabEl) {
@@ -418,13 +448,107 @@
                         <td>${d.jumlah}</td>
                         <td>${d.namaPenyerah}</td>
                         <td>${d.namaPenerima}</td>
-                        <td><button class="btn btn-print btn-sm" onclick="window.printSinglePDF('${docSnap.id}')"><i class="fas fa-print"></i> PDF</button></td>
+                        <td>
+                            <button class="btn btn-view btn-sm" onclick="window.viewTransaction('${docSnap.id}')"><i class="fas fa-eye"></i> View</button>
+                            <button class="btn btn-print btn-sm" onclick="window.printSinglePDF('${docSnap.id}')"><i class="fas fa-print"></i> PDF</button>
+                        </td>
                     `;
                     tbody.appendChild(row);
                 });
             } catch (error) {
                 console.error("Error:", error);
                 tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Gagal: ' + error.message + '</td></tr>';
+            }
+        };
+
+        window.viewTransaction = function(docId) {
+            const transaction = allTransactions.find(t => t.id === docId);
+            if (!transaction) { showAlert('error', 'Data tidak ditemukan!'); return; }
+            
+            currentViewTransaction = transaction;
+            
+            const badgeClass = transaction.jenis === 'Pembelian' ? 'badge-pembelian' : 'badge-serah-terima';
+            
+            const content = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-row">
+                            <div class="detail-label">No. Transaksi</div>
+                            <div>SIRAT/${transaction.timestamp ? new Date(transaction.timestamp.toDate()).getFullYear() : new Date().getFullYear()}/${transaction.id.substring(0, 8).toUpperCase()}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Tanggal</div>
+                            <div>${formatDate(transaction.tanggal)}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Jenis Transaksi</div>
+                            <div><span class="badge-custom ${badgeClass}">${transaction.jenis}</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-row">
+                            <div class="detail-label">Nama Barang</div>
+                            <div><strong>${transaction.namaBarang}</strong></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Jumlah</div>
+                            <div>${transaction.jumlah}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Keterangan</div>
+                            <div>${transaction.keterangan || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="my-4">
+                
+                <h6 class="text-success mb-3"><i class="fas fa-signature"></i> Tanda Tangan</h6>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-row">
+                            <div class="detail-label">Nama Penyerah</div>
+                            <div>${transaction.namaPenyerah}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Tanda Tangan Penyerah</div>
+                            <div>
+                                ${transaction.ttdPenyerah ? `<img src="${transaction.ttdPenyerah}" class="signature-preview-large" alt="TTD Penyerah">` : '<em class="text-muted">Tidak ada</em>'}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-row">
+                            <div class="detail-label">Nama Penerima</div>
+                            <div>${transaction.namaPenerima}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Tanda Tangan Penerima</div>
+                            <div>
+                                ${transaction.ttdPenerima ? `<img src="${transaction.ttdPenerima}" class="signature-preview-large" alt="TTD Penerima">` : '<em class="text-muted">Tidak ada</em>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="my-4">
+                
+                <div class="detail-row">
+                    <div class="detail-label">Dibuat Oleh</div>
+                    <div>${transaction.createdByName || 'User'} | ${transaction.timestamp ? new Date(transaction.timestamp.toDate()).toLocaleString('id-ID') : '-'}</div>
+                </div>
+            `;
+            
+            document.getElementById('viewContent').innerHTML = content;
+            
+            const viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
+            viewModal.show();
+        };
+
+        window.printCurrentView = function() {
+            if (currentViewTransaction) {
+                generatePDF([currentViewTransaction]);
             }
         };
 
