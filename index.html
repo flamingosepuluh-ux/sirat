@@ -2,7 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1b5e20">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>SIRAT - CV REZEKI AMANAH JAYA Group</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,73 +19,493 @@
             --primary-green: #1b5e20;
             --secondary-green: #2e7d32;
             --light-green: #4caf50;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
-        .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); padding: 40px; max-width: 450px; width: 100%; text-align: center; }
-        .logo-container { margin-bottom: 30px; }
-        .logo-container img { max-width: 200px; height: auto; margin-bottom: 15px; }
-        .company-name { color: var(--primary-green); font-size: 24px; font-weight: 700; margin-bottom: 5px; }
-        .company-tagline { color: var(--secondary-green); font-size: 14px; font-weight: 500; }
-        .login-title { color: #333; font-size: 22px; font-weight: 600; margin: 25px 0; }
-        .form-control, .form-select { border-radius: 10px; padding: 12px 15px; border: 2px solid #e0e0e0; }
-        .form-control:focus, .form-select:focus { border-color: var(--light-green); box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25); }
-        .btn-login { background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); border: none; border-radius: 10px; padding: 12px; font-weight: 600; color: white; width: 100%; cursor: pointer; }
-        .btn-register { background: #6c757d; border: none; border-radius: 10px; padding: 12px; font-weight: 600; color: white; width: 100%; margin-top: 10px; cursor: pointer; }
-        .auth-toggle { margin-top: 20px; color: var(--primary-green); cursor: pointer; font-weight: 600; }
-        .user-info { background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; margin-right: 10px; font-size: 14px; }
-        .app-header { background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); color: white; padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .header-logo { max-height: 60px; margin-right: 15px; }
-        .header-title { font-size: 24px; font-weight: 700; }
-        .header-subtitle { font-size: 12px; opacity: 0.9; }
-        .main-container { padding: 30px 20px; max-width: 1200px; margin: 0 auto; }
-        .card-custom { background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); border: none; margin-bottom: 25px; }
-        .card-header-custom { background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); color: white; padding: 20px; border-radius: 15px 15px 0 0 !important; font-weight: 600; font-size: 18px; }
-        .nav-tabs-custom { border-bottom: 3px solid var(--light-green); margin-bottom: 25px; }
-        .nav-tabs-custom .nav-link { color: var(--primary-green); font-weight: 600; padding: 15px 25px; border: none; border-radius: 10px 10px 0 0; cursor: pointer; }
-        .nav-tabs-custom .nav-link.active { background: var(--light-green); color: white; }
-        .btn-signature { background: var(--light-green); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: 600; margin-top: 10px; cursor: pointer; }
-        .signature-status { padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 14px; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--bg-gradient); 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        /* Login - Mobile Optimized */
+        .login-container { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px;
+        }
+        
+        .login-card { 
+            background: white; 
+            border-radius: 20px; 
+            box-shadow: var(--shadow-lg); 
+            padding: 30px 25px; 
+            max-width: 400px; 
+            width: 100%; 
+            text-align: center;
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logo-container { margin-bottom: 25px; }
+        .logo-container img { max-width: 150px; height: auto; margin-bottom: 15px; }
+        .company-name { color: var(--primary-green); font-size: 20px; font-weight: 700; margin-bottom: 5px; }
+        .company-tagline { color: var(--secondary-green); font-size: 12px; font-weight: 500; }
+        .login-title { color: #333; font-size: 20px; font-weight: 600; margin: 20px 0; }
+        
+        .form-control, .form-select { 
+            border-radius: 12px; 
+            padding: 14px 16px; 
+            border: 2px solid #e0e0e0;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus { 
+            border-color: var(--light-green); 
+            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+            transform: translateY(-1px);
+        }
+        
+        .btn-login { 
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); 
+            border: none; 
+            border-radius: 12px; 
+            padding: 14px; 
+            font-weight: 600; 
+            color: white; 
+            width: 100%; 
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:active { transform: scale(0.98); }
+        
+        .btn-register { 
+            background: #6c757d; 
+            border: none; 
+            border-radius: 12px; 
+            padding: 14px; 
+            font-weight: 600; 
+            color: white; 
+            width: 100%; 
+            margin-top: 10px; 
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .auth-toggle { margin-top: 20px; color: var(--primary-green); cursor: pointer; font-weight: 600; font-size: 14px; }
+        
+        /* Header - Mobile Optimized */
+        .app-header { 
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); 
+            color: white; 
+            padding: 15px 0; 
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-logo { max-height: 45px; margin-right: 12px; }
+        .header-title { font-size: 18px; font-weight: 700; }
+        .header-subtitle { font-size: 11px; opacity: 0.9; }
+        
+        .user-info { 
+            background: rgba(255,255,255,0.2); 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            margin-right: 8px; 
+            font-size: 13px;
+        }
+        
+        /* Main Container */
+        .main-container { padding: 20px 15px; max-width: 1200px; margin: 0 auto; padding-bottom: 80px; }
+        
+        /* Cards */
+        .card-custom { 
+            background: white; 
+            border-radius: 16px; 
+            box-shadow: var(--shadow-sm); 
+            border: none; 
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .card-header-custom { 
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); 
+            color: white; 
+            padding: 16px 20px; 
+            font-weight: 600; 
+            font-size: 16px;
+        }
+        
+        /* Tabs - Mobile Optimized */
+        .nav-tabs-custom { 
+            border-bottom: 3px solid var(--light-green); 
+            margin-bottom: 20px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .nav-tabs-custom .nav-link { 
+            color: var(--primary-green); 
+            font-weight: 600; 
+            padding: 12px 20px; 
+            border: none; 
+            border-radius: 10px 10px 0 0; 
+            cursor: pointer;
+            font-size: 14px;
+            flex: 1;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tabs-custom .nav-link.active { 
+            background: var(--light-green); 
+            color: white;
+        }
+        
+        /* Buttons - Touch Friendly */
+        .btn-signature { 
+            background: var(--light-green); 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            border-radius: 12px; 
+            width: 100%; 
+            font-weight: 600; 
+            margin-top: 10px; 
+            cursor: pointer;
+            font-size: 15px;
+            min-height: 48px;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-signature:active { transform: scale(0.98); background: var(--secondary-green); }
+        
+        .signature-status { 
+            padding: 12px; 
+            border-radius: 10px; 
+            margin-top: 10px; 
+            font-size: 14px;
+        }
+        
         .signature-completed { background: #e8f5e9; color: var(--primary-green); border: 2px solid var(--light-green); }
         .signature-pending { background: #fff3e0; color: #e65100; border: 2px solid #ffb74d; }
-        .btn-submit { background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); border: none; padding: 15px; border-radius: 10px; font-weight: 600; font-size: 16px; width: 100%; color: white; cursor: pointer; }
-        .signature-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
+        
+        .btn-submit { 
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); 
+            border: none; 
+            padding: 16px; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            font-size: 16px; 
+            width: 100%; 
+            color: white; 
+            cursor: pointer;
+            min-height: 52px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-submit:active { transform: scale(0.98); }
+        
+        /* Signature Modal - Full Screen on Mobile */
+        .signature-modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 9999; 
+            justify-content: center; 
+            align-items: center;
+        }
+        
         .signature-modal.active { display: flex; }
-        .signature-modal-content { background: white; border-radius: 20px; padding: 30px; max-width: 90%; max-height: 90%; width: 800px; position: relative; }
-        .signature-modal-title { color: var(--primary-green); font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 5px; }
-        .signature-canvas-container { border: 3px dashed var(--light-green); border-radius: 15px; background: #f9f9f9; margin: 20px 0; }
-        .signature-canvas-container canvas { width: 100%; height: 400px; display: block; border-radius: 12px; }
-        .signature-buttons { display: flex; gap: 10px; justify-content: center; }
-        .btn-save-signature, .btn-clear-signature { color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        
+        .signature-modal-content { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 25px; 
+            width: 95%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .signature-modal-title { 
+            color: var(--primary-green); 
+            font-size: 20px; 
+            font-weight: 700; 
+            text-align: center; 
+            margin-bottom: 5px;
+        }
+        
+        .signature-canvas-container { 
+            border: 3px dashed var(--light-green); 
+            border-radius: 15px; 
+            background: #f9f9f9; 
+            margin: 20px 0;
+            touch-action: none;
+        }
+        
+        .signature-canvas-container canvas { 
+            width: 100%; 
+            height: 300px; 
+            display: block; 
+            border-radius: 12px;
+            touch-action: none;
+        }
+        
+        .signature-buttons { 
+            display: flex; 
+            gap: 10px; 
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-save-signature, .btn-clear-signature { 
+            color: white; 
+            border: none; 
+            padding: 14px 28px; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            font-size: 15px;
+            min-height: 48px;
+        }
+        
         .btn-save-signature { background: var(--light-green); }
         .btn-clear-signature { background: #f44336; }
-        .btn-close-modal { position: absolute; top: 15px; right: 15px; background: #f44336; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; }
-        .table-custom { background: white; border-radius: 10px; overflow: hidden; }
-        .table-custom thead { background: var(--primary-green); color: white; }
-        .table-custom th { font-weight: 600; padding: 15px; }
-        .table-custom td { padding: 12px; vertical-align: middle; }
-        .badge-custom { padding: 8px 15px; border-radius: 20px; font-weight: 600; font-size: 12px; }
+        
+        .btn-close-modal { 
+            position: absolute; 
+            top: 15px; 
+            right: 15px; 
+            background: #f44336; 
+            color: white; 
+            border: none; 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            font-size: 18px; 
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        /* Table - Mobile Optimized */
+        .table-custom { 
+            background: white; 
+            border-radius: 12px; 
+            overflow: hidden;
+            font-size: 14px;
+        }
+        
+        .table-custom thead { 
+            background: var(--primary-green); 
+            color: white;
+        }
+        
+        .table-custom th { 
+            font-weight: 600; 
+            padding: 12px 8px;
+            font-size: 13px;
+        }
+        
+        .table-custom td { 
+            padding: 10px 8px; 
+            vertical-align: middle;
+            font-size: 13px;
+        }
+        
+        .badge-custom { 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+            font-size: 11px;
+        }
+        
         .badge-serah-terima { background: #e3f2fd; color: #1976d2; }
         .badge-pembelian { background: #fff3e0; color: #f57c00; }
-        .btn-view { background: #ff9800; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-right: 5px; }
-        .btn-view:hover { background: #f57c00; }
-        .btn-print { background: #2196f3; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-        .btn-print:hover { background: #1976d2; }
-        .hidden { display: none !important; }
-        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 99999; }
-        .alert-custom { position: fixed; top: 20px; right: 20px; z-index: 10000; min-width: 300px; animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .btn-light { cursor: pointer; }
         
-        /* View Modal Styles */
-        .view-modal .modal-content { border-radius: 15px; border: none; }
-        .view-modal .modal-header { background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); color: white; border-radius: 15px 15px 0 0; }
-        .view-modal .modal-title { font-weight: 600; }
+        .btn-view, .btn-print { 
+            color: white; 
+            border: none; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            cursor: pointer;
+            font-size: 12px;
+            min-height: 36px;
+            margin: 2px;
+        }
+        
+        .btn-view { background: #ff9800; }
+        .btn-print { background: #2196f3; }
+        
+        /* Stamp Option */
+        .stamp-option { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid #dee2e6;
+            margin-top: 15px;
+        }
+        
+        .stamp-option label { 
+            font-weight: 600; 
+            color: var(--primary-green);
+            font-size: 14px;
+        }
+        
+        /* View Modal */
+        .view-modal .modal-content { 
+            border-radius: 16px; 
+            border: none;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .view-modal .modal-header { 
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); 
+            color: white; 
+            border-radius: 16px 16px 0 0;
+            padding: 16px 20px;
+        }
+        
+        .view-modal .modal-title { font-weight: 600; font-size: 18px; }
         .view-modal .btn-close { filter: invert(1); }
-        .detail-row { padding: 10px 0; border-bottom: 1px solid #eee; }
-        .detail-label { font-weight: 600; color: var(--primary-green); }
-        .signature-preview-large { max-width: 200px; border: 2px solid #e0e0e0; border-radius: 8px; padding: 5px; background: white; }
+        
+        .detail-row { 
+            padding: 12px 0; 
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-label { 
+            font-weight: 600; 
+            color: var(--primary-green);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        
+        .signature-preview-large { 
+            max-width: 180px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
+            padding: 5px; 
+            background: white;
+        }
+        
+        /* Loading & Alerts */
+        .hidden { display: none !important; }
+        
+        .loading-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.7); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 99999;
+            backdrop-filter: blur(5px);
+        }
+        
+        .alert-custom { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 10000; 
+            min-width: 280px;
+            max-width: 90vw;
+            animation: slideIn 0.3s ease-out;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        @keyframes slideIn { 
+            from { transform: translateX(100%); opacity: 0; } 
+            to { transform: translateX(0); opacity: 1; } 
+        }
+        
+        /* Mobile Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+        
+        .bottom-nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        .bottom-nav-item.active {
+            background: var(--light-green);
+            color: white;
+        }
+        
+        .bottom-nav-item i {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .bottom-nav-item span {
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-title { font-size: 16px; }
+            .header-subtitle { font-size: 10px; }
+            .user-info { display: none; }
+            .main-container { padding: 15px 10px; padding-bottom: 80px; }
+            .nav-tabs-custom .nav-link { padding: 10px 15px; font-size: 13px; }
+            .signature-canvas-container canvas { height: 250px; }
+            .table-custom { font-size: 12px; }
+            .table-custom th, .table-custom td { padding: 8px 6px; }
+        }
+        
+        @media (min-width: 769px) {
+            .bottom-nav { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -130,7 +553,7 @@
                     </div>
                     <div class="ms-auto d-flex align-items-center">
                         <span class="user-info"><i class="fas fa-user"></i> <span id="userName">User</span></span>
-                        <button onclick="logoutUser()" class="btn btn-light btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        <button onclick="logoutUser()" class="btn btn-light btn-sm"><i class="fas fa-sign-out-alt"></i></button>
                     </div>
                 </div>
             </div>
@@ -139,25 +562,25 @@
         <div class="main-container">
             <ul class="nav nav-tabs nav-tabs-custom" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="form-tab" data-bs-toggle="tab" data-bs-target="#form" type="button" role="tab" aria-controls="form" aria-selected="true">
+                    <button class="nav-link active" id="form-tab" data-bs-toggle="tab" data-bs-target="#form" type="button" role="tab">
                         <i class="fas fa-file-alt"></i> Input Data
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="data-tab" data-bs-toggle="tab" data-bs-target="#data" type="button" role="tab" aria-controls="data" aria-selected="false">
+                    <button class="nav-link" id="data-tab" data-bs-toggle="tab" data-bs-target="#data" type="button" role="tab">
                         <i class="fas fa-database"></i> Data Transaksi
                     </button>
                 </li>
             </ul>
 
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="form" role="tabpanel" aria-labelledby="form-tab">
+                <div class="tab-pane fade show active" id="form" role="tabpanel">
                     <div class="card-custom">
                         <div class="card-header-custom"><i class="fas fa-plus-circle"></i> Form Transaksi</div>
-                        <div class="card-body p-4">
+                        <div class="card-body p-3 p-md-4">
                             <form id="siratForm">
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mb-2 mb-md-0">
                                         <label class="form-label fw-bold">Jenis Transaksi</label>
                                         <select class="form-select" id="jenis" required>
                                             <option value="">Pilih Jenis Transaksi</option>
@@ -171,7 +594,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 mb-2 mb-md-0">
                                         <label class="form-label fw-bold">Nama Barang</label>
                                         <input type="text" class="form-control" id="namaBarang" placeholder="Masukkan nama barang" required>
                                     </div>
@@ -202,22 +625,39 @@
                                         <input type="hidden" id="ttdPenerimaData">
                                     </div>
                                 </div>
+
+                                <div class="stamp-option">
+                                    <label class="form-label fw-bold mb-2"><i class="fas fa-stamp"></i> Penempatan Stempel:</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="stampPlacement" id="stampPenyerah" value="penyerah">
+                                        <label class="form-check-label" for="stampPenyerah">Di Penyerah</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="stampPlacement" id="stampPenerima" value="penerima" checked>
+                                        <label class="form-check-label" for="stampPenerima">Di Penerima</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="stampPlacement" id="stampNone" value="none">
+                                        <label class="form-check-label" for="stampNone">Tanpa Stempel</label>
+                                    </div>
+                                </div>
+
                                 <div class="mt-4"><button type="submit" class="btn btn-submit" id="btnSubmit"><i class="fas fa-save"></i> Simpan Data Transaksi</button></div>
                             </form>
                         </div>
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="data" role="tabpanel" aria-labelledby="data-tab">
+                <div class="tab-pane fade" id="data" role="tabpanel">
                     <div class="card-custom">
-                        <div class="card-header-custom d-flex justify-content-between align-items-center">
+                        <div class="card-header-custom d-flex justify-content-between align-items-center flex-wrap gap-2">
                             <span><i class="fas fa-list"></i> Riwayat Transaksi</span>
                             <div>
-                                <button onclick="exportToCSV()" class="btn btn-light btn-sm me-2"><i class="fas fa-download"></i> Export CSV</button>
-                                <button onclick="printAllToPDF()" class="btn btn-light btn-sm"><i class="fas fa-print"></i> Print PDF</button>
+                                <button onclick="exportToCSV()" class="btn btn-light btn-sm me-2"><i class="fas fa-download"></i> CSV</button>
+                                <button onclick="printAllToPDF()" class="btn btn-light btn-sm"><i class="fas fa-print"></i> PDF</button>
                             </div>
                         </div>
-                        <div class="card-body p-4">
+                        <div class="card-body p-3 p-md-4">
                             <div class="table-responsive">
                                 <table class="table table-custom" id="dataTable">
                                     <thead><tr><th>Tanggal</th><th>Jenis</th><th>Barang</th><th>Jumlah</th><th>Penyerah</th><th>Penerima</th><th>Aksi</th></tr></thead>
@@ -229,26 +669,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- Bottom Navigation for Mobile -->
+        <div class="bottom-nav d-md-none">
+            <div class="bottom-nav-item active" onclick="switchTab('form')">
+                <i class="fas fa-file-alt"></i>
+                <span>Input</span>
+            </div>
+            <div class="bottom-nav-item" onclick="switchTab('data')">
+                <i class="fas fa-database"></i>
+                <span>Data</span>
+            </div>
+        </div>
     </div>
 
     <!-- View Detail Modal -->
     <div class="modal fade view-modal" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="viewModalLabel"><i class="fas fa-file-alt"></i> Detail Transaksi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="viewContent">
-                        <!-- Content will be filled by JavaScript -->
-                    </div>
+                    <div id="viewContent"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary" onclick="printCurrentView()">
-                        <i class="fas fa-print"></i> Cetak PDF
-                    </button>
+                    <button type="button" class="btn btn-primary" onclick="printCurrentView()"><i class="fas fa-print"></i> Cetak PDF</button>
                 </div>
             </div>
         </div>
@@ -295,7 +743,7 @@
                 const reader = new FileReader();
                 reader.onloadend = function() {
                     logoBase64 = reader.result;
-                    console.log('✅ Logo berhasil di-load');
+                    console.log('✅ Logo loaded');
                 };
                 reader.readAsDataURL(blob);
             } catch (error) {
@@ -324,13 +772,7 @@
             const password = document.getElementById('loginPassword').value;
             if (!email || !password) { showAlert('error', 'Mohon isi email dan password!'); return; }
             showLoading('Sedang login...');
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                hideLoading();
-            } catch (error) {
-                hideLoading();
-                showAlert('error', 'Login gagal: ' + error.message);
-            }
+            try { await signInWithEmailAndPassword(auth, email, password); hideLoading(); } catch (error) { hideLoading(); showAlert('error', 'Login gagal: ' + error.message); }
         };
 
         window.registerUser = async function() {
@@ -349,14 +791,7 @@
                 hideLoading();
                 showAlert('success', 'Registrasi berhasil! Silakan login.');
                 toggleAuthMode();
-                document.getElementById('registerName').value = '';
-                document.getElementById('registerEmail').value = '';
-                document.getElementById('registerPassword').value = '';
-                document.getElementById('registerPasswordConfirm').value = '';
-            } catch (error) {
-                hideLoading();
-                showAlert('error', 'Registrasi gagal: ' + error.message);
-            }
+            } catch (error) { hideLoading(); showAlert('error', 'Registrasi gagal: ' + error.message); }
         };
 
         window.logoutUser = async function() {
@@ -372,11 +807,14 @@
             const ttdPenyerah = document.getElementById('ttdPenyerahData').value;
             const ttdPenerima = document.getElementById('ttdPenerimaData').value;
             if (!ttdPenyerah || !ttdPenerima) { showAlert('error', 'Harap lengkapi kedua tanda tangan!'); return; }
+            
+            const stampPlacement = document.querySelector('input[name="stampPlacement"]:checked').value;
             const btn = document.getElementById('btnSubmit');
             const originalText = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
             showLoading('Menyimpan data...');
+            
             try {
                 const data = {
                     jenis: document.getElementById('jenis').value,
@@ -388,6 +826,7 @@
                     ttdPenyerah, 
                     namaPenerima: document.getElementById('namaPenerima').value,
                     ttdPenerima,
+                    stampPlacement: stampPlacement,
                     createdBy: currentUser.uid,
                     createdByName: currentUser.displayName || currentUser.email,
                     timestamp: serverTimestamp()
@@ -405,24 +844,24 @@
                 document.getElementById('statusPenerima').innerHTML = '<i class="fas fa-exclamation-circle"></i> Belum ada tanda tangan';
                 document.getElementById('btnTextPenerima').textContent = 'Buat Tanda Tangan Penerima';
                 document.getElementById('tanggal').valueAsDate = new Date();
-            } catch (error) {
-                hideLoading();
-                showAlert('error', 'Gagal: ' + error.message);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-            }
+                document.getElementById('stampPenerima').checked = true;
+            } catch (error) { hideLoading(); showAlert('error', 'Gagal: ' + error.message); } finally { btn.disabled = false; btn.innerHTML = originalText; }
         });
 
         document.addEventListener('DOMContentLoaded', function() {
             const dataTabEl = document.getElementById('data-tab');
             if (dataTabEl) {
-                dataTabEl.addEventListener('shown.bs.tab', function(event) {
-                    console.log('📊 Tab Data Transaksi aktif - loading data...');
-                    loadData();
-                });
+                dataTabEl.addEventListener('shown.bs.tab', function(event) { loadData(); });
             }
         });
+
+        window.switchTab = function(tabName) {
+            const tab = new bootstrap.Tab(document.getElementById(tabName + '-tab'));
+            tab.show();
+            
+            document.querySelectorAll('.bottom-nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        };
 
         window.loadData = async function() {
             const tbody = document.getElementById('tableBody');
@@ -431,10 +870,7 @@
                 const snapshot = await getDocs(q);
                 allTransactions = [];
                 tbody.innerHTML = "";
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="text-center">Belum ada data.</td></tr>';
-                    return;
-                }
+                if (snapshot.empty) { tbody.innerHTML = '<tr><td colspan="7" class="text-center">Belum ada data.</td></tr>'; return; }
                 snapshot.forEach(docSnap => {
                     const d = docSnap.data();
                     d.id = docSnap.id;
@@ -449,113 +885,62 @@
                         <td>${d.namaPenyerah}</td>
                         <td>${d.namaPenerima}</td>
                         <td>
-                            <button class="btn btn-view btn-sm" onclick="window.viewTransaction('${docSnap.id}')"><i class="fas fa-eye"></i> View</button>
-                            <button class="btn btn-print btn-sm" onclick="window.printSinglePDF('${docSnap.id}')"><i class="fas fa-print"></i> PDF</button>
+                            <button class="btn btn-view btn-sm" onclick="window.viewTransaction('${docSnap.id}')"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-print btn-sm" onclick="window.printSinglePDF('${docSnap.id}')"><i class="fas fa-print"></i></button>
                         </td>
                     `;
                     tbody.appendChild(row);
                 });
-            } catch (error) {
-                console.error("Error:", error);
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Gagal: ' + error.message + '</td></tr>';
-            }
+            } catch (error) { console.error("Error:", error); tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Gagal: ' + error.message + '</td></tr>'; }
         };
 
         window.viewTransaction = function(docId) {
             const transaction = allTransactions.find(t => t.id === docId);
             if (!transaction) { showAlert('error', 'Data tidak ditemukan!'); return; }
-            
             currentViewTransaction = transaction;
-            
             const badgeClass = transaction.jenis === 'Pembelian' ? 'badge-pembelian' : 'badge-serah-terima';
             
+            let stampText = 'Tanpa Stempel';
+            if (transaction.stampPlacement === 'penyerah') stampText = 'Di Penyerah';
+            else if (transaction.stampPlacement === 'penerima') stampText = 'Di Penerima';
+
             const content = `
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="detail-row">
-                            <div class="detail-label">No. Transaksi</div>
-                            <div>SIRAT/${transaction.timestamp ? new Date(transaction.timestamp.toDate()).getFullYear() : new Date().getFullYear()}/${transaction.id.substring(0, 8).toUpperCase()}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Tanggal</div>
-                            <div>${formatDate(transaction.tanggal)}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Jenis Transaksi</div>
-                            <div><span class="badge-custom ${badgeClass}">${transaction.jenis}</span></div>
-                        </div>
+                        <div class="detail-row"><div class="detail-label">No. Transaksi</div><div>SIRAT/${transaction.timestamp ? new Date(transaction.timestamp.toDate()).getFullYear() : new Date().getFullYear()}/${transaction.id.substring(0, 8).toUpperCase()}</div></div>
+                        <div class="detail-row"><div class="detail-label">Tanggal</div><div>${formatDate(transaction.tanggal)}</div></div>
+                        <div class="detail-row"><div class="detail-label">Jenis Transaksi</div><div><span class="badge-custom ${badgeClass}">${transaction.jenis}</span></div></div>
+                        <div class="detail-row"><div class="detail-label">Penempatan Stempel</div><div><i class="fas fa-stamp text-success"></i> ${stampText}</div></div>
                     </div>
                     <div class="col-md-6">
-                        <div class="detail-row">
-                            <div class="detail-label">Nama Barang</div>
-                            <div><strong>${transaction.namaBarang}</strong></div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Jumlah</div>
-                            <div>${transaction.jumlah}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Keterangan</div>
-                            <div>${transaction.keterangan || '-'}</div>
-                        </div>
+                        <div class="detail-row"><div class="detail-label">Nama Barang</div><div><strong>${transaction.namaBarang}</strong></div></div>
+                        <div class="detail-row"><div class="detail-label">Jumlah</div><div>${transaction.jumlah}</div></div>
+                        <div class="detail-row"><div class="detail-label">Keterangan</div><div>${transaction.keterangan || '-'}</div></div>
                     </div>
                 </div>
-                
                 <hr class="my-4">
-                
                 <h6 class="text-success mb-3"><i class="fas fa-signature"></i> Tanda Tangan</h6>
-                
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="detail-row">
-                            <div class="detail-label">Nama Penyerah</div>
-                            <div>${transaction.namaPenyerah}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Tanda Tangan Penyerah</div>
-                            <div>
-                                ${transaction.ttdPenyerah ? `<img src="${transaction.ttdPenyerah}" class="signature-preview-large" alt="TTD Penyerah">` : '<em class="text-muted">Tidak ada</em>'}
-                            </div>
-                        </div>
+                        <div class="detail-row"><div class="detail-label">Nama Penyerah</div><div>${transaction.namaPenyerah}</div></div>
+                        <div class="detail-row"><div class="detail-label">Tanda Tangan Penyerah</div><div>${transaction.ttdPenyerah ? `<img src="${transaction.ttdPenyerah}" class="signature-preview-large" alt="TTD Penyerah">` : '<em class="text-muted">Tidak ada</em>'}</div></div>
                     </div>
                     <div class="col-md-6">
-                        <div class="detail-row">
-                            <div class="detail-label">Nama Penerima</div>
-                            <div>${transaction.namaPenerima}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Tanda Tangan Penerima</div>
-                            <div>
-                                ${transaction.ttdPenerima ? `<img src="${transaction.ttdPenerima}" class="signature-preview-large" alt="TTD Penerima">` : '<em class="text-muted">Tidak ada</em>'}
-                            </div>
-                        </div>
+                        <div class="detail-row"><div class="detail-label">Nama Penerima</div><div>${transaction.namaPenerima}</div></div>
+                        <div class="detail-row"><div class="detail-label">Tanda Tangan Penerima</div><div>${transaction.ttdPenerima ? `<img src="${transaction.ttdPenerima}" class="signature-preview-large" alt="TTD Penerima">` : '<em class="text-muted">Tidak ada</em>'}</div></div>
                     </div>
                 </div>
-                
                 <hr class="my-4">
-                
-                <div class="detail-row">
-                    <div class="detail-label">Dibuat Oleh</div>
-                    <div>${transaction.createdByName || 'User'} | ${transaction.timestamp ? new Date(transaction.timestamp.toDate()).toLocaleString('id-ID') : '-'}</div>
-                </div>
+                <div class="detail-row"><div class="detail-label">Dibuat Oleh</div><div>${transaction.createdByName || 'User'} | ${transaction.timestamp ? new Date(transaction.timestamp.toDate()).toLocaleString('id-ID') : '-'}</div></div>
             `;
-            
             document.getElementById('viewContent').innerHTML = content;
-            
             const viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
             viewModal.show();
         };
 
-        window.printCurrentView = function() {
-            if (currentViewTransaction) {
-                generatePDF([currentViewTransaction]);
-            }
-        };
+        window.printCurrentView = function() { if (currentViewTransaction) generatePDF([currentViewTransaction]); };
 
-        function formatDate(dateString) {
-            if (!dateString) return '-';
-            return new Date(dateString).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
-        }
+        function formatDate(dateString) { if (!dateString) return '-'; return new Date(dateString).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' }); }
 
         window.openSignatureModal = function(type) {
             currentSignatureType = type;
@@ -599,13 +984,7 @@
             const loginForm = document.getElementById('loginForm');
             const registerForm = document.getElementById('registerForm');
             const authTitle = document.getElementById('authTitle');
-            if (loginForm.classList.contains('hidden')) {
-                loginForm.classList.remove('hidden'); registerForm.classList.add('hidden');
-                authTitle.innerHTML = '<i class="fas fa-lock"></i> Login SIRAT';
-            } else {
-                loginForm.classList.add('hidden'); registerForm.classList.remove('hidden');
-                authTitle.innerHTML = '<i class="fas fa-user-plus"></i> Daftar Akun SIRAT';
-            }
+            if (loginForm.classList.contains('hidden')) { loginForm.classList.remove('hidden'); registerForm.classList.add('hidden'); authTitle.innerHTML = '<i class="fas fa-lock"></i> Login SIRAT'; } else { loginForm.classList.add('hidden'); registerForm.classList.remove('hidden'); authTitle.innerHTML = '<i class="fas fa-user-plus"></i> Daftar Akun SIRAT'; }
         };
 
         function showLoading(text = 'Memuat...') { document.getElementById('loadingText').textContent = text; document.getElementById('loadingOverlay').classList.remove('hidden'); }
@@ -649,74 +1028,50 @@
         };
 
         async function generatePDF(transactions) {
+            if (!logoBase64) { showAlert('error', 'Logo/Stempel belum dimuat. Tunggu sebentar dan coba lagi.'); return; }
+            
             const { jsPDF } = window.jspdf;
             const pdfDoc = new jsPDF('p', 'mm', 'a4');
+            const stampBase64 = logoBase64;
             
             transactions.forEach((trans, index) => {
                 if (index > 0) pdfDoc.addPage();
                 
-                if (logoBase64) {
-                    pdfDoc.addImage(logoBase64, 'PNG', 20, 10, 25, 25);
-                }
-                
-                pdfDoc.setFontSize(16);
-                pdfDoc.setFont(undefined, 'bold');
-                pdfDoc.setTextColor(27, 94, 32);
+                pdfDoc.addImage(logoBase64, 'PNG', 20, 10, 25, 25);
+                pdfDoc.setFontSize(16); pdfDoc.setFont(undefined, 'bold'); pdfDoc.setTextColor(27, 94, 32);
                 pdfDoc.text('CV REZEKI AMANAH JAYA GROUP', 50, 18);
-                
-                pdfDoc.setFontSize(10);
-                pdfDoc.setFont(undefined, 'normal');
-                pdfDoc.setTextColor(46, 125, 50);
+                pdfDoc.setFontSize(10); pdfDoc.setFont(undefined, 'normal'); pdfDoc.setTextColor(46, 125, 50);
                 pdfDoc.text('SUPPLIER & WASTE SOLUTION PARTNER', 50, 25);
-                
-                pdfDoc.setFontSize(8);
-                pdfDoc.setTextColor(100, 100, 100);
+                pdfDoc.setFontSize(8); pdfDoc.setTextColor(100, 100, 100);
                 pdfDoc.text('Cluster Puri Flamingo FLA 06/19 Sukamantri Pasarkemis Kab Tangerang', 50, 31);
                 pdfDoc.text('HP. 081296580968', 50, 36);
-                
-                pdfDoc.setDrawColor(27, 94, 32);
-                pdfDoc.setLineWidth(0.5);
+                pdfDoc.setDrawColor(27, 94, 32); pdfDoc.setLineWidth(0.5);
                 pdfDoc.line(20, 40, 190, 40);
                 
-                pdfDoc.setFontSize(14);
-                pdfDoc.setFont(undefined, 'bold');
-                pdfDoc.setTextColor(0, 0, 0);
+                pdfDoc.setFontSize(14); pdfDoc.setFont(undefined, 'bold'); pdfDoc.setTextColor(0, 0, 0);
                 pdfDoc.text('BERITA ACARA SERAH TERIMA BARANG', 105, 55, { align: 'center' });
-                
-                pdfDoc.setFontSize(10);
-                pdfDoc.setFont(undefined, 'normal');
+                pdfDoc.setFontSize(10); pdfDoc.setFont(undefined, 'normal');
                 const year = trans.timestamp ? new Date(trans.timestamp.toDate()).getFullYear() : new Date().getFullYear();
                 pdfDoc.text(`No: SIRAT/${year}/${String(index + 1).padStart(3, '0')}`, 105, 62, { align: 'center' });
                 
                 let yPos = 75;
                 pdfDoc.setFontSize(10);
                 pdfDoc.text('Pada hari ini, dengan ini kami yang bertanda tangan di bawah ini:', 20, yPos);
-                
-                yPos += 10;
-                pdfDoc.text('1. Nama Penyerah', 20, yPos); pdfDoc.text(`: ${trans.namaPenyerah}`, 70, yPos);
-                yPos += 7;
-                pdfDoc.text('2. Nama Penerima', 20, yPos); pdfDoc.text(`: ${trans.namaPenerima}`, 70, yPos);
-                yPos += 7;
-                pdfDoc.text('3. Tanggal', 20, yPos); pdfDoc.text(`: ${formatDate(trans.tanggal)}`, 70, yPos);
-                yPos += 7;
-                pdfDoc.text('4. Jenis Transaksi', 20, yPos); pdfDoc.text(`: ${trans.jenis}`, 70, yPos);
-                
+                yPos += 10; pdfDoc.text('1. Nama Penyerah', 20, yPos); pdfDoc.text(`: ${trans.namaPenyerah}`, 70, yPos);
+                yPos += 7; pdfDoc.text('2. Nama Penerima', 20, yPos); pdfDoc.text(`: ${trans.namaPenerima}`, 70, yPos);
+                yPos += 7; pdfDoc.text('3. Tanggal', 20, yPos); pdfDoc.text(`: ${formatDate(trans.tanggal)}`, 70, yPos);
+                yPos += 7; pdfDoc.text('4. Jenis Transaksi', 20, yPos); pdfDoc.text(`: ${trans.jenis}`, 70, yPos);
                 yPos += 15;
                 pdfDoc.text('Dengan ini menyatakan telah melakukan serah terima barang dengan rincian:', 20, yPos);
-                
                 yPos += 10;
                 pdfDoc.autoTable({
-                    startY: yPos,
-                    head: [['Nama Barang', 'Jumlah', 'Keterangan']],
+                    startY: yPos, head: [['Nama Barang', 'Jumlah', 'Keterangan']],
                     body: [[trans.namaBarang, trans.jumlah, trans.keterangan || '-']],
-                    theme: 'grid',
-                    headStyles: { fillColor: [27, 94, 32], textColor: 255, fontStyle: 'bold' },
-                    styles: { fontSize: 9, cellPadding: 3 }
+                    theme: 'grid', headStyles: { fillColor: [27, 94, 32], textColor: 255, fontStyle: 'bold' }, styles: { fontSize: 9, cellPadding: 3 }
                 });
                 
                 yPos = pdfDoc.lastAutoTable.finalY + 15;
                 pdfDoc.text('Demikian berita acara ini dibuat untuk dipergunakan sebagaimana mestinya.', 20, yPos);
-                
                 yPos += 20;
                 const signY = yPos;
                 
@@ -725,13 +1080,24 @@
                 pdfDoc.line(20, signY + 30, 70, signY + 30);
                 pdfDoc.text(trans.namaPenyerah, 45, signY + 35, { align: 'center' });
                 
+                if (trans.stampPlacement === 'penyerah' && stampBase64) {
+                    pdfDoc.setGState(new pdfDoc.GState({ opacity: 0.85 }));
+                    pdfDoc.addImage(stampBase64, 'PNG', 25, signY - 5, 40, 40);
+                    pdfDoc.setGState(new pdfDoc.GState({ opacity: 1 }));
+                }
+                
                 pdfDoc.text('Penerima,', 120, signY);
                 if (trans.ttdPenerima) pdfDoc.addImage(trans.ttdPenerima, 'PNG', 120, signY + 5, 50, 20);
                 pdfDoc.line(120, signY + 30, 170, signY + 30);
                 pdfDoc.text(trans.namaPenerima, 145, signY + 35, { align: 'center' });
                 
-                pdfDoc.setFontSize(7);
-                pdfDoc.setTextColor(150, 150, 150);
+                if (trans.stampPlacement === 'penerima' && stampBase64) {
+                    pdfDoc.setGState(new pdfDoc.GState({ opacity: 0.85 }));
+                    pdfDoc.addImage(stampBase64, 'PNG', 125, signY - 5, 40, 40);
+                    pdfDoc.setGState(new pdfDoc.GState({ opacity: 1 }));
+                }
+                
+                pdfDoc.setFontSize(7); pdfDoc.setTextColor(150, 150, 150);
                 pdfDoc.text(`Dicetak oleh: ${trans.createdByName || 'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 285, { align: 'center' });
             });
             
