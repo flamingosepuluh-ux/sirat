@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1b5e20">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>SIRAT - CV REZEKI AMANAH JAYA Group</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,8 +21,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
         .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); padding: 30px 25px; max-width: 400px; width: 100%; text-align: center; animation: slideUp 0.4s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .login-card { background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); padding: 30px 25px; max-width: 400px; width: 100%; text-align: center; }
         .logo-container { margin-bottom: 25px; }
         .logo-container img { max-width: 150px; height: auto; margin-bottom: 15px; }
         .company-name { color: var(--primary-green); font-size: 20px; font-weight: 700; margin-bottom: 5px; }
@@ -56,7 +53,7 @@
         .signature-modal-content { background: white; border-radius: 20px; padding: 25px; width: 95%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; }
         .signature-modal-title { color: var(--primary-green); font-size: 20px; font-weight: 700; text-align: center; margin-bottom: 5px; }
         .signature-canvas-container { border: 3px dashed var(--light-green); border-radius: 15px; background: #f9f9f9; margin: 20px 0; touch-action: none; }
-        .signature-canvas-container canvas { width: 100%; height: 300px; display: block; border-radius: 12px; touch-action: none; }
+        .signature-canvas-container canvas { width: 100%; height: 300px; display: block; border-radius: 12px; touch-action: none; background-color: white; }
         .signature-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
         .btn-save-signature, .btn-clear-signature { color: white; border: none; padding: 14px 28px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 15px; min-height: 48px; }
         .btn-save-signature { background: var(--light-green); }
@@ -69,9 +66,12 @@
         .badge-custom { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 11px; }
         .badge-serah-terima { background: #e3f2fd; color: #1976d2; }
         .badge-pembelian { background: #fff3e0; color: #f57c00; }
-        .btn-view, .btn-print { color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 12px; min-height: 36px; margin: 2px; }
+        .btn-action { color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 12px; min-height: 36px; margin: 2px; }
         .btn-view { background: #ff9800; }
-        .btn-print { background: #2196f3; }
+        .btn-pdf-view { background: #9c27b0; }
+        .btn-pdf-down { background: #2196f3; }
+        .btn-filter { background: #ff5722; }
+        .btn-csv { background: #4caf50; }
         .stamp-option { background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #dee2e6; margin-top: 15px; }
         .stamp-option label { font-weight: 600; color: var(--primary-green); font-size: 14px; }
         .view-modal .modal-content { border-radius: 16px; border: none; max-height: 90vh; overflow-y: auto; }
@@ -91,6 +91,7 @@
         .bottom-nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
         .bottom-nav-item span { font-size: 11px; font-weight: 600; }
         .btn-light { cursor: pointer; }
+        .filter-badge { background: #ff5722; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 5px; }
         @media (max-width: 768px) { .header-title { font-size: 16px; } .user-info { display: none; } .nav-tabs-custom .nav-link { padding: 10px 15px; font-size: 13px; } .table-custom { font-size: 12px; } }
         @media (min-width: 769px) { .bottom-nav { display: none; } }
     </style>
@@ -236,10 +237,12 @@
                 <div class="tab-pane fade" id="data" role="tabpanel">
                     <div class="card-custom">
                         <div class="card-header-custom d-flex justify-content-between align-items-center flex-wrap gap-2">
-                            <span><i class="fas fa-list"></i> Riwayat Transaksi</span>
-                            <div>
-                                <button onclick="exportToCSV()" class="btn btn-light btn-sm me-2"><i class="fas fa-download"></i> CSV</button>
-                                <button onclick="printAllToPDF()" class="btn btn-light btn-sm"><i class="fas fa-print"></i> PDF</button>
+                            <span><i class="fas fa-list"></i> Riwayat Transaksi <span id="filterIndicator" class="filter-badge hidden">Aktif</span></span>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button onclick="openFilterModal()" class="btn btn-light btn-sm"><i class="fas fa-filter"></i> Filter</button>
+                                <button onclick="exportToCSV()" class="btn btn-light btn-sm"><i class="fas fa-file-csv"></i> CSV</button>
+                                <button onclick="viewPDF()" class="btn btn-light btn-sm"><i class="fas fa-eye"></i> Lihat PDF</button>
+                                <button onclick="downloadPDF()" class="btn btn-light btn-sm"><i class="fas fa-download"></i> Download</button>
                             </div>
                         </div>
                         <div class="card-body p-3 p-md-4">
@@ -265,6 +268,51 @@
         </div>
     </div>
 
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 16px; border: none;">
+                <div class="modal-header" style="background: linear-gradient(135deg, var(--primary-green), var(--secondary-green)); color: white; border-radius: 16px 16px 0 0;">
+                    <h5 class="modal-title"><i class="fas fa-filter"></i> Filter Data Export</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Bulan</label>
+                        <select class="form-select" id="filterBulan">
+                            <option value="">Semua Bulan</option>
+                            <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
+                            <option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
+                            <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
+                            <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tahun</label>
+                        <select class="form-select" id="filterTahun">
+                            <option value="">Semua Tahun</option>
+                            <option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option>
+                            <option value="2027">2027</option><option value="2028">2028</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Jenis Transaksi</label>
+                        <select class="form-select" id="filterJenis">
+                            <option value="Semua">Semua Jenis</option>
+                            <option value="Serah Terima">Serah Terima Barang</option>
+                            <option value="Pembelian">Pembelian Barang</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="resetFilter()">Reset</button>
+                    <button type="button" class="btn btn-success" onclick="applyFilter()" data-bs-dismiss="modal">Terapkan Filter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Detail Modal -->
     <div class="modal fade view-modal" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
@@ -275,7 +323,7 @@
                 <div class="modal-body"><div id="viewContent"></div></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary" onclick="printCurrentView()"><i class="fas fa-print"></i> Cetak PDF</button>
+                    <button type="button" class="btn btn-primary" onclick="viewSinglePDF(currentViewTransaction.id)"><i class="fas fa-eye"></i> Lihat PDF</button>
                 </div>
             </div>
         </div>
@@ -314,6 +362,10 @@
 
         let currentUser = null, currentSigner = '', modalSignaturePad = null, currentSignatureType = '';
         let allTransactions = [], logoBase64 = null, currentViewTransaction = null;
+        let filteredTransactions = [];
+
+        // Filter State
+        let activeFilters = { bulan: '', tahun: '', jenis: 'Semua' };
 
         async function loadLogo() {
             try {
@@ -325,7 +377,7 @@
                     console.log('✅ Logo loaded');
                 };
                 reader.readAsDataURL(blob);
-            } catch (error) { console.error(' Error loading logo:', error); }
+            } catch (error) { console.error('Error loading logo:', error); }
         }
 
         onAuthStateChanged(auth, (user) => {
@@ -432,36 +484,90 @@
             event.currentTarget.classList.add('active');
         };
 
+        // --- FILTER LOGIC ---
+        window.openFilterModal = function() {
+            document.getElementById('filterBulan').value = activeFilters.bulan;
+            document.getElementById('filterTahun').value = activeFilters.tahun;
+            document.getElementById('filterJenis').value = activeFilters.jenis;
+            new bootstrap.Modal(document.getElementById('filterModal')).show();
+        };
+
+        window.applyFilter = function() {
+            activeFilters.bulan = document.getElementById('filterBulan').value;
+            activeFilters.tahun = document.getElementById('filterTahun').value;
+            activeFilters.jenis = document.getElementById('filterJenis').value;
+            
+            updateFilterIndicator();
+            renderTable();
+            showAlert('success', 'Filter diterapkan!');
+        };
+
+        window.resetFilter = function() {
+            activeFilters = { bulan: '', tahun: '', jenis: 'Semua' };
+            document.getElementById('filterBulan').value = '';
+            document.getElementById('filterTahun').value = '';
+            document.getElementById('filterJenis').value = 'Semua';
+            updateFilterIndicator();
+            renderTable();
+        };
+
+        function updateFilterIndicator() {
+            const indicator = document.getElementById('filterIndicator');
+            if (activeFilters.bulan || activeFilters.tahun || activeFilters.jenis !== 'Semua') {
+                indicator.classList.remove('hidden');
+            } else {
+                indicator.classList.add('hidden');
+            }
+        }
+
+        function getFilteredData() {
+            return allTransactions.filter(t => {
+                const [y, m, d] = t.tanggal.split('-');
+                if (activeFilters.bulan && m !== activeFilters.bulan) return false;
+                if (activeFilters.tahun && y !== activeFilters.tahun) return false;
+                if (activeFilters.jenis !== 'Semua' && t.jenis !== activeFilters.jenis) return false;
+                return true;
+            });
+        }
+
         window.loadData = async function() {
-            const tbody = document.getElementById('tableBody');
             try {
                 const q = query(collection(db, "transaksi_sirat"), orderBy("timestamp", "desc"));
                 const snapshot = await getDocs(q);
                 allTransactions = [];
-                tbody.innerHTML = "";
-                if (snapshot.empty) { tbody.innerHTML = '<tr><td colspan="7" class="text-center">Belum ada data.</td></tr>'; return; }
                 snapshot.forEach(docSnap => {
                     const d = docSnap.data();
                     d.id = docSnap.id;
                     allTransactions.push(d);
-                    const badgeClass = d.jenis === 'Pembelian' ? 'badge-pembelian' : 'badge-serah-terima';
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${formatDate(d.tanggal)}</td>
-                        <td><span class="badge-custom ${badgeClass}">${d.jenis}</span></td>
-                        <td><strong>${d.namaBarang}</strong></td>
-                        <td>${d.jumlah}</td>
-                        <td>${d.namaPenyerah}</td>
-                        <td>${d.namaPenerima}</td>
-                        <td>
-                            <button class="btn btn-view btn-sm" onclick="window.viewTransaction('${docSnap.id}')"><i class="fas fa-eye"></i></button>
-                            <button class="btn btn-print btn-sm" onclick="window.printSinglePDF('${docSnap.id}')"><i class="fas fa-print"></i></button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
                 });
-            } catch (error) { console.error("Error:", error); tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Gagal: ' + error.message + '</td></tr>'; }
+                renderTable();
+            } catch (error) { console.error("Error:", error); document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" class="text-center text-danger">Gagal: ' + error.message + '</td></tr>'; }
         };
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const dataToShow = getFilteredData();
+            tbody.innerHTML = "";
+            if (dataToShow.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center">Tidak ada data.</td></tr>'; return; }
+            
+            dataToShow.forEach(d => {
+                const badgeClass = d.jenis === 'Pembelian' ? 'badge-pembelian' : 'badge-serah-terima';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(d.tanggal)}</td>
+                    <td><span class="badge-custom ${badgeClass}">${d.jenis}</span></td>
+                    <td><strong>${d.namaBarang}</strong></td>
+                    <td>${d.jumlah}</td>
+                    <td>${d.namaPenyerah}</td>
+                    <td>${d.namaPenerima}</td>
+                    <td>
+                        <button class="btn-action btn-view" onclick="window.viewTransaction('${d.id}')"><i class="fas fa-eye"></i></button>
+                        <button class="btn-action btn-pdf-view" onclick="window.viewSinglePDF('${d.id}')"><i class="fas fa-file-pdf"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
 
         window.viewTransaction = function(docId) {
             const transaction = allTransactions.find(t => t.id === docId);
@@ -497,16 +603,12 @@
                         <div class="detail-row"><div class="detail-label">Tanda Tangan Penerima</div><div>${transaction.ttdPenerima ? `<img src="${transaction.ttdPenerima}" class="signature-preview-large" alt="TTD Penerima">` : '<em class="text-muted">Tidak ada</em>'}</div></div>
                     </div>
                 </div>
-                <hr class="my-4">
-                <div class="detail-row"><div class="detail-label">Dibuat Oleh</div><div>${transaction.createdByName || 'User'} | ${transaction.timestamp ? new Date(transaction.timestamp.toDate()).toLocaleString('id-ID') : '-'}</div></div>
             `;
             document.getElementById('viewContent').innerHTML = content;
-            const viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
-            viewModal.show();
+            new bootstrap.Modal(document.getElementById('viewModal')).show();
         };
 
-        window.printCurrentView = function() { if (currentViewTransaction) generatePDF([currentViewTransaction]); };
-        function formatDate(dateString) { if (!dateString) return '-'; return new Date(dateString).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' }); }
+        function formatDate(dateString) { if (!dateString) return '-'; const [y, m, d] = dateString.split('-'); return `${d} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][parseInt(m)-1]} ${y}`; }
 
         window.openSignatureModal = function(type) {
             currentSignatureType = type;
@@ -522,7 +624,7 @@
                 canvas.height = canvas.offsetHeight * ratio;
                 canvas.getContext("2d").scale(ratio, ratio);
                 if (modalSignaturePad) modalSignaturePad.clear();
-                modalSignaturePad = new SignaturePad(canvas, { backgroundColor: 'rgb(255, 255, 255)', penColor: 'rgb(0, 0, 0)', minWidth: 2, maxWidth: 4 });
+                modalSignaturePad = new SignaturePad(canvas, { backgroundColor: 'rgba(0,0,0,0)', penColor: 'rgb(0, 0, 0)', minWidth: 2, maxWidth: 4 });
             }, 100);
         };
 
@@ -560,17 +662,14 @@
             document.body.appendChild(alertDiv);
             setTimeout(() => alertDiv.remove(), 3000);
         }
+
         window.exportToCSV = function() {
-            const table = document.getElementById("dataTable");
-            let csv = [];
-            const rows = table.querySelectorAll("tr");
-            csv.push(["Tanggal", "Jenis", "Barang", "Jumlah", "Penyerah", "Penerima"]);
-            for (let i = 1; i < rows.length; i++) {
-                let row = [];
-                const cols = rows[i].querySelectorAll("td");
-                for (let j = 0; j < cols.length - 1; j++) row.push(cols[j].innerText.replace(/,/g, ";"));
-                csv.push(row);
-            }
+            const dataToShow = getFilteredData();
+            if (dataToShow.length === 0) { showAlert('error', 'Tidak ada data untuk diexport!'); return; }
+            let csv = [["Tanggal", "Jenis", "Barang", "Jumlah", "Penyerah", "Penerima", "Keterangan"]];
+            dataToShow.forEach(d => {
+                csv.push([d.tanggal, d.jenis, d.namaBarang, d.jumlah, d.namaPenyerah, d.namaPenerima, d.keterangan || '-']);
+            });
             const csvContent = csv.map(e => e.join(",")).join("\n");
             const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
             const link = document.createElement("a");
@@ -578,18 +677,28 @@
             link.download = `SIRAT_Data_${new Date().toISOString().slice(0,10)}.csv`;
             link.click();
         };
-        window.printSinglePDF = async function(docId) {
+
+        // --- PDF FUNCTIONS ---
+        window.viewSinglePDF = async function(docId) {
             const transaction = allTransactions.find(t => t.id === docId);
             if (!transaction) { showAlert('error', 'Data tidak ditemukan!'); return; }
-            await generatePDF([transaction]);
-        };
-        window.printAllToPDF = async function() {
-            if (allTransactions.length === 0) { showAlert('error', 'Tidak ada data!'); return; }
-            await generatePDF(allTransactions);
+            await generatePDF([transaction], 'view');
         };
 
-        async function generatePDF(transactions) {
-            if (!logoBase64) { showAlert('error', 'Logo belum dimuat. Tunggu sebentar dan coba lagi.'); return; }
+        window.viewPDF = async function() {
+            const dataToShow = getFilteredData();
+            if (dataToShow.length === 0) { showAlert('error', 'Tidak ada data!'); return; }
+            await generatePDF(dataToShow, 'view');
+        };
+
+        window.downloadPDF = async function() {
+            const dataToShow = getFilteredData();
+            if (dataToShow.length === 0) { showAlert('error', 'Tidak ada data!'); return; }
+            await generatePDF(dataToShow, 'download');
+        };
+
+        async function generatePDF(transactions, mode) {
+            if (!logoBase64) { showAlert('error', 'Logo belum dimuat. Tunggu sebentar.'); return; }
             const { jsPDF } = window.jspdf;
             const pdfDoc = new jsPDF('p', 'mm', 'a4');
             const stampBase64 = logoBase64;
@@ -597,19 +706,15 @@
             transactions.forEach((trans, index) => {
                 if (index > 0) pdfDoc.addPage();
                 
-                // KOP SURAT - Logo diperbesar dari 25mm jadi 30mm
-                pdfDoc.addImage(logoBase64, 'PNG', 20, 10, 30, 30);
-                
+                // KOP SURAT (Sesuai File)
+                pdfDoc.addImage(logoBase64, 'PNG', 20, 10, 40, 30);
                 pdfDoc.setFontSize(16); pdfDoc.setFont(undefined, 'bold'); pdfDoc.setTextColor(27, 94, 32);
-                pdfDoc.text('CV REZEKI AMANAH JAYA GROUP', 55, 18);
-                
+                pdfDoc.text('CV REZEKI AMANAH JAYA GROUP', 65, 18);
                 pdfDoc.setFontSize(10); pdfDoc.setFont(undefined, 'normal'); pdfDoc.setTextColor(46, 125, 50);
-                pdfDoc.text('SUPPLIER & WASTE SOLUTION PARTNER', 55, 25);
-                
+                pdfDoc.text('SUPPLIER & WASTE SOLUTION PARTNER', 65, 25);
                 pdfDoc.setFontSize(8); pdfDoc.setTextColor(100, 100, 100);
-                pdfDoc.text('Cluster Puri Flamingo FLA 06/19 Sukamantri Pasarkemis Kab Tangerang', 55, 31);
-                pdfDoc.text('HP. 081296580968', 55, 36);
-                
+                pdfDoc.text('Cluster Puri Flamingo FLA 06/19 Sukamantri Pasarkemis Kab Tangerang', 65, 31);
+                pdfDoc.text('HP. 081296580968', 65, 36);
                 pdfDoc.setDrawColor(27, 94, 32); pdfDoc.setLineWidth(0.5);
                 pdfDoc.line(20, 40, 190, 40);
                 
@@ -642,42 +747,37 @@
                 yPos += 20;
                 const signY = yPos;
                 
-                // === PENYERAH ===
+                // Penyerah
                 pdfDoc.text('Penyerah,', 20, signY);
-                
-                // 1. STEMPEL DULU (di belakang)
                 if (trans.stampPlacement === 'penyerah' && stampBase64) {
                     pdfDoc.setGState(new pdfDoc.GState({ opacity: 0.8 }));
                     pdfDoc.addImage(stampBase64, 'PNG', 25, signY - 5, 40, 40);
                     pdfDoc.setGState(new pdfDoc.GState({ opacity: 1 }));
                 }
-                
-                // 2. TANDA TANGAN DI ATAS (di depan stempel)
                 if (trans.ttdPenyerah) pdfDoc.addImage(trans.ttdPenyerah, 'PNG', 20, signY + 5, 50, 20);
                 pdfDoc.line(20, signY + 30, 70, signY + 30);
                 pdfDoc.text(trans.namaPenyerah, 45, signY + 35, { align: 'center' });
                 
-                // === PENERIMA ===
+                // Penerima
                 pdfDoc.text('Penerima,', 120, signY);
-                
-                // 1. STEMPEL DULU (di belakang)
                 if (trans.stampPlacement === 'penerima' && stampBase64) {
                     pdfDoc.setGState(new pdfDoc.GState({ opacity: 0.8 }));
                     pdfDoc.addImage(stampBase64, 'PNG', 125, signY - 5, 40, 40);
                     pdfDoc.setGState(new pdfDoc.GState({ opacity: 1 }));
                 }
-                
-                // 2. TANDA TANGAN DI ATAS (di depan stempel)
                 if (trans.ttdPenerima) pdfDoc.addImage(trans.ttdPenerima, 'PNG', 120, signY + 5, 50, 20);
                 pdfDoc.line(120, signY + 30, 170, signY + 30);
                 pdfDoc.text(trans.namaPenerima, 145, signY + 35, { align: 'center' });
                 
-                // Footer
                 pdfDoc.setFontSize(7); pdfDoc.setTextColor(150, 150, 150);
                 pdfDoc.text(`Dicetak oleh: ${trans.createdByName || 'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 285, { align: 'center' });
             });
             
-            pdfDoc.save(`SIRAT_Berita_Acara_${new Date().toISOString().slice(0,10)}.pdf`);
+            if (mode === 'view') {
+                pdfDoc.output('dataurlnewwindow');
+            } else {
+                pdfDoc.save(`SIRAT_Berita_Acara_${new Date().toISOString().slice(0,10)}.pdf`);
+            }
         }
     </script>
 </body>
