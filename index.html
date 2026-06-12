@@ -506,7 +506,7 @@
                     fotoArmadaNama = fileName;
                     document.getElementById('fotoArmadaPreview').src = fotoArmadaBase64;
                     document.getElementById('fotoArmadaPreview').classList.remove('hidden');
-                    document.getElementById('fotoArmadaTimestamp').textContent = `📷 ${timestamp}`;
+                    document.getElementById('fotoArmadaTimestamp').textContent = ` ${timestamp}`;
                 }
             };
             reader.readAsDataURL(file);
@@ -548,6 +548,8 @@
                     createdByEmail: currentUser.email,
                     createdByName: currentUser.displayName || currentUser.email
                 };
+                
+                console.log('📤 Mengirim data:', data);
                 
                 await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
                 hideLoading();
@@ -602,6 +604,12 @@
                 allTransactions = data;
                 filteredTransactions = data;
                 
+                console.log('✅ Data loaded:', data.length, 'records');
+                if (data.length > 0) {
+                    console.log('Sample data keys:', Object.keys(data[0]));
+                    console.log('Sample data:', data[0]);
+                }
+                
                 document.getElementById('searchInput').value = '';
                 document.getElementById('filterKode').value = '';
                 document.getElementById('filterBulan').value = '';
@@ -610,7 +618,7 @@
                 
             } catch (error) { 
                 hideLoading(); 
-                console.error('Error loading data:', error);
+                console.error('❌ Error loading data:', error);
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="9" class="text-center text-danger">
@@ -725,37 +733,61 @@
         // ===== PDF GENERATOR LENGKAP =====
         function getDriveDirectUrl(url) {
             if (!url) return null;
-            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (match) {
-                return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+            // Coba berbagai format URL Google Drive
+            const match1 = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (match1) {
+                return `https://lh3.googleusercontent.com/d/${match1[1]}=w800`;
             }
             return url;
         }
 
         function loadImageToBase64(url) {
-            return new Promise((resolve, reject) => {
-                if (!url) { resolve(null); return; }
+            return new Promise((resolve) => {
+                if (!url || url === '-') { 
+                    console.log('⚠️ URL foto kosong');
+                    resolve(null); 
+                    return; 
+                }
+                
+                console.log('🖼️ Mencoba load foto dari:', url);
+                
                 const directUrl = getDriveDirectUrl(url);
+                console.log('🔗 Direct URL:', directUrl);
+                
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
+                
                 img.onload = function() {
+                    console.log('✅ Foto berhasil dimuat');
                     try {
                         const canvas = document.createElement('canvas');
                         canvas.width = img.width;
                         canvas.height = img.height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0);
-                        resolve(canvas.toDataURL('image/jpeg', 0.8));
+                        const base64 = canvas.toDataURL('image/jpeg', 0.8);
+                        console.log('✅ Base64 length:', base64.length);
+                        resolve(base64);
                     } catch(e) {
-                        console.log('CORS error untuk foto:', url);
+                        console.log('❌ Error convert ke base64:', e);
                         resolve(null);
                     }
                 };
+                
                 img.onerror = function() {
-                    console.log('Gagal load foto:', url);
+                    console.log(' Gagal load foto dari URL:', directUrl);
                     resolve(null);
                 };
+                
                 img.src = directUrl;
+                
+                // Timeout 5 detik
+                setTimeout(() => {
+                    if (!img.complete) {
+                        console.log('⏰ Timeout load foto');
+                        resolve(null);
+                    }
+                }, 5000);
             });
         }
 
@@ -772,6 +804,10 @@
             
             for (let index = 0; index < transactions.length; index++) {
                 const trans = transactions[index];
+                
+                console.log(`\n=== Generating PDF ${index + 1}/${transactions.length} ===`);
+                console.log('Data:', trans);
+                
                 if (index > 0) pdfDoc.addPage();
                 
                 let yPos = 10;
@@ -837,7 +873,11 @@
                 pdfDoc.autoTable({
                     startY: yPos,
                     head: [['Jenis Waste', 'Jumlah (KG)', 'Keterangan']],
-                    body: [[trans['Jenis Waste'] || '-', trans['Jumlah (KG)'] || '0', trans['Keterangan'] || '-']],
+                    body: [[
+                        trans['Jenis Waste'] || '-', 
+                        trans['Jumlah (KG)'] || '0', 
+                        trans['Keterangan'] || '-'
+                    ]],
                     theme: 'grid',
                     headStyles: { fillColor: [27, 94, 32], textColor: 255, fontStyle: 'bold', fontSize: 9 },
                     styles: { fontSize: 9, cellPadding: 3 },
@@ -850,8 +890,11 @@
                 const fotoLokasiUrl = trans['Foto Lokasi URL'];
                 const fotoArmadaUrl = trans['Foto Armada URL'];
                 
+                console.log('📷 Foto Lokasi URL:', fotoLokasiUrl);
+                console.log('📷 Foto Armada URL:', fotoArmadaUrl);
+                
                 if (fotoLokasiUrl || fotoArmadaUrl) {
-                    if (yPos > 180) {
+                    if (yPos > 170) {
                         pdfDoc.addPage();
                         yPos = 15;
                     }
@@ -894,7 +937,7 @@
                                 pdfDoc.text(trans['Foto Lokasi Timestamp'], xPos + fotoWidth/2, yPos + fotoHeight + 9, { align: 'center' });
                             }
                         } catch(e) {
-                            console.log('Error foto lokasi:', e);
+                            console.log('❌ Error foto lokasi:', e);
                         }
                     } else if (fotoLokasiUrl) {
                         pdfDoc.setDrawColor(200, 200, 200);
@@ -928,7 +971,7 @@
                                 pdfDoc.text(trans['Foto Armada Timestamp'], xPos + fotoWidth/2, yPos + fotoHeight + 9, { align: 'center' });
                             }
                         } catch(e) {
-                            console.log('Error foto armada:', e);
+                            console.log('❌ Error foto armada:', e);
                         }
                     } else if (fotoArmadaUrl) {
                         pdfDoc.setDrawColor(200, 200, 200);
@@ -944,7 +987,7 @@
                 }
                 
                 // TANDA TANGAN
-                if (yPos > 200) {
+                if (yPos > 195) {
                     pdfDoc.addPage();
                     yPos = 20;
                 }
@@ -968,29 +1011,43 @@
                 pdfDoc.setFont(undefined, 'normal');
                 pdfDoc.text('PIC (Penanggung Jawab),', 15, signY);
                 
-                if (trans['TTD PIC'] && trans['TTD PIC'] !== '-' && trans['TTD PIC'].length > 100) {
+                const ttdPIC = trans['TTD PIC'];
+                console.log('✍️ TTD PIC length:', ttdPIC ? ttdPIC.length : 0);
+                
+                if (ttdPIC && ttdPIC !== '-' && ttdPIC.length > 100) {
                     try {
-                        pdfDoc.addImage(trans['TTD PIC'], 'PNG', 15, signY + 3, signWidth, signHeight);
-                    } catch(e) { console.log('TTD PIC error'); }
+                        pdfDoc.addImage(ttdPIC, 'PNG', 15, signY + 3, signWidth, signHeight);
+                        console.log('✅ TTD PIC ditampilkan');
+                    } catch(e) { 
+                        console.log('❌ TTD PIC error:', e); 
+                    }
                 }
                 pdfDoc.setDrawColor(0, 0, 0);
                 pdfDoc.setLineWidth(0.3);
                 pdfDoc.line(15, signY + 28, 65, signY + 28);
                 pdfDoc.setFont(undefined, 'bold');
                 pdfDoc.text(trans['Nama PIC'] || '-', 40, signY + 33, { align: 'center' });
+                console.log('👤 Nama PIC:', trans['Nama PIC']);
                 
                 // Customer
                 pdfDoc.setFont(undefined, 'normal');
                 pdfDoc.text('Customer,', 130, signY);
                 
-                if (trans['TTD Customer'] && trans['TTD Customer'] !== '-' && trans['TTD Customer'].length > 100) {
+                const ttdCustomer = trans['TTD Customer'];
+                console.log('✍️ TTD Customer length:', ttdCustomer ? ttdCustomer.length : 0);
+                
+                if (ttdCustomer && ttdCustomer !== '-' && ttdCustomer.length > 100) {
                     try {
-                        pdfDoc.addImage(trans['TTD Customer'], 'PNG', 130, signY + 3, signWidth, signHeight);
-                    } catch(e) { console.log('TTD Customer error'); }
+                        pdfDoc.addImage(ttdCustomer, 'PNG', 130, signY + 3, signWidth, signHeight);
+                        console.log('✅ TTD Customer ditampilkan');
+                    } catch(e) { 
+                        console.log('❌ TTD Customer error:', e); 
+                    }
                 }
                 pdfDoc.line(130, signY + 28, 180, signY + 28);
                 pdfDoc.setFont(undefined, 'bold');
                 pdfDoc.text(trans['Nama Customer'] || '-', 155, signY + 33, { align: 'center' });
+                console.log('👤 Nama Customer:', trans['Nama Customer']);
                 
                 // FOOTER
                 pdfDoc.setFontSize(7);
