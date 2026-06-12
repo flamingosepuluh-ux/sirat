@@ -144,7 +144,6 @@
             </ul>
 
             <div class="tab-content">
-                <!-- FORM INPUT -->
                 <div class="tab-pane fade show active" id="form">
                     <div class="card-custom">
                         <div class="card-header-custom">Form Surat Jalan</div>
@@ -269,7 +268,6 @@
                     </div>
                 </div>
 
-                <!-- DATA TABLE -->
                 <div class="tab-pane fade" id="data">
                     <div class="card-custom">
                         <div class="card-header-custom d-flex justify-content-between flex-wrap gap-2">
@@ -383,7 +381,7 @@
                 const kopResp = await fetch('kop-surat.png');
                 const kopBlob = await kopResp.blob();
                 const kopReader = new FileReader();
-                kopReader.onloadend = () => { kopSuratBase64 = kopReader.result; };
+                kopReader.onloadend = () => { kopSuratBase64 = kopReader.result; console.log('✅ Kop surat loaded'); };
                 kopReader.readAsDataURL(kopBlob);
             } catch (e) { console.error('Error load images:', e); }
         }
@@ -497,34 +495,37 @@
         document.getElementById('siratForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             if (!currentUser) { alert('Harus login!'); return; }
+            
             const ttdPIC = document.getElementById('ttdPICData').value;
             const ttdCust = document.getElementById('ttdCustomerData').value;
             if (!ttdPIC || !ttdCust) { alert('Lengkapi kedua tanda tangan!'); return; }
+            
+            const kode = document.getElementById('kode').value;
+            const lokasiCustomer = document.getElementById('lokasiCustomer').value;
+            const tanggal = document.getElementById('tanggal').value;
+            const jenisTransaksi = document.getElementById('jenisTransaksi').value;
+            const jenisWaste = document.getElementById('jenisWaste').value;
+            const jumlah = parseFloat(document.getElementById('jumlah').value);
+            const keterangan = document.getElementById('keterangan').value;
+            const namaPIC = document.getElementById('namaPIC').value;
+            const namaCustomer = document.getElementById('namaCustomer').value;
+            const stampPlacement = document.querySelector('input[name="stampPlacement"]:checked').value;
+            
+            console.log('=== DATA TO SEND ===');
+            console.log({kode, lokasiCustomer, tanggal, jenisTransaksi, jenisWaste, jumlah, keterangan, namaPIC, namaCustomer});
             
             const btn = document.getElementById('btnSubmit');
             const origText = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-            showLoading('Menyimpan...');
+            showLoading('Menyimpan data...');
             
             try {
                 const data = {
-                    kode: document.getElementById('kode').value,
-                    lokasiCustomer: document.getElementById('lokasiCustomer').value,
-                    tanggal: document.getElementById('tanggal').value,
-                    jenisTransaksi: document.getElementById('jenisTransaksi').value,
-                    jenisWaste: document.getElementById('jenisWaste').value,
-                    jumlah: parseFloat(document.getElementById('jumlah').value),
-                    keterangan: document.getElementById('keterangan').value,
-                    namaPIC: document.getElementById('namaPIC').value,
-                    ttdPIC: ttdPIC,
-                    namaCustomer: document.getElementById('namaCustomer').value,
-                    ttdCustomer: ttdCust,
-                    stampPlacement: document.querySelector('input[name="stampPlacement"]:checked').value,
-                    fotoLokasi: fotoLokasiBase64,
-                    fotoLokasiNama: fotoLokasiNama,
-                    fotoArmada: fotoArmadaBase64,
-                    fotoArmadaNama: fotoArmadaNama,
+                    kode, lokasiCustomer, tanggal, jenisTransaksi, jenisWaste, jumlah, keterangan,
+                    namaPIC, ttdPIC, namaCustomer, ttdCustomer: ttdCust, stampPlacement,
+                    fotoLokasi: fotoLokasiBase64, fotoLokasiNama,
+                    fotoArmada: fotoArmadaBase64, fotoArmadaNama,
                     createdByEmail: currentUser.email,
                     createdByName: currentUser.displayName || currentUser.email
                 };
@@ -539,7 +540,6 @@
                 hideLoading();
                 alert('✅ Data berhasil disimpan!');
                 
-                // Reset form
                 document.getElementById('siratForm').reset();
                 document.getElementById('ttdPICData').value = '';
                 document.getElementById('ttdCustomerData').value = '';
@@ -559,6 +559,7 @@
             } catch (err) { 
                 hideLoading(); 
                 alert('Gagal: ' + err.message); 
+                console.error('Error:', err);
             } finally { 
                 btn.disabled = false; 
                 btn.innerHTML = origText; 
@@ -584,6 +585,13 @@
                 hideLoading();
                 allTransactions = data;
                 filteredTransactions = data;
+                
+                console.log('=== DATA LOADED ===');
+                console.log('Total records:', data.length);
+                if (data.length > 0) {
+                    console.log('First record keys:', Object.keys(data[0]));
+                    console.log('First record:', data[0]);
+                }
                 
                 document.getElementById('searchInput').value = '';
                 document.getElementById('filterKode').value = '';
@@ -700,6 +708,7 @@
             return new Promise((resolve) => {
                 if (!url || url === '-') { resolve(null); return; }
                 const directUrl = getDriveDirectUrl(url);
+                console.log('Loading image from:', directUrl);
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
                 img.onload = function() {
@@ -708,12 +717,14 @@
                         canvas.width = img.width;
                         canvas.height = img.height;
                         canvas.getContext('2d').drawImage(img, 0, 0);
-                        resolve(canvas.toDataURL('image/jpeg', 0.8));
-                    } catch(e) { resolve(null); }
+                        const base64 = canvas.toDataURL('image/jpeg', 0.8);
+                        console.log('✅ Image loaded, base64 length:', base64.length);
+                        resolve(base64);
+                    } catch(e) { console.log('❌ Canvas error:', e); resolve(null); }
                 };
-                img.onerror = () => resolve(null);
+                img.onerror = () => { console.log('❌ Image load error'); resolve(null); };
                 img.src = directUrl;
-                setTimeout(() => { if (!img.complete) resolve(null); }, 5000);
+                setTimeout(() => { if (!img.complete) { console.log('⏰ Timeout'); resolve(null); } }, 5000);
             });
         }
 
@@ -726,6 +737,9 @@
             
             for (let i = 0; i < transactions.length; i++) {
                 const t = transactions[i];
+                console.log('=== Generating PDF', i+1, '===');
+                console.log('Transaction data:', t);
+                
                 if (i > 0) pdf.addPage();
                 
                 let y = 10;
@@ -765,6 +779,19 @@
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(0, 0, 0);
                 
+                // Debug: log semua field
+                console.log('Kode:', t['Kode']);
+                console.log('Tanggal:', t['Tanggal']);
+                console.log('Jenis Transaksi:', t['Jenis Transaksi']);
+                console.log('Lokasi Customer:', t['Lokasi Customer']);
+                console.log('Jenis Waste:', t['Jenis Waste']);
+                console.log('Jumlah (KG):', t['Jumlah (KG)']);
+                console.log('Keterangan:', t['Keterangan']);
+                console.log('Nama PIC:', t['Nama PIC']);
+                console.log('Nama Customer:', t['Nama Customer']);
+                console.log('TTD PIC length:', t['TTD PIC'] ? t['TTD PIC'].length : 0);
+                console.log('TTD Customer length:', t['TTD Customer'] ? t['TTD Customer'].length : 0);
+                
                 const infoRows = [
                     ['Kode Transaksi', t['Kode'] || '-'],
                     ['Tanggal', formatDate(t['Tanggal'])],
@@ -803,6 +830,9 @@
                 // Foto
                 const fotoLokasi = t['Foto Lokasi URL'];
                 const fotoArmada = t['Foto Armada URL'];
+                
+                console.log('Foto Lokasi URL:', fotoLokasi);
+                console.log('Foto Armada URL:', fotoArmada);
                 
                 if (fotoLokasi || fotoArmada) {
                     if (y > 170) { pdf.addPage(); y = 15; }
@@ -898,7 +928,10 @@
                 pdf.text('PIC (Penanggung Jawab),', 15, signY);
                 
                 if (t['TTD PIC'] && t['TTD PIC'] !== '-' && t['TTD PIC'].length > 100) {
-                    try { pdf.addImage(t['TTD PIC'], 'PNG', 15, signY+3, sw, sh); } catch(e) {}
+                    try { 
+                        pdf.addImage(t['TTD PIC'], 'PNG', 15, signY+3, sw, sh); 
+                        console.log('✅ TTD PIC rendered');
+                    } catch(e) { console.log('❌ TTD PIC error:', e); }
                 }
                 pdf.setDrawColor(0, 0, 0);
                 pdf.setLineWidth(0.3);
@@ -911,7 +944,10 @@
                 pdf.text('Customer,', 130, signY);
                 
                 if (t['TTD Customer'] && t['TTD Customer'] !== '-' && t['TTD Customer'].length > 100) {
-                    try { pdf.addImage(t['TTD Customer'], 'PNG', 130, signY+3, sw, sh); } catch(e) {}
+                    try { 
+                        pdf.addImage(t['TTD Customer'], 'PNG', 130, signY+3, sw, sh); 
+                        console.log('✅ TTD Customer rendered');
+                    } catch(e) { console.log('❌ TTD Customer error:', e); }
                 }
                 pdf.line(130, signY+28, 180, signY+28);
                 pdf.setFont(undefined, 'bold');
