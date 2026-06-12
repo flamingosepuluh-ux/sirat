@@ -507,7 +507,6 @@
             showLoading('Menyimpan data...');
             
             try {
-                // Gunakan URLSearchParams
                 const params = new URLSearchParams();
                 params.append('kode', document.getElementById('kode').value);
                 params.append('lokasiCustomer', document.getElementById('lokasiCustomer').value);
@@ -529,14 +528,9 @@
                 params.append('createdByName', currentUser.displayName || currentUser.email);
                 
                 console.log('=== SENDING DATA ===');
-                console.log('Kode:', params.get('kode'));
-                console.log('Lokasi:', params.get('lokasiCustomer'));
-                console.log('Tanggal:', params.get('tanggal'));
-                console.log('Jenis Transaksi:', params.get('jenisTransaksi'));
-                console.log('Jenis Waste:', params.get('jenisWaste'));
-                console.log('Jumlah:', params.get('jumlah'));
-                console.log('Nama PIC:', params.get('namaPIC'));
-                console.log('Nama Customer:', params.get('namaCustomer'));
+                for (let [key, value] of params.entries()) {
+                    console.log(key + ': ' + value);
+                }
                 
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
@@ -740,6 +734,9 @@
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
             
+            // Set default font
+            pdf.setFont("helvetica");
+            
             for (let i = 0; i < transactions.length; i++) {
                 const t = transactions[i];
                 console.log('=== Generating PDF', i+1, '===');
@@ -747,86 +744,105 @@
                 
                 if (i > 0) pdf.addPage();
                 
-                let y = 10;
+                let y = 15;
                 
-                pdf.addImage(kopSuratBase64, 'PNG', 10, y, 190, 35);
-                y += 37;
+                // HEADER DENGAN LOGO
+                pdf.addImage(kopSuratBase64, 'PNG', 15, y, 180, 40);
+                y += 42;
                 
+                // GARIS PEMISAH TEBAL
                 pdf.setDrawColor(27, 94, 32);
-                pdf.setLineWidth(0.8);
-                pdf.line(10, y, 200, y);
-                y += 5;
+                pdf.setLineWidth(1.5);
+                pdf.line(15, y, 195, y);
+                y += 8;
                 
-                pdf.setFontSize(14);
+                // JUDUL SURAT JALAN
+                pdf.setFontSize(16);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
                 pdf.text('SURAT JALAN', 105, y, {align:'center'});
-                y += 7;
+                y += 8;
                 
+                // NOMOR SURAT
                 pdf.setFontSize(10);
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(0, 0, 0);
                 pdf.text(`No: ${t['No. Surat Jalan'] || '-'}`, 105, y, {align:'center'});
-                y += 10;
+                y += 12;
                 
-                pdf.setFontSize(9);
+                // GARIS TIPIS
+                pdf.setDrawColor(200, 200, 200);
+                pdf.setLineWidth(0.5);
+                pdf.line(15, y, 195, y);
+                y += 8;
+                
+                // INFORMASI TRANSAKSI - BOX
+                pdf.setFontSize(11);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
-                pdf.text('INFORMASI TRANSAKSI', 10, y);
+                pdf.text('INFORMASI TRANSAKSI', 15, y);
                 y += 2;
-                pdf.setDrawColor(200, 200, 200);
-                pdf.line(10, y, 200, y);
-                y += 5;
+                pdf.setDrawColor(27, 94, 32);
+                pdf.setLineWidth(0.5);
+                pdf.line(15, y, 195, y);
+                y += 7;
                 
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(0, 0, 0);
+                pdf.setFontSize(9);
                 
-                console.log('Kode:', t['Kode']);
-                console.log('Tanggal:', t['Tanggal']);
-                console.log('Jenis Transaksi:', t['Jenis Transaksi']);
-                console.log('Lokasi Customer:', t['Lokasi Customer']);
-                console.log('Jenis Waste:', t['Jenis Waste']);
-                console.log('Jumlah (KG):', t['Jumlah (KG)']);
-                console.log('Keterangan:', t['Keterangan']);
-                console.log('Nama PIC:', t['Nama PIC']);
-                console.log('Nama Customer:', t['Nama Customer']);
-                console.log('TTD PIC length:', t['TTD PIC'] ? t['TTD PIC'].length : 0);
-                console.log('TTD Customer length:', t['TTD Customer'] ? t['TTD Customer'].length : 0);
-                
-                const infoRows = [
-                    ['Kode Transaksi', t['Kode'] || '-'],
-                    ['Tanggal', formatDate(t['Tanggal'])],
-                    ['Jenis Transaksi', t['Jenis Transaksi'] || '-'],
-                    ['Lokasi Customer', t['Lokasi Customer'] || '-']
+                const infoData = [
+                    ['Kode Transaksi', ':', t['Kode'] || '-'],
+                    ['Tanggal', ':', formatDate(t['Tanggal'])],
+                    ['Jenis Transaksi', ':', t['Jenis Transaksi'] || '-'],
+                    ['Lokasi Customer', ':', t['Lokasi Customer'] || '-']
                 ];
                 
-                infoRows.forEach(row => {
-                    pdf.text(`${row[0]} : ${row[1]}`, 10, y);
-                    y += 5;
+                infoData.forEach(row => {
+                    pdf.text(row[0], 15, y);
+                    pdf.text(row[1], 65, y);
+                    pdf.text(row[2], 70, y);
+                    y += 6;
                 });
                 
                 y += 3;
                 
-                pdf.setFontSize(9);
+                // DETAIL WASTE - TABLE
+                pdf.setFontSize(11);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
-                pdf.text('DETAIL WASTE', 10, y);
+                pdf.text('DETAIL WASTE', 15, y);
                 y += 2;
-                pdf.line(10, y, 200, y);
-                y += 5;
+                pdf.setDrawColor(27, 94, 32);
+                pdf.line(15, y, 195, y);
+                y += 7;
                 
                 pdf.autoTable({
                     startY: y,
                     head: [['Jenis Waste', 'Jumlah (KG)', 'Keterangan']],
                     body: [[t['Jenis Waste']||'-', t['Jumlah (KG)']||'0', t['Keterangan']||'-']],
-                    theme: 'grid',
-                    headStyles: {fillColor:[27,94,32], textColor:255, fontStyle:'bold', fontSize:9},
-                    styles: {fontSize:9, cellPadding:3},
-                    margin: {left:10, right:10}
+                    theme: 'striped',
+                    headStyles: {
+                        fillColor: [27, 94, 32], 
+                        textColor: 255, 
+                        fontStyle: 'bold',
+                        fontSize: 10,
+                        halign: 'center'
+                    },
+                    bodyStyles: {
+                        fontSize: 9,
+                        cellPadding: 4
+                    },
+                    styles: {
+                        overflow: 'linebreak',
+                        cellWidth: 'auto'
+                    },
+                    margin: {left: 15, right: 15}
                 });
                 
-                y = pdf.lastAutoTable.finalY + 8;
+                y = pdf.lastAutoTable.finalY + 10;
                 
+                // DOKUMENTASI FOTO
                 const fotoLokasi = t['Foto Lokasi URL'];
                 const fotoArmada = t['Foto Armada URL'];
                 
@@ -834,123 +850,143 @@
                 console.log('Foto Armada URL:', fotoArmada);
                 
                 if (fotoLokasi || fotoArmada) {
-                    if (y > 170) { pdf.addPage(); y = 15; }
+                    if (y > 160) { pdf.addPage(); y = 15; }
                     
-                    pdf.setFontSize(9);
+                    pdf.setFontSize(11);
                     pdf.setFont(undefined, 'bold');
                     pdf.setTextColor(27, 94, 32);
-                    pdf.text('DOKUMENTASI FOTO', 10, y);
+                    pdf.text('DOKUMENTASI FOTO', 15, y);
                     y += 2;
-                    pdf.line(10, y, 200, y);
-                    y += 5;
+                    pdf.setDrawColor(27, 94, 32);
+                    pdf.line(15, y, 195, y);
+                    y += 8;
                     
                     const [imgLokasi, imgArmada] = await Promise.all([
                         loadImageToBase64(fotoLokasi),
                         loadImageToBase64(fotoArmada)
                     ]);
                     
-                    const w = 85, h = 60, gap = 10;
-                    let x = 10;
+                    const w = 80, h = 60, gap = 15;
+                    let x = 15;
                     
+                    // Foto Lokasi
                     if (imgLokasi) {
-                        pdf.setDrawColor(200, 200, 200);
-                        pdf.setLineWidth(0.3);
+                        pdf.setDrawColor(27, 94, 32);
+                        pdf.setLineWidth(0.5);
                         pdf.rect(x, y, w, h);
                         pdf.addImage(imgLokasi, 'JPEG', x+2, y+2, w-4, h-4);
-                        pdf.setFontSize(8);
+                        
+                        pdf.setFontSize(9);
                         pdf.setFont(undefined, 'bold');
                         pdf.setTextColor(27, 94, 32);
-                        pdf.text('Foto Lokasi', x+w/2, y+h+5, {align:'center'});
+                        pdf.text('Foto Lokasi', x+w/2, y+h+6, {align:'center'});
+                        
                         if (t['Foto Lokasi Timestamp']) {
                             pdf.setFont(undefined, 'normal');
                             pdf.setTextColor(100, 100, 100);
                             pdf.setFontSize(7);
-                            pdf.text(t['Foto Lokasi Timestamp'], x+w/2, y+h+9, {align:'center'});
+                            pdf.text(t['Foto Lokasi Timestamp'], x+w/2, y+h+11, {align:'center'});
                         }
                     } else if (fotoLokasi) {
                         pdf.setDrawColor(200, 200, 200);
-                        pdf.rect(x, y, w, h);
-                        pdf.setFontSize(8);
+                        pdf.setLineWidth(0.5);
+                        pdf.setFillColor(245, 245, 245);
+                        pdf.rect(x, y, w, h, 'F');
+                        pdf.setFontSize(9);
                         pdf.setTextColor(150, 150, 150);
-                        pdf.text('Foto Lokasi', x+w/2, y+h/2, {align:'center'});
-                        pdf.text('(tidak dapat dimuat)', x+w/2, y+h/2+4, {align:'center'});
+                        pdf.text('Foto Lokasi', x+w/2, y+h/2-3, {align:'center'});
+                        pdf.text('(tidak dapat dimuat)', x+w/2, y+h/2+3, {align:'center'});
                     }
                     
                     x += w + gap;
                     
+                    // Foto Armada
                     if (imgArmada) {
-                        pdf.setDrawColor(200, 200, 200);
-                        pdf.setLineWidth(0.3);
+                        pdf.setDrawColor(27, 94, 32);
+                        pdf.setLineWidth(0.5);
                         pdf.rect(x, y, w, h);
                         pdf.addImage(imgArmada, 'JPEG', x+2, y+2, w-4, h-4);
-                        pdf.setFontSize(8);
+                        
+                        pdf.setFontSize(9);
                         pdf.setFont(undefined, 'bold');
                         pdf.setTextColor(27, 94, 32);
-                        pdf.text('Foto Armada', x+w/2, y+h+5, {align:'center'});
+                        pdf.text('Foto Armada', x+w/2, y+h+6, {align:'center'});
+                        
                         if (t['Foto Armada Timestamp']) {
                             pdf.setFont(undefined, 'normal');
                             pdf.setTextColor(100, 100, 100);
                             pdf.setFontSize(7);
-                            pdf.text(t['Foto Armada Timestamp'], x+w/2, y+h+9, {align:'center'});
+                            pdf.text(t['Foto Armada Timestamp'], x+w/2, y+h+11, {align:'center'});
                         }
                     } else if (fotoArmada) {
                         pdf.setDrawColor(200, 200, 200);
-                        pdf.rect(x, y, w, h);
-                        pdf.setFontSize(8);
+                        pdf.setLineWidth(0.5);
+                        pdf.setFillColor(245, 245, 245);
+                        pdf.rect(x, y, w, h, 'F');
+                        pdf.setFontSize(9);
                         pdf.setTextColor(150, 150, 150);
-                        pdf.text('Foto Armada', x+w/2, y+h/2, {align:'center'});
-                        pdf.text('(tidak dapat dimuat)', x+w/2, y+h/2+4, {align:'center'});
+                        pdf.text('Foto Armada', x+w/2, y+h/2-3, {align:'center'});
+                        pdf.text('(tidak dapat dimuat)', x+w/2, y+h/2+3, {align:'center'});
                     }
                     
-                    y += h + 15;
+                    y += h + 18;
                 }
                 
-                if (y > 195) { pdf.addPage(); y = 20; }
+                // TANDA TANGAN
+                if (y > 190) { pdf.addPage(); y = 20; }
                 
-                pdf.setFontSize(9);
+                pdf.setFontSize(11);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
-                pdf.text('TANDA TANGAN', 10, y);
+                pdf.text('TANDA TANGAN', 15, y);
                 y += 2;
-                pdf.line(10, y, 200, y);
-                y += 8;
+                pdf.setDrawColor(27, 94, 32);
+                pdf.line(15, y, 195, y);
+                y += 12;
                 
                 const signY = y;
-                const sw = 50, sh = 20;
+                const sw = 55, sh = 25;
                 
+                // PIC
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(0, 0, 0);
-                pdf.text('PIC (Penanggung Jawab),', 15, signY);
+                pdf.setFontSize(9);
+                pdf.text('PIC (Penanggung Jawab),', 20, signY);
                 
                 if (t['TTD PIC'] && t['TTD PIC'] !== '-' && t['TTD PIC'].length > 100) {
                     try { 
-                        pdf.addImage(t['TTD PIC'], 'PNG', 15, signY+3, sw, sh); 
+                        pdf.addImage(t['TTD PIC'], 'PNG', 20, signY+5, sw, sh); 
                         console.log('✅ TTD PIC rendered');
                     } catch(e) { console.log('❌ TTD PIC error:', e); }
                 }
                 pdf.setDrawColor(0, 0, 0);
                 pdf.setLineWidth(0.3);
-                pdf.line(15, signY+28, 65, signY+28);
+                pdf.line(20, signY+35, 75, signY+35);
                 pdf.setFont(undefined, 'bold');
-                pdf.text(t['Nama PIC'] || '-', 40, signY+33, {align:'center'});
+                pdf.text(t['Nama PIC'] || '-', 47, signY+41, {align:'center'});
                 
+                // Customer
                 pdf.setFont(undefined, 'normal');
-                pdf.text('Customer,', 130, signY);
+                pdf.text('Customer,', 125, signY);
                 
                 if (t['TTD Customer'] && t['TTD Customer'] !== '-' && t['TTD Customer'].length > 100) {
                     try { 
-                        pdf.addImage(t['TTD Customer'], 'PNG', 130, signY+3, sw, sh); 
+                        pdf.addImage(t['TTD Customer'], 'PNG', 125, signY+5, sw, sh); 
                         console.log('✅ TTD Customer rendered');
                     } catch(e) { console.log('❌ TTD Customer error:', e); }
                 }
-                pdf.line(130, signY+28, 180, signY+28);
+                pdf.line(125, signY+35, 180, signY+35);
                 pdf.setFont(undefined, 'bold');
-                pdf.text(t['Nama Customer'] || '-', 155, signY+33, {align:'center'});
+                pdf.text(t['Nama Customer'] || '-', 152, signY+41, {align:'center'});
                 
-                pdf.setFontSize(7);
+                // FOOTER
+                pdf.setFontSize(8);
                 pdf.setFont(undefined, 'normal');
-                pdf.setTextColor(150, 150, 150);
-                pdf.text(`Dicetak: ${t['Dibuat Oleh']||'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 285, {align:'center'});
+                pdf.setTextColor(128, 128, 128);
+                pdf.setDrawColor(200, 200, 200);
+                pdf.setLineWidth(0.3);
+                pdf.line(15, 280, 195, 280);
+                pdf.text(`Dicetak oleh: ${t['Dibuat Oleh']||'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
             }
             
             hideLoading();
