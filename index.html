@@ -500,20 +500,6 @@
             const ttdCust = document.getElementById('ttdCustomerData').value;
             if (!ttdPIC || !ttdCust) { alert('Lengkapi kedua tanda tangan!'); return; }
             
-            const kode = document.getElementById('kode').value;
-            const lokasiCustomer = document.getElementById('lokasiCustomer').value;
-            const tanggal = document.getElementById('tanggal').value;
-            const jenisTransaksi = document.getElementById('jenisTransaksi').value;
-            const jenisWaste = document.getElementById('jenisWaste').value;
-            const jumlah = parseFloat(document.getElementById('jumlah').value);
-            const keterangan = document.getElementById('keterangan').value;
-            const namaPIC = document.getElementById('namaPIC').value;
-            const namaCustomer = document.getElementById('namaCustomer').value;
-            const stampPlacement = document.querySelector('input[name="stampPlacement"]:checked').value;
-            
-            console.log('=== DATA TO SEND ===');
-            console.log({kode, lokasiCustomer, tanggal, jenisTransaksi, jenisWaste, jumlah, keterangan, namaPIC, namaCustomer});
-            
             const btn = document.getElementById('btnSubmit');
             const origText = btn.innerHTML;
             btn.disabled = true;
@@ -521,20 +507,40 @@
             showLoading('Menyimpan data...');
             
             try {
-                const data = {
-                    kode, lokasiCustomer, tanggal, jenisTransaksi, jenisWaste, jumlah, keterangan,
-                    namaPIC, ttdPIC, namaCustomer, ttdCustomer: ttdCust, stampPlacement,
-                    fotoLokasi: fotoLokasiBase64, fotoLokasiNama,
-                    fotoArmada: fotoArmadaBase64, fotoArmadaNama,
-                    createdByEmail: currentUser.email,
-                    createdByName: currentUser.displayName || currentUser.email
-                };
+                // Gunakan URLSearchParams
+                const params = new URLSearchParams();
+                params.append('kode', document.getElementById('kode').value);
+                params.append('lokasiCustomer', document.getElementById('lokasiCustomer').value);
+                params.append('tanggal', document.getElementById('tanggal').value);
+                params.append('jenisTransaksi', document.getElementById('jenisTransaksi').value);
+                params.append('jenisWaste', document.getElementById('jenisWaste').value);
+                params.append('jumlah', document.getElementById('jumlah').value);
+                params.append('keterangan', document.getElementById('keterangan').value);
+                params.append('namaPIC', document.getElementById('namaPIC').value);
+                params.append('ttdPIC', ttdPIC);
+                params.append('namaCustomer', document.getElementById('namaCustomer').value);
+                params.append('ttdCustomer', ttdCust);
+                params.append('stampPlacement', document.querySelector('input[name="stampPlacement"]:checked').value);
+                params.append('fotoLokasi', fotoLokasiBase64 || '');
+                params.append('fotoLokasiNama', fotoLokasiNama || '');
+                params.append('fotoArmada', fotoArmadaBase64 || '');
+                params.append('fotoArmadaNama', fotoArmadaNama || '');
+                params.append('createdByEmail', currentUser.email);
+                params.append('createdByName', currentUser.displayName || currentUser.email);
+                
+                console.log('=== SENDING DATA ===');
+                console.log('Kode:', params.get('kode'));
+                console.log('Lokasi:', params.get('lokasiCustomer'));
+                console.log('Tanggal:', params.get('tanggal'));
+                console.log('Jenis Transaksi:', params.get('jenisTransaksi'));
+                console.log('Jenis Waste:', params.get('jenisWaste'));
+                console.log('Jumlah:', params.get('jumlah'));
+                console.log('Nama PIC:', params.get('namaPIC'));
+                console.log('Nama Customer:', params.get('namaCustomer'));
                 
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(data)
+                    body: params
                 });
                 
                 hideLoading();
@@ -696,7 +702,6 @@
             generatePDF(filteredTransactions, 'download');
         };
 
-        // PDF Generator
         function getDriveDirectUrl(url) {
             if (!url || url === '-') return null;
             const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -744,7 +749,6 @@
                 
                 let y = 10;
                 
-                // Kop Surat
                 pdf.addImage(kopSuratBase64, 'PNG', 10, y, 190, 35);
                 y += 37;
                 
@@ -753,7 +757,6 @@
                 pdf.line(10, y, 200, y);
                 y += 5;
                 
-                // Judul
                 pdf.setFontSize(14);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
@@ -766,7 +769,6 @@
                 pdf.text(`No: ${t['No. Surat Jalan'] || '-'}`, 105, y, {align:'center'});
                 y += 10;
                 
-                // Info Transaksi
                 pdf.setFontSize(9);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
@@ -779,7 +781,6 @@
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(0, 0, 0);
                 
-                // Debug: log semua field
                 console.log('Kode:', t['Kode']);
                 console.log('Tanggal:', t['Tanggal']);
                 console.log('Jenis Transaksi:', t['Jenis Transaksi']);
@@ -806,7 +807,6 @@
                 
                 y += 3;
                 
-                // Detail Waste
                 pdf.setFontSize(9);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
@@ -827,7 +827,6 @@
                 
                 y = pdf.lastAutoTable.finalY + 8;
                 
-                // Foto
                 const fotoLokasi = t['Foto Lokasi URL'];
                 const fotoArmada = t['Foto Armada URL'];
                 
@@ -853,7 +852,6 @@
                     const w = 85, h = 60, gap = 10;
                     let x = 10;
                     
-                    // Foto Lokasi
                     if (imgLokasi) {
                         pdf.setDrawColor(200, 200, 200);
                         pdf.setLineWidth(0.3);
@@ -880,7 +878,6 @@
                     
                     x += w + gap;
                     
-                    // Foto Armada
                     if (imgArmada) {
                         pdf.setDrawColor(200, 200, 200);
                         pdf.setLineWidth(0.3);
@@ -908,7 +905,6 @@
                     y += h + 15;
                 }
                 
-                // Tanda Tangan
                 if (y > 195) { pdf.addPage(); y = 20; }
                 
                 pdf.setFontSize(9);
@@ -922,7 +918,6 @@
                 const signY = y;
                 const sw = 50, sh = 20;
                 
-                // PIC
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(0, 0, 0);
                 pdf.text('PIC (Penanggung Jawab),', 15, signY);
@@ -939,7 +934,6 @@
                 pdf.setFont(undefined, 'bold');
                 pdf.text(t['Nama PIC'] || '-', 40, signY+33, {align:'center'});
                 
-                // Customer
                 pdf.setFont(undefined, 'normal');
                 pdf.text('Customer,', 130, signY);
                 
@@ -953,7 +947,6 @@
                 pdf.setFont(undefined, 'bold');
                 pdf.text(t['Nama Customer'] || '-', 155, signY+33, {align:'center'});
                 
-                // Footer
                 pdf.setFontSize(7);
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(150, 150, 150);
