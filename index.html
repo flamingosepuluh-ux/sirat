@@ -59,7 +59,6 @@
         .table-custom td { padding: 10px 8px; vertical-align: middle; font-size: 13px; }
         .btn-action { color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 12px; min-height: 36px; margin: 2px; }
         .btn-view { background: #ff9800; }
-        .btn-pdf { background: #2196f3; }
         .stamp-option { background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #dee2e6; margin-top: 15px; }
         .stamp-option label { font-weight: 600; color: var(--primary-green); font-size: 14px; }
         .foto-upload-box { border: 2px dashed var(--light-green); border-radius: 12px; padding: 20px; text-align: center; background: #f9f9f9; margin-top: 15px; }
@@ -550,7 +549,17 @@
                 if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="text-center">Belum ada data.</td></tr>'; return; }
                 data.forEach(d => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td><strong>${d['No. Surat Jalan'] || '-'}</strong></td><td>${formatDate(d['Tanggal'])}</td><td>${d['Kode'] || '-'}</td><td>${d['Lokasi Customer'] || '-'}</td><td>${d['Jenis Waste'] || '-'}</td><td>${d['Jumlah (KG)'] || '0'}</td><td>${d['Nama PIC'] || '-'}</td><td>${d['Nama Customer'] || '-'}</td><td><button class="btn-action btn-view" onclick="viewDetail('${d['No. Surat Jalan']}')"><i class="fas fa-eye"></i></button></td>`;
+                    row.innerHTML = `
+                        <td><strong>${d['No. Surat Jalan'] || '-'}</strong></td>
+                        <td>${formatDate(d['Tanggal'])}</td>
+                        <td>${d['Kode'] || '-'}</td>
+                        <td>${d['Lokasi Customer'] || '-'}</td>
+                        <td>${d['Jenis Waste'] || '-'}</td>
+                        <td>${d['Jumlah (KG)'] || '0'}</td>
+                        <td>${d['Nama PIC'] || '-'}</td>
+                        <td>${d['Nama Customer'] || '-'}</td>
+                        <td><button class="btn-action btn-view" onclick="viewDetail('${d['No. Surat Jalan']}')"><i class="fas fa-eye"></i></button></td>
+                    `;
                     tbody.appendChild(row);
                 });
             } catch (error) { hideLoading(); tbody.innerHTML = '<tr><td colspan="9" class="text-center text-danger">Gagal: ' + error.message + '</td></tr>'; }
