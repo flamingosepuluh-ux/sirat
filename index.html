@@ -8,16 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <style>
-        :root {
-            --primary-green: #1b5e20;
-            --secondary-green: #2e7d32;
-            --light-green: #4caf50;
-        }
+        :root { --primary-green: #1b5e20; --secondary-green: #2e7d32; --light-green: #4caf50; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
         .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -63,24 +57,12 @@
         .table-custom thead { background: var(--primary-green); color: white; }
         .table-custom th { font-weight: 600; padding: 12px 8px; font-size: 13px; }
         .table-custom td { padding: 10px 8px; vertical-align: middle; font-size: 13px; }
-        .badge-custom { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 11px; }
-        .badge-serah-terima { background: #e3f2fd; color: #1976d2; }
-        .badge-pembelian { background: #fff3e0; color: #f57c00; }
         .btn-action { color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 12px; min-height: 36px; margin: 2px; }
         .btn-view { background: #ff9800; }
-        .btn-pdf-view { background: #9c27b0; }
-        .btn-pdf-down { background: #2196f3; }
-        .btn-filter { background: #ff5722; }
-        .btn-csv { background: #4caf50; }
         .stamp-option { background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #dee2e6; margin-top: 15px; }
         .stamp-option label { font-weight: 600; color: var(--primary-green); font-size: 14px; }
-        .view-modal .modal-content { border-radius: 16px; border: none; max-height: 90vh; overflow-y: auto; }
-        .view-modal .modal-header { background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%); color: white; border-radius: 16px 16px 0 0; padding: 16px 20px; }
-        .view-modal .modal-title { font-weight: 600; font-size: 18px; }
-        .view-modal .btn-close { filter: invert(1); }
-        .detail-row { padding: 12px 0; border-bottom: 1px solid #eee; }
-        .detail-label { font-weight: 600; color: var(--primary-green); font-size: 13px; margin-bottom: 4px; }
-        .signature-preview-large { max-width: 180px; border: 2px solid #e0e0e0; border-radius: 8px; padding: 5px; background: white; }
+        .foto-upload-box { border: 2px dashed var(--light-green); border-radius: 12px; padding: 20px; text-align: center; background: #f9f9f9; margin-top: 15px; }
+        .foto-preview { max-width: 100%; border-radius: 8px; margin-top: 10px; max-height: 200px; object-fit: contain; }
         .hidden { display: none !important; }
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 99999; backdrop-filter: blur(5px); }
         .alert-custom { position: fixed; top: 20px; right: 20px; z-index: 10000; min-width: 280px; max-width: 90vw; animation: slideIn 0.3s ease-out; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.16); }
@@ -91,7 +73,8 @@
         .bottom-nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
         .bottom-nav-item span { font-size: 11px; font-weight: 600; }
         .btn-light { cursor: pointer; }
-        .filter-badge { background: #ff5722; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; margin-left: 5px; }
+        .no-surat-display { background: #e8f5e9; padding: 15px; border-radius: 12px; border: 2px solid var(--light-green); margin-bottom: 15px; }
+        .no-surat-display strong { color: var(--primary-green); font-size: 18px; }
         @media (max-width: 768px) { .header-title { font-size: 16px; } .user-info { display: none; } .nav-tabs-custom .nav-link { padding: 10px 15px; font-size: 13px; } .table-custom { font-size: 12px; } }
         @media (min-width: 769px) { .bottom-nav { display: none; } }
     </style>
@@ -99,7 +82,7 @@
 <body>
 
     <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="text-white">
+        <div class="text-white text-center">
             <i class="fas fa-spinner fa-spin fa-3x"></i>
             <p class="mt-2" id="loadingText">Memuat...</p>
         </div>
@@ -113,12 +96,14 @@
                 <div class="company-tagline">SUPPLIER & WASTE SOLUTION PARTNER</div>
             </div>
             <div class="login-title" id="authTitle"><i class="fas fa-lock"></i> Login SIRAT</div>
+            
             <div id="loginForm">
                 <div class="mb-3"><input type="email" id="loginEmail" class="form-control" placeholder="Email"></div>
                 <div class="mb-3"><input type="password" id="loginPassword" class="form-control" placeholder="Password"></div>
                 <button onclick="loginUser()" class="btn btn-login"><i class="fas fa-sign-in-alt"></i> Masuk</button>
                 <div class="auth-toggle" onclick="toggleAuthMode()">Belum punya akun? <span>Daftar di sini</span></div>
             </div>
+            
             <div id="registerForm" class="hidden">
                 <div class="mb-3"><input type="text" id="registerName" class="form-control" placeholder="Nama Lengkap"></div>
                 <div class="mb-3"><input type="email" id="registerEmail" class="form-control" placeholder="Email"></div>
@@ -164,16 +149,20 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="form" role="tabpanel">
                     <div class="card-custom">
-                        <div class="card-header-custom"><i class="fas fa-plus-circle"></i> Form Transaksi</div>
+                        <div class="card-header-custom"><i class="fas fa-plus-circle"></i> Form Surat Jalan Pickup</div>
                         <div class="card-body p-3 p-md-4">
                             <form id="siratForm">
+                                <div class="no-surat-display">
+                                    <div class="text-muted" style="font-size: 12px;">No. Surat Jalan (Otomatis)</div>
+                                    <strong id="noSuratDisplay">SJP/---/RAJ/-/----</strong>
+                                </div>
+
                                 <div class="row mb-3">
                                     <div class="col-md-6 mb-2 mb-md-0">
-                                        <label class="form-label fw-bold">Jenis Transaksi</label>
-                                        <select class="form-select" id="jenis" required>
-                                            <option value="">Pilih Jenis Transaksi</option>
-                                            <option value="Serah Terima">Serah Terima Barang</option>
-                                            <option value="Pembelian">Pembelian Barang</option>
+                                        <label class="form-label fw-bold">Kode</label>
+                                        <select class="form-select" id="kode" required>
+                                            <option value="P">P - Pickup</option>
+                                            <option value="D">D - Delivery</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
@@ -181,6 +170,7 @@
                                         <input type="date" class="form-control" id="tanggal" required>
                                     </div>
                                 </div>
+
                                 <div class="row mb-3">
                                     <div class="col-md-8 mb-2 mb-md-0">
                                         <label class="form-label fw-bold">Nama Barang</label>
@@ -191,10 +181,19 @@
                                         <input type="number" class="form-control" id="jumlah" placeholder="0" required>
                                     </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Keterangan</label>
                                     <textarea class="form-control" id="keterangan" rows="3" placeholder="Tambahkan keterangan"></textarea>
                                 </div>
+
+                                <div class="foto-upload-box">
+                                    <label class="form-label fw-bold"><i class="fas fa-camera"></i> Upload Foto (dengan Timestamp)</label>
+                                    <input type="file" class="form-control" id="fotoInput" accept="image/*" capture="environment" onchange="handleFotoUpload(event)">
+                                    <img id="fotoPreview" class="foto-preview hidden">
+                                    <div id="fotoTimestamp" class="text-muted mt-2" style="font-size: 12px;"></div>
+                                </div>
+
                                 <hr class="my-4">
                                 <h5 class="mb-3 text-success"><i class="fas fa-signature"></i> Tanda Tangan Digital</h5>
                                 <div class="row">
@@ -213,6 +212,7 @@
                                         <input type="hidden" id="ttdPenerimaData">
                                     </div>
                                 </div>
+
                                 <div class="stamp-option">
                                     <label class="form-label fw-bold mb-2"><i class="fas fa-stamp"></i> Penempatan Stempel:</label>
                                     <div class="form-check form-check-inline">
@@ -228,7 +228,8 @@
                                         <label class="form-check-label" for="stampNone">Tanpa Stempel</label>
                                     </div>
                                 </div>
-                                <div class="mt-4"><button type="submit" class="btn btn-submit" id="btnSubmit"><i class="fas fa-save"></i> Simpan Data Transaksi</button></div>
+
+                                <div class="mt-4"><button type="submit" class="btn btn-submit" id="btnSubmit"><i class="fas fa-save"></i> Simpan ke Spreadsheet</button></div>
                             </form>
                         </div>
                     </div>
@@ -237,18 +238,15 @@
                 <div class="tab-pane fade" id="data" role="tabpanel">
                     <div class="card-custom">
                         <div class="card-header-custom d-flex justify-content-between align-items-center flex-wrap gap-2">
-                            <span><i class="fas fa-list"></i> Riwayat Transaksi <span id="filterIndicator" class="filter-badge hidden">Aktif</span></span>
-                            <div class="d-flex flex-wrap gap-2">
-                                <button onclick="openFilterModal()" class="btn btn-light btn-sm"><i class="fas fa-filter"></i> Filter</button>
-                                <button onclick="exportToCSV()" class="btn btn-light btn-sm"><i class="fas fa-file-csv"></i> CSV</button>
-                                <button onclick="viewPDF()" class="btn btn-light btn-sm"><i class="fas fa-eye"></i> Lihat PDF</button>
-                                <button onclick="downloadPDF()" class="btn btn-light btn-sm"><i class="fas fa-download"></i> Download</button>
+                            <span><i class="fas fa-list"></i> Riwayat Transaksi</span>
+                            <div>
+                                <button onclick="loadData()" class="btn btn-light btn-sm"><i class="fas fa-sync"></i> Refresh</button>
                             </div>
                         </div>
                         <div class="card-body p-3 p-md-4">
                             <div class="table-responsive">
                                 <table class="table table-custom" id="dataTable">
-                                    <thead><tr><th>Tanggal</th><th>Jenis</th><th>Barang</th><th>Jumlah</th><th>Penyerah</th><th>Penerima</th><th>Aksi</th></tr></thead>
+                                    <thead><tr><th>No. SJP</th><th>Tanggal</th><th>Barang</th><th>Jumlah</th><th>Penyerah</th><th>Penerima</th><th>Aksi</th></tr></thead>
                                     <tbody id="tableBody"><tr><td colspan="7" class="text-center">Memuat data...</td></tr></tbody>
                                 </table>
                             </div>
@@ -268,67 +266,6 @@
         </div>
     </div>
 
-    <!-- Filter Modal -->
-    <div class="modal fade" id="filterModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 16px; border: none;">
-                <div class="modal-header" style="background: linear-gradient(135deg, var(--primary-green), var(--secondary-green)); color: white; border-radius: 16px 16px 0 0;">
-                    <h5 class="modal-title"><i class="fas fa-filter"></i> Filter Data Export</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Bulan</label>
-                        <select class="form-select" id="filterBulan">
-                            <option value="">Semua Bulan</option>
-                            <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
-                            <option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
-                            <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
-                            <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Tahun</label>
-                        <select class="form-select" id="filterTahun">
-                            <option value="">Semua Tahun</option>
-                            <option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option>
-                            <option value="2027">2027</option><option value="2028">2028</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Jenis Transaksi</label>
-                        <select class="form-select" id="filterJenis">
-                            <option value="Semua">Semua Jenis</option>
-                            <option value="Serah Terima">Serah Terima Barang</option>
-                            <option value="Pembelian">Pembelian Barang</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="resetFilter()">Reset</button>
-                    <button type="button" class="btn btn-success" onclick="applyFilter()" data-bs-dismiss="modal">Terapkan Filter</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- View Detail Modal -->
-    <div class="modal fade view-modal" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="viewModalLabel"><i class="fas fa-file-alt"></i> Detail Transaksi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body"><div id="viewContent"></div></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary" onclick="viewSinglePDF(currentViewTransaction.id)"><i class="fas fa-eye"></i> Lihat PDF</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="signatureModal" class="signature-modal">
         <div class="signature-modal-content">
             <button class="btn-close-modal" onclick="closeSignatureModal()"><i class="fas fa-times"></i></button>
@@ -342,10 +279,13 @@
         </div>
     </div>
 
+    <!-- FIREBASE SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, setDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // GANTI DENGAN URL GOOGLE APPS SCRIPT ANDA
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdUCXjE8w92xp0pgTHVVvYGspXjofc-RpAxmlHEm2B-pa8DMKjwzdCDvlU_xpX4lUd/exec';
 
         const firebaseConfig = {
             apiKey: "AIzaSyBOAUrCY6YZAzO80vUdt1ZLEZHJO2G55Cw",
@@ -358,28 +298,11 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
 
         let currentUser = null, currentSigner = '', modalSignaturePad = null, currentSignatureType = '';
-        let allTransactions = [], logoBase64 = null, currentViewTransaction = null;
-        let filteredTransactions = [];
+        let allTransactions = [], logoBase64 = null, fotoBase64 = null, fotoNama = '';
 
-        // Filter State
-        let activeFilters = { bulan: '', tahun: '', jenis: 'Semua' };
-
-        async function loadLogo() {
-            try {
-                const response = await fetch('logo-raj.png');
-                const blob = await response.blob();
-                const reader = new FileReader();
-                reader.onloadend = function() {
-                    logoBase64 = reader.result;
-                    console.log('✅ Logo loaded');
-                };
-                reader.readAsDataURL(blob);
-            } catch (error) { console.error('Error loading logo:', error); }
-        }
-
+        // --- AUTH STATE OBSERVER ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
@@ -387,6 +310,7 @@
                 document.getElementById('loginSection').classList.add('hidden');
                 document.getElementById('appSection').classList.remove('hidden');
                 document.getElementById('tanggal').valueAsDate = new Date();
+                generateNoSurat();
                 loadLogo();
                 showAlert('success', 'Login berhasil!');
             } else {
@@ -396,12 +320,20 @@
             }
         });
 
+        // --- AUTH FUNCTIONS ---
         window.loginUser = async function() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             if (!email || !password) { showAlert('error', 'Mohon isi email dan password!'); return; }
+            
             showLoading('Sedang login...');
-            try { await signInWithEmailAndPassword(auth, email, password); hideLoading(); } catch (error) { hideLoading(); showAlert('error', 'Login gagal: ' + error.message); }
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                hideLoading();
+            } catch (error) {
+                hideLoading();
+                showAlert('error', 'Login gagal: ' + error.message);
+            }
         };
 
         window.registerUser = async function() {
@@ -409,55 +341,139 @@
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
             const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+            
             if (!name || !email || !password || !passwordConfirm) { showAlert('error', 'Mohon lengkapi semua field!'); return; }
             if (password !== passwordConfirm) { showAlert('error', 'Password tidak cocok!'); return; }
             if (password.length < 6) { showAlert('error', 'Password minimal 6 karakter!'); return; }
+            
             showLoading('Mendaftarkan akun...');
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(userCredential.user, { displayName: name });
-                await setDoc(doc(db, 'users', userCredential.user.uid), { name, email, createdAt: serverTimestamp() });
                 hideLoading();
                 showAlert('success', 'Registrasi berhasil! Silakan login.');
                 toggleAuthMode();
-            } catch (error) { hideLoading(); showAlert('error', 'Registrasi gagal: ' + error.message); }
+            } catch (error) {
+                hideLoading();
+                showAlert('error', 'Registrasi gagal: ' + error.message);
+            }
         };
 
         window.logoutUser = async function() {
             if (confirm('Yakin ingin logout?')) {
                 showLoading('Sedang logout...');
-                try { await signOut(auth); hideLoading(); } catch (error) { hideLoading(); showAlert('error', error.message); }
+                try { 
+                    await signOut(auth); 
+                    hideLoading(); 
+                } catch (error) { 
+                    hideLoading(); 
+                    showAlert('error', error.message); 
+                }
             }
         };
 
+        // --- UTILS & UI ---
+        window.toggleAuthMode = function() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const authTitle = document.getElementById('authTitle');
+            if (loginForm.classList.contains('hidden')) { 
+                loginForm.classList.remove('hidden'); registerForm.classList.add('hidden'); 
+                authTitle.innerHTML = '<i class="fas fa-lock"></i> Login SIRAT'; 
+            } else { 
+                loginForm.classList.add('hidden'); registerForm.classList.remove('hidden'); 
+                authTitle.innerHTML = '<i class="fas fa-user-plus"></i> Daftar Akun SIRAT'; 
+            }
+        };
+
+        function showLoading(text = 'Memuat...') { document.getElementById('loadingText').textContent = text; document.getElementById('loadingOverlay').classList.remove('hidden'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.add('hidden'); }
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-custom`;
+            alertDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+
+        async function loadLogo() {
+            try {
+                const response = await fetch('logo-raj.png');
+                const blob = await response.blob();
+                const reader = new FileReader();
+                reader.onloadend = function() { logoBase64 = reader.result; };
+                reader.readAsDataURL(blob);
+            } catch (error) { console.error('Error loading logo:', error); }
+        }
+
+        function generateNoSurat() {
+            const now = new Date();
+            const tahun = now.getFullYear();
+            const bulan = now.getMonth() + 1;
+            const bulanRomawi = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'][bulan - 1];
+            document.getElementById('noSuratDisplay').textContent = `SJP/---/RAJ/${bulanRomawi}/${tahun}`;
+        }
+
+        window.handleFotoUpload = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const timestamp = new Date().toLocaleString('id-ID');
+            fotoNama = `${timestamp.replace(/[/,: ]/g, '_')}_${file.name}`;
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                fotoBase64 = reader.result;
+                document.getElementById('fotoPreview').src = fotoBase64;
+                document.getElementById('fotoPreview').classList.remove('hidden');
+                document.getElementById('fotoTimestamp').textContent = `📷 ${timestamp}`;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        // --- FORM SUBMIT TO GOOGLE SHEETS ---
         document.getElementById('siratForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             if (!currentUser) { showAlert('error', 'Anda harus login!'); return; }
             const ttdPenyerah = document.getElementById('ttdPenyerahData').value;
             const ttdPenerima = document.getElementById('ttdPenerimaData').value;
             if (!ttdPenyerah || !ttdPenerima) { showAlert('error', 'Harap lengkapi kedua tanda tangan!'); return; }
+            
             const stampPlacement = document.querySelector('input[name="stampPlacement"]:checked').value;
             const btn = document.getElementById('btnSubmit');
             const originalText = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-            showLoading('Menyimpan data...');
+            showLoading('Menyimpan ke Spreadsheet...');
+            
             try {
                 const data = {
-                    jenis: document.getElementById('jenis').value,
+                    kode: document.getElementById('kode').value,
                     tanggal: document.getElementById('tanggal').value,
+                    jenis: 'Pickup',
                     namaBarang: document.getElementById('namaBarang').value,
                     jumlah: parseInt(document.getElementById('jumlah').value),
                     keterangan: document.getElementById('keterangan').value,
                     namaPenyerah: document.getElementById('namaPenyerah').value,
-                    ttdPenyerah, namaPenerima: document.getElementById('namaPenerima').value,
-                    ttdPenerima, stampPlacement: stampPlacement,
-                    createdBy: currentUser.uid, createdByName: currentUser.displayName || currentUser.email,
-                    timestamp: serverTimestamp()
+                    ttdPenyerah, 
+                    namaPenerima: document.getElementById('namaPenerima').value,
+                    ttdPenerima, 
+                    stampPlacement: stampPlacement,
+                    foto: fotoBase64,
+                    fotoNama: fotoNama,
+                    createdByEmail: currentUser.email,
+                    createdByName: currentUser.displayName || currentUser.email
                 };
-                await addDoc(collection(db, "transaksi_sirat"), data);
+                
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
                 hideLoading();
-                showAlert('success', '✅ Data berhasil disimpan!');
+                showAlert('success', '✅ Data berhasil disimpan ke Spreadsheet!');
+                
+                // Reset form
                 document.getElementById('siratForm').reset();
                 document.getElementById('ttdPenyerahData').value = '';
                 document.getElementById('ttdPenerimaData').value = '';
@@ -469,9 +485,22 @@
                 document.getElementById('btnTextPenerima').textContent = 'Buat Tanda Tangan Penerima';
                 document.getElementById('tanggal').valueAsDate = new Date();
                 document.getElementById('stampPenerima').checked = true;
-            } catch (error) { hideLoading(); showAlert('error', 'Gagal: ' + error.message); } finally { btn.disabled = false; btn.innerHTML = originalText; }
+                document.getElementById('fotoPreview').classList.add('hidden');
+                document.getElementById('fotoTimestamp').textContent = '';
+                fotoBase64 = null;
+                fotoNama = '';
+                generateNoSurat();
+                
+            } catch (error) { 
+                hideLoading(); 
+                showAlert('error', 'Gagal: ' + error.message); 
+            } finally { 
+                btn.disabled = false; 
+                btn.innerHTML = originalText; 
+            }
         });
 
+        // --- TABS & DATA ---
         document.addEventListener('DOMContentLoaded', function() {
             const dataTabEl = document.getElementById('data-tab');
             if (dataTabEl) dataTabEl.addEventListener('shown.bs.tab', function(event) { loadData(); });
@@ -484,132 +513,48 @@
             event.currentTarget.classList.add('active');
         };
 
-        // --- FILTER LOGIC ---
-        window.openFilterModal = function() {
-            document.getElementById('filterBulan').value = activeFilters.bulan;
-            document.getElementById('filterTahun').value = activeFilters.tahun;
-            document.getElementById('filterJenis').value = activeFilters.jenis;
-            new bootstrap.Modal(document.getElementById('filterModal')).show();
-        };
-
-        window.applyFilter = function() {
-            activeFilters.bulan = document.getElementById('filterBulan').value;
-            activeFilters.tahun = document.getElementById('filterTahun').value;
-            activeFilters.jenis = document.getElementById('filterJenis').value;
-            
-            updateFilterIndicator();
-            renderTable();
-            showAlert('success', 'Filter diterapkan!');
-        };
-
-        window.resetFilter = function() {
-            activeFilters = { bulan: '', tahun: '', jenis: 'Semua' };
-            document.getElementById('filterBulan').value = '';
-            document.getElementById('filterTahun').value = '';
-            document.getElementById('filterJenis').value = 'Semua';
-            updateFilterIndicator();
-            renderTable();
-        };
-
-        function updateFilterIndicator() {
-            const indicator = document.getElementById('filterIndicator');
-            if (activeFilters.bulan || activeFilters.tahun || activeFilters.jenis !== 'Semua') {
-                indicator.classList.remove('hidden');
-            } else {
-                indicator.classList.add('hidden');
-            }
-        }
-
-        function getFilteredData() {
-            return allTransactions.filter(t => {
-                const [y, m, d] = t.tanggal.split('-');
-                if (activeFilters.bulan && m !== activeFilters.bulan) return false;
-                if (activeFilters.tahun && y !== activeFilters.tahun) return false;
-                if (activeFilters.jenis !== 'Semua' && t.jenis !== activeFilters.jenis) return false;
-                return true;
-            });
-        }
-
         window.loadData = async function() {
+            const tbody = document.getElementById('tableBody');
             try {
-                const q = query(collection(db, "transaksi_sirat"), orderBy("timestamp", "desc"));
-                const snapshot = await getDocs(q);
-                allTransactions = [];
-                snapshot.forEach(docSnap => {
-                    const d = docSnap.data();
-                    d.id = docSnap.id;
-                    allTransactions.push(d);
+                showLoading('Memuat data...');
+                const response = await fetch(APPS_SCRIPT_URL);
+                const data = await response.json();
+                hideLoading();
+                allTransactions = data;
+                tbody.innerHTML = "";
+                if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center">Belum ada data.</td></tr>'; return; }
+                data.forEach(d => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${d['No. Surat Jalan'] || '-'}</strong></td>
+                        <td>${formatDate(d['Tanggal'])}</td>
+                        <td><strong>${d['Nama Barang']}</strong></td>
+                        <td>${d['Jumlah']}</td>
+                        <td>${d['Nama Penyerah']}</td>
+                        <td>${d['Nama Penerima']}</td>
+                        <td><button class="btn-action btn-view" onclick="viewDetail('${d['No. Surat Jalan']}')"><i class="fas fa-eye"></i></button></td>
+                    `;
+                    tbody.appendChild(row);
                 });
-                renderTable();
-            } catch (error) { console.error("Error:", error); document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" class="text-center text-danger">Gagal: ' + error.message + '</td></tr>'; }
+            } catch (error) { 
+                hideLoading(); 
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Gagal: ' + error.message + '</td></tr>'; 
+            }
         };
 
-        function renderTable() {
-            const tbody = document.getElementById('tableBody');
-            const dataToShow = getFilteredData();
-            tbody.innerHTML = "";
-            if (dataToShow.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center">Tidak ada data.</td></tr>'; return; }
-            
-            dataToShow.forEach(d => {
-                const badgeClass = d.jenis === 'Pembelian' ? 'badge-pembelian' : 'badge-serah-terima';
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(d.tanggal)}</td>
-                    <td><span class="badge-custom ${badgeClass}">${d.jenis}</span></td>
-                    <td><strong>${d.namaBarang}</strong></td>
-                    <td>${d.jumlah}</td>
-                    <td>${d.namaPenyerah}</td>
-                    <td>${d.namaPenerima}</td>
-                    <td>
-                        <button class="btn-action btn-view" onclick="window.viewTransaction('${d.id}')"><i class="fas fa-eye"></i></button>
-                        <button class="btn-action btn-pdf-view" onclick="window.viewSinglePDF('${d.id}')"><i class="fas fa-file-pdf"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
+        window.viewDetail = function(noSurat) {
+            const t = allTransactions.find(x => x['No. Surat Jalan'] === noSurat);
+            if (!t) return;
+            alert(`Detail:\nNo: ${t['No. Surat Jalan']}\nBarang: ${t['Nama Barang']}\nPenyerah: ${t['Nama Penyerah']}\nPenerima: ${t['Nama Penerima']}`);
+        };
+
+        function formatDate(dateString) { 
+            if (!dateString) return '-'; 
+            const [y, m, d] = dateString.split('-'); 
+            return `${d} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][parseInt(m)-1]} ${y}`; 
         }
 
-        window.viewTransaction = function(docId) {
-            const transaction = allTransactions.find(t => t.id === docId);
-            if (!transaction) { showAlert('error', 'Data tidak ditemukan!'); return; }
-            currentViewTransaction = transaction;
-            const badgeClass = transaction.jenis === 'Pembelian' ? 'badge-pembelian' : 'badge-serah-terima';
-            let stampText = 'Tanpa Stempel';
-            if (transaction.stampPlacement === 'penyerah') stampText = 'Di Penyerah';
-            else if (transaction.stampPlacement === 'penerima') stampText = 'Di Penerima';
-            const content = `
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="detail-row"><div class="detail-label">No. Transaksi</div><div>SIRAT/${transaction.timestamp ? new Date(transaction.timestamp.toDate()).getFullYear() : new Date().getFullYear()}/${transaction.id.substring(0, 8).toUpperCase()}</div></div>
-                        <div class="detail-row"><div class="detail-label">Tanggal</div><div>${formatDate(transaction.tanggal)}</div></div>
-                        <div class="detail-row"><div class="detail-label">Jenis Transaksi</div><div><span class="badge-custom ${badgeClass}">${transaction.jenis}</span></div></div>
-                        <div class="detail-row"><div class="detail-label">Penempatan Stempel</div><div><i class="fas fa-stamp text-success"></i> ${stampText}</div></div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="detail-row"><div class="detail-label">Nama Barang</div><div><strong>${transaction.namaBarang}</strong></div></div>
-                        <div class="detail-row"><div class="detail-label">Jumlah</div><div>${transaction.jumlah}</div></div>
-                        <div class="detail-row"><div class="detail-label">Keterangan</div><div>${transaction.keterangan || '-'}</div></div>
-                    </div>
-                </div>
-                <hr class="my-4">
-                <h6 class="text-success mb-3"><i class="fas fa-signature"></i> Tanda Tangan</h6>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="detail-row"><div class="detail-label">Nama Penyerah</div><div>${transaction.namaPenyerah}</div></div>
-                        <div class="detail-row"><div class="detail-label">Tanda Tangan Penyerah</div><div>${transaction.ttdPenyerah ? `<img src="${transaction.ttdPenyerah}" class="signature-preview-large" alt="TTD Penyerah">` : '<em class="text-muted">Tidak ada</em>'}</div></div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="detail-row"><div class="detail-label">Nama Penerima</div><div>${transaction.namaPenerima}</div></div>
-                        <div class="detail-row"><div class="detail-label">Tanda Tangan Penerima</div><div>${transaction.ttdPenerima ? `<img src="${transaction.ttdPenerima}" class="signature-preview-large" alt="TTD Penerima">` : '<em class="text-muted">Tidak ada</em>'}</div></div>
-                    </div>
-                </div>
-            `;
-            document.getElementById('viewContent').innerHTML = content;
-            new bootstrap.Modal(document.getElementById('viewModal')).show();
-        };
-
-        function formatDate(dateString) { if (!dateString) return '-'; const [y, m, d] = dateString.split('-'); return `${d} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][parseInt(m)-1]} ${y}`; }
-
+        // --- SIGNATURE MODAL ---
         window.openSignatureModal = function(type) {
             currentSignatureType = type;
             const signerName = type === 'penyerah' ? document.getElementById('namaPenyerah').value : document.getElementById('namaPenerima').value;
@@ -647,138 +592,6 @@
             closeSignatureModal();
         };
         document.getElementById('signatureModal').addEventListener('click', function(e) { if (e.target === this) closeSignatureModal(); });
-        window.toggleAuthMode = function() {
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-            const authTitle = document.getElementById('authTitle');
-            if (loginForm.classList.contains('hidden')) { loginForm.classList.remove('hidden'); registerForm.classList.add('hidden'); authTitle.innerHTML = '<i class="fas fa-lock"></i> Login SIRAT'; } else { loginForm.classList.add('hidden'); registerForm.classList.remove('hidden'); authTitle.innerHTML = '<i class="fas fa-user-plus"></i> Daftar Akun SIRAT'; }
-        };
-        function showLoading(text = 'Memuat...') { document.getElementById('loadingText').textContent = text; document.getElementById('loadingOverlay').classList.remove('hidden'); }
-        function hideLoading() { document.getElementById('loadingOverlay').classList.add('hidden'); }
-        function showAlert(type, message) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-custom`;
-            alertDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
-            document.body.appendChild(alertDiv);
-            setTimeout(() => alertDiv.remove(), 3000);
-        }
-
-        window.exportToCSV = function() {
-            const dataToShow = getFilteredData();
-            if (dataToShow.length === 0) { showAlert('error', 'Tidak ada data untuk diexport!'); return; }
-            let csv = [["Tanggal", "Jenis", "Barang", "Jumlah", "Penyerah", "Penerima", "Keterangan"]];
-            dataToShow.forEach(d => {
-                csv.push([d.tanggal, d.jenis, d.namaBarang, d.jumlah, d.namaPenyerah, d.namaPenerima, d.keterangan || '-']);
-            });
-            const csvContent = csv.map(e => e.join(",")).join("\n");
-            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `SIRAT_Data_${new Date().toISOString().slice(0,10)}.csv`;
-            link.click();
-        };
-
-        // --- PDF FUNCTIONS ---
-        window.viewSinglePDF = async function(docId) {
-            const transaction = allTransactions.find(t => t.id === docId);
-            if (!transaction) { showAlert('error', 'Data tidak ditemukan!'); return; }
-            await generatePDF([transaction], 'view');
-        };
-
-        window.viewPDF = async function() {
-            const dataToShow = getFilteredData();
-            if (dataToShow.length === 0) { showAlert('error', 'Tidak ada data!'); return; }
-            await generatePDF(dataToShow, 'view');
-        };
-
-        window.downloadPDF = async function() {
-            const dataToShow = getFilteredData();
-            if (dataToShow.length === 0) { showAlert('error', 'Tidak ada data!'); return; }
-            await generatePDF(dataToShow, 'download');
-        };
-
-        async function generatePDF(transactions, mode) {
-            if (!logoBase64) { showAlert('error', 'Logo belum dimuat. Tunggu sebentar.'); return; }
-            const { jsPDF } = window.jspdf;
-            const pdfDoc = new jsPDF('p', 'mm', 'a4');
-            const stampBase64 = logoBase64;
-            
-            transactions.forEach((trans, index) => {
-                if (index > 0) pdfDoc.addPage();
-                
-                // KOP SURAT (Sesuai File)
-                pdfDoc.addImage(logoBase64, 'PNG', 20, 10, 40, 30);
-                pdfDoc.setFontSize(16); pdfDoc.setFont(undefined, 'bold'); pdfDoc.setTextColor(27, 94, 32);
-                pdfDoc.text('CV REZEKI AMANAH JAYA GROUP', 65, 18);
-                pdfDoc.setFontSize(10); pdfDoc.setFont(undefined, 'normal'); pdfDoc.setTextColor(46, 125, 50);
-                pdfDoc.text('SUPPLIER & WASTE SOLUTION PARTNER', 65, 25);
-                pdfDoc.setFontSize(8); pdfDoc.setTextColor(100, 100, 100);
-                pdfDoc.text('Cluster Puri Flamingo FLA 06/19 Sukamantri Pasarkemis Kab Tangerang', 65, 31);
-                pdfDoc.text('HP. 081296580968', 65, 36);
-                pdfDoc.setDrawColor(27, 94, 32); pdfDoc.setLineWidth(0.5);
-                pdfDoc.line(20, 40, 190, 40);
-                
-                // Judul
-                pdfDoc.setFontSize(14); pdfDoc.setFont(undefined, 'bold'); pdfDoc.setTextColor(0, 0, 0);
-                pdfDoc.text('BERITA ACARA SERAH TERIMA BARANG', 105, 55, { align: 'center' });
-                pdfDoc.setFontSize(10); pdfDoc.setFont(undefined, 'normal');
-                const year = trans.timestamp ? new Date(trans.timestamp.toDate()).getFullYear() : new Date().getFullYear();
-                pdfDoc.text(`No: SIRAT/${year}/${String(index + 1).padStart(3, '0')}`, 105, 62, { align: 'center' });
-                
-                // Isi
-                let yPos = 75;
-                pdfDoc.setFontSize(10);
-                pdfDoc.text('Pada hari ini, dengan ini kami yang bertanda tangan di bawah ini:', 20, yPos);
-                yPos += 10; pdfDoc.text('1. Nama Penyerah', 20, yPos); pdfDoc.text(`: ${trans.namaPenyerah}`, 70, yPos);
-                yPos += 7; pdfDoc.text('2. Nama Penerima', 20, yPos); pdfDoc.text(`: ${trans.namaPenerima}`, 70, yPos);
-                yPos += 7; pdfDoc.text('3. Tanggal', 20, yPos); pdfDoc.text(`: ${formatDate(trans.tanggal)}`, 70, yPos);
-                yPos += 7; pdfDoc.text('4. Jenis Transaksi', 20, yPos); pdfDoc.text(`: ${trans.jenis}`, 70, yPos);
-                yPos += 15;
-                pdfDoc.text('Dengan ini menyatakan telah melakukan serah terima barang dengan rincian:', 20, yPos);
-                yPos += 10;
-                pdfDoc.autoTable({
-                    startY: yPos, head: [['Nama Barang', 'Jumlah', 'Keterangan']],
-                    body: [[trans.namaBarang, trans.jumlah, trans.keterangan || '-']],
-                    theme: 'grid', headStyles: { fillColor: [27, 94, 32], textColor: 255, fontStyle: 'bold' }, styles: { fontSize: 9, cellPadding: 3 }
-                });
-                
-                yPos = pdfDoc.lastAutoTable.finalY + 15;
-                pdfDoc.text('Demikian berita acara ini dibuat untuk dipergunakan sebagaimana mestinya.', 20, yPos);
-                yPos += 20;
-                const signY = yPos;
-                
-                // Penyerah
-                pdfDoc.text('Penyerah,', 20, signY);
-                if (trans.stampPlacement === 'penyerah' && stampBase64) {
-                    pdfDoc.setGState(new pdfDoc.GState({ opacity: 0.8 }));
-                    pdfDoc.addImage(stampBase64, 'PNG', 25, signY - 5, 40, 40);
-                    pdfDoc.setGState(new pdfDoc.GState({ opacity: 1 }));
-                }
-                if (trans.ttdPenyerah) pdfDoc.addImage(trans.ttdPenyerah, 'PNG', 20, signY + 5, 50, 20);
-                pdfDoc.line(20, signY + 30, 70, signY + 30);
-                pdfDoc.text(trans.namaPenyerah, 45, signY + 35, { align: 'center' });
-                
-                // Penerima
-                pdfDoc.text('Penerima,', 120, signY);
-                if (trans.stampPlacement === 'penerima' && stampBase64) {
-                    pdfDoc.setGState(new pdfDoc.GState({ opacity: 0.8 }));
-                    pdfDoc.addImage(stampBase64, 'PNG', 125, signY - 5, 40, 40);
-                    pdfDoc.setGState(new pdfDoc.GState({ opacity: 1 }));
-                }
-                if (trans.ttdPenerima) pdfDoc.addImage(trans.ttdPenerima, 'PNG', 120, signY + 5, 50, 20);
-                pdfDoc.line(120, signY + 30, 170, signY + 30);
-                pdfDoc.text(trans.namaPenerima, 145, signY + 35, { align: 'center' });
-                
-                pdfDoc.setFontSize(7); pdfDoc.setTextColor(150, 150, 150);
-                pdfDoc.text(`Dicetak oleh: ${trans.createdByName || 'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 285, { align: 'center' });
-            });
-            
-            if (mode === 'view') {
-                pdfDoc.output('dataurlnewwindow');
-            } else {
-                pdfDoc.save(`SIRAT_Berita_Acara_${new Date().toISOString().slice(0,10)}.pdf`);
-            }
-        }
     </script>
 </body>
 </html>
