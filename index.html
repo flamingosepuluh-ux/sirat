@@ -367,7 +367,7 @@
         const auth = getAuth(app);
         let currentUser = null, modalSignaturePad = null, currentSignatureType = '';
         let allTransactions = [], filteredTransactions = [];
-        let logoBase64 = null, kopSuratBase64 = null;
+        let logoBase64 = null, kopSuratBase64 = null, stempelBase64 = null;
         let fotoLokasiBase64 = null, fotoLokasiNama = '', fotoArmadaBase64 = null, fotoArmadaNama = '';
 
         async function loadImages() {
@@ -383,6 +383,13 @@
                 const kopReader = new FileReader();
                 kopReader.onloadend = () => { kopSuratBase64 = kopReader.result; console.log('✅ Kop surat loaded'); };
                 kopReader.readAsDataURL(kopBlob);
+
+                // Load stempel/watermark dari gambar yang sama
+                const stempelResp = await fetch('stempel-raj.png');
+                const stempelBlob = await stempelResp.blob();
+                const stempelReader = new FileReader();
+                stempelReader.onloadend = () => { stempelBase64 = stempelReader.result; console.log('✅ Stempel loaded'); };
+                stempelReader.readAsDataURL(stempelBlob);
             } catch (e) { console.error('Error load images:', e); }
         }
 
@@ -727,6 +734,57 @@
             });
         }
 
+        // FUNGSI: Tambah header ke setiap halaman
+        function addHeaderToPDF(pdf, yPos) {
+            if (kopSuratBase64) {
+                pdf.addImage(kopSuratBase64, 'PNG', 15, yPos, 180, 40);
+            }
+        }
+
+        // FUNGSI: Tambah footer ke setiap halaman
+        function addFooterToPDF(pdf, pageNum, totalPages, createdBy) {
+            pdf.setFontSize(8);
+            pdf.setFont(undefined, 'normal');
+            pdf.setTextColor(128, 128, 128);
+            pdf.setDrawColor(200, 200, 200);
+            pdf.setLineWidth(0.3);
+            pdf.line(15, 280, 195, 280);
+            pdf.text(`Dicetak oleh: ${createdBy||'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
+            pdf.text(`Halaman ${pageNum} dari ${totalPages}`, 195, 286, {align:'right'});
+        }
+
+        // FUNGSI: Tambah watermark di background
+        function addWatermarkToPDF(pdf, yPos) {
+            if (!stempelBase64) return;
+            
+            // Simpan state graphics
+            const currentOpacity = pdf.internal.getCurrentPageInfo().pageContext.opacity;
+            
+            // Set opacity rendah untuk watermark
+            pdf.setGState(new pdf.GState({opacity: 0.08}));
+            
+            // Tambah watermark di tengah halaman
+            const watermarkY = yPos + 60;
+            pdf.addImage(stempelBase64, 'PNG', 60, watermarkY, 90, 90);
+            
+            // Restore opacity
+            pdf.setGState(new pdf.GState({opacity: 1}));
+        }
+
+        // FUNGSI: Tambah stempel di belakang tanda tangan
+        function addStempelToPDF(pdf, xPos, yPos, width, height) {
+            if (!stempelBase64) return;
+            
+            // Simpan state
+            pdf.setGState(new pdf.GState({opacity: 0.6}));
+            
+            // Tambah stempel
+            pdf.addImage(stempelBase64, 'PNG', xPos, yPos, width, height);
+            
+            // Restore
+            pdf.setGState(new pdf.GState({opacity: 1}));
+        }
+
         async function generatePDF(transactions, mode) {
             if (!kopSuratBase64) { alert('Kop surat belum dimuat!'); return; }
             
@@ -737,18 +795,26 @@
             // Set default font
             pdf.setFont("helvetica");
             
+            const totalPages = transactions.length;
+            
             for (let i = 0; i < transactions.length; i++) {
                 const t = transactions[i];
                 console.log('=== Generating PDF', i+1, '===');
                 console.log('Transaction data:', t);
                 
-                if (i > 0) pdf.addPage();
+                if (i > 0) {
+                    pdf.addPage();
+                    // TAMBAHKAN KOP SURAT DI SETIAP HALAMAN BARU
+                    addHeaderToPDF(pdf, 15);
+                } else {
+                    // Halaman pertama juga punya header
+                    addHeaderToPDF(pdf, 15);
+                }
                 
-                let y = 15;
+                // Tambah watermark di background
+                addWatermarkToPDF(pdf, 15);
                 
-                // HEADER DENGAN LOGO
-                pdf.addImage(kopSuratBase64, 'PNG', 15, y, 180, 40);
-                y += 42;
+                let y = 60; // Start below header
                 
                 // GARIS PEMISAH TEBAL
                 pdf.setDrawColor(27, 94, 32);
@@ -850,7 +916,13 @@
                 console.log('Foto Armada URL:', fotoArmada);
                 
                 if (fotoLokasi || fotoArmada) {
-                    if (y > 160) { pdf.addPage(); y = 15; }
+                    // Cek apakah perlu halaman baru untuk foto
+                    if (y > 160) { 
+                        pdf.addPage(); 
+                        addHeaderToPDF(pdf, 15);
+                        addWatermarkToPDF(pdf, 15);
+                        y = 60; 
+                    }
                     
                     pdf.setFontSize(11);
                     pdf.setFont(undefined, 'bold');
@@ -933,7 +1005,12 @@
                 }
                 
                 // TANDA TANGAN
-                if (y > 190) { pdf.addPage(); y = 20; }
+                if (y > 190) { 
+                    pdf.addPage(); 
+                    addHeaderToPDF(pdf, 15);
+                    addWatermarkToPDF(pdf, 15);
+                    y = 60; 
+                }
                 
                 pdf.setFontSize(11);
                 pdf.setFont(undefined, 'bold');
@@ -946,12 +1023,18 @@
                 
                 const signY = y;
                 const sw = 55, sh = 25;
+                const stampPlacement = t['Penempatan Stempel'] || 'customer';
                 
                 // PIC
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(0, 0, 0);
                 pdf.setFontSize(9);
                 pdf.text('PIC (Penanggung Jawab),', 20, signY);
+                
+                // Tambah stempel di PIC jika dipilih
+                if (stampPlacement === 'pic' && stempelBase64) {
+                    addStempelToPDF(pdf, 15, signY-5, 65, 65);
+                }
                 
                 if (t['TTD PIC'] && t['TTD PIC'] !== '-' && t['TTD PIC'].length > 100) {
                     try { 
@@ -969,6 +1052,11 @@
                 pdf.setFont(undefined, 'normal');
                 pdf.text('Customer,', 125, signY);
                 
+                // Tambah stempel di Customer jika dipilih
+                if (stampPlacement === 'customer' && stempelBase64) {
+                    addStempelToPDF(pdf, 120, signY-5, 65, 65);
+                }
+                
                 if (t['TTD Customer'] && t['TTD Customer'] !== '-' && t['TTD Customer'].length > 100) {
                     try { 
                         pdf.addImage(t['TTD Customer'], 'PNG', 125, signY+5, sw, sh); 
@@ -979,14 +1067,8 @@
                 pdf.setFont(undefined, 'bold');
                 pdf.text(t['Nama Customer'] || '-', 152, signY+41, {align:'center'});
                 
-                // FOOTER
-                pdf.setFontSize(8);
-                pdf.setFont(undefined, 'normal');
-                pdf.setTextColor(128, 128, 128);
-                pdf.setDrawColor(200, 200, 200);
-                pdf.setLineWidth(0.3);
-                pdf.line(15, 280, 195, 280);
-                pdf.text(`Dicetak oleh: ${t['Dibuat Oleh']||'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
+                // FOOTER dengan nomor halaman
+                addFooterToPDF(pdf, i+1, totalPages, t['Dibuat Oleh']||'User');
             }
             
             hideLoading();
