@@ -165,7 +165,7 @@
                                         <input type="text" class="form-control bg-light" id="mouNomor" readonly>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <label class="form-label fw-bold">Tanggal</label>
+                                        <label class="form-label fw-bold">Tanggal (Otomatis di PDF)</label>
                                         <input type="date" class="form-control" id="mouTanggal">
                                     </div>
                                     <div class="col-md-12 mb-2">
@@ -198,11 +198,11 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <label class="form-label fw-bold">Nama Perwakilan</label>
-                                        <input type="text" class="form-control" id="mouP2Nama">
+                                        <input type="text" class="form-control" id="mouP2Nama" placeholder="Masukkan nama lengkap perwakilan">
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <label class="form-label fw-bold">Jabatan</label>
-                                        <input type="text" class="form-control" id="mouP2Jabatan">
+                                        <input type="text" class="form-control" id="mouP2Jabatan" placeholder="Masukkan jabatan">
                                     </div>
                                 </div>
                             </div>
@@ -238,11 +238,11 @@
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label fw-bold">PASAL 7 - PENYELESAIAN PERSELISIHAN</label>
-                                    <textarea class="form-control" id="mouPasal7" rows="2">Apabila terjadi perselisihan dalam pelaksanaan Nota Kesepahaman ini, kedua belah pihak sepakat untuk menyelesaikannya secara musyawarah dan mufakat.</textarea>
+                                    <textarea class="form-control" id="mouPasal7" rows="2">Setiap perselisihan akan diselesaikan secara musyawarah dan mufakat.</textarea>
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label fw-bold">PASAL 8 - PENUTUP</label>
-                                    <textarea class="form-control" id="mouPasal8" rows="2">Nota Kesepahaman ini dibuat dalam rangkap dua, masing-masing mempunyai kekuatan hukum yang sama dan berlaku sejak tanggal ditandatangani.</textarea>
+                                    <textarea class="form-control" id="mouPasal8" rows="2">MoU dibuat dalam rangkap dua dan mempunyai kekuatan hukum yang sama.</textarea>
                                 </div>
                             </div>
 
@@ -561,8 +561,41 @@
         } catch(e) { hideLoad(); alert('Error membuat PDF: ' + e.message); }
     }
 
-    // ===== GENERATE MoU PDF - TTD KOSONG UNTUK FISIK =====
+    // ===== FUNGSI BARU: Format Tanggal Lengkap dengan Hari =====
+    function formatTanggalLengkap(dateStr) {
+        if (!dateStr) return '__________';
+        const d = new Date(dateStr);
+        if (isNaN(d)) return '__________';
+        
+        const hariList = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const bulanList = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        
+        const hari = hariList[d.getDay()];
+        const tanggal = d.getDate();
+        const bulan = bulanList[d.getMonth()];
+        const tahun = d.getFullYear();
+        
+        return `${hari}, ${tanggal} ${bulan} ${tahun}`;
+    }
+
+    // ===== FUNGSI BARU: Format Tanggal Pendek =====
+    function formatDate(str) {
+        if (!str) return '-';
+        const d = new Date(str);
+        if (isNaN(d)) return str;
+        return `${d.getDate()} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][d.getMonth()]} ${d.getFullYear()}`;
+    }
+
+    // ===== GENERATE MoU PDF - PERBAIKAN TANGGAL & NAMA PIHAK 2 =====
     window.generateMoUPDF = async () => {
+        // Validasi Nama Pihak Kedua
+        const p2Nama = document.getElementById('mouP2Nama').value.trim();
+        if (!p2Nama) {
+            alert('⚠️ Nama Perwakilan Pihak Kedua wajib diisi!');
+            document.getElementById('mouP2Nama').focus();
+            return;
+        }
+
         showLoad('Membuat MoU PDF...');
         
         try {
@@ -607,14 +640,15 @@
             pdf.text(`Nomor: ${nomor}`, 105, y, {align:'center'});
             y += 12;
             
-            // ===== PARAGRAF PEMBUKA =====
+            // ===== PARAGRAF PEMBUKA DENGAN TANGGAL OTOMATIS =====
             const tgl = document.getElementById('mouTanggal').value;
             const tempat = document.getElementById('mouTempat').value || 'Kota Tangerang';
-            const fmtTgl = tgl ? formatDate(tgl) : '__________';
+            const fmtTglLengkap = formatTanggalLengkap(tgl); // Format: "Senin, 17 Juni 2026"
             const tahun = tgl ? new Date(tgl).getFullYear() : 2026;
             
             pdf.setFontSize(10);
-            const pembukaan = `Pada hari ini, __________ tanggal ${fmtTgl} bulan __________ tahun ${tahun}, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman (Memorandum of Understanding/MoU) antara:`;
+            // Menggunakan format lengkap dengan hari
+            const pembukaan = `Pada hari ini, ${fmtTglLengkap}, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman (Memorandum of Understanding/MoU) antara:`;
             const pembukaanLines = pdf.splitTextToSize(pembukaan, PAGE_WIDTH);
             pdf.text(pembukaanLines, MARGIN_LEFT, y);
             y += pembukaanLines.length * 5 + 10;
@@ -628,11 +662,9 @@
             const p1Nama = document.getElementById('mouP1Nama').value || 'Sidik Dwi Kuncahyo';
             const p1Jab = document.getElementById('mouP1Jabatan').value || 'Direktur CV Rezeki Amanah Jaya';
             
-            // Format dengan titik dua yang lurus
             pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', MARGIN_LEFT, y);
             y += 6;
             
-            // Gunakan fixed width untuk alignment yang sempurna
             pdf.text('Nama', MARGIN_LEFT, y);
             pdf.text(':  ' + p1Nama, MARGIN_LEFT + 25, y);
             y += 5;
@@ -644,19 +676,19 @@
             pdf.text('Selanjutnya disebut PIHAK PERTAMA.', MARGIN_LEFT, y);
             y += 10;
 
-            // ===== PIHAK KEDUA =====
+            // ===== PIHAK KEDUA - DENGAN NAMA YANG MUNCUL =====
             pdf.setFont(undefined, 'bold');
             pdf.text('PIHAK KEDUA', MARGIN_LEFT, y);
             y += 6;
             
             pdf.setFont(undefined, 'normal');
             const p2Inst = document.getElementById('mouP2Instansi').value || 'ZChicken Baznas Kota Tangerang';
-            const p2Nama = document.getElementById('mouP2Nama').value || '____________________';
             const p2Jab = document.getElementById('mouP2Jabatan').value || '____________________';
             
             pdf.text(`${p2Inst}, diwakili oleh:`, MARGIN_LEFT, y);
             y += 6;
             
+            // Nama Pihak Kedua - TAMPILKAN dari form
             pdf.text('Nama', MARGIN_LEFT, y);
             pdf.text(':  ' + p2Nama, MARGIN_LEFT + 25, y);
             y += 5;
@@ -706,12 +738,12 @@
             
             y += 5;
             
-            // Tempat dan Tanggal
+            // Tempat dan Tanggal - OTOMATIS dari form
             pdf.setFont(undefined, 'normal');
             pdf.setFontSize(10);
             pdf.text(`Dibuat di: ${tempat}`, MARGIN_LEFT, y);
             y += 5;
-            pdf.text(`Tanggal: ____________________`, MARGIN_LEFT, y);
+            pdf.text(`Tanggal: ${fmtTglLengkap}`, MARGIN_LEFT, y); // Tampilkan tanggal lengkap
             y += 25;
             
             const signY = y;
@@ -733,10 +765,10 @@
             pdf.line(leftColX - 25, signY + 35, leftColX + 25, signY + 35);
             pdf.line(rightColX - 25, signY + 35, rightColX + 25, signY + 35);
             
-            // Nama di bawah garis
+            // Nama di bawah garis - KEDUA PIHAK MUNCUL
             pdf.setFont(undefined, 'bold');
             pdf.text(p1Nama, leftColX, signY + 41, {align:'center'});
-            pdf.text(p2Nama, rightColX, signY + 41, {align:'center'});
+            pdf.text(p2Nama, rightColX, signY + 41, {align:'center'}); // Nama Pihak Kedua muncul di sini
 
             // ===== FOOTER =====
             pdf.setFontSize(8);
@@ -805,7 +837,7 @@
     window.viewMoUDetail = (nomor) => {
         const d = mouData.find(x => x['Nomor MoU'] === nomor);
         if (!d) return;
-        alert(`Detail MoU:\n\nNomor: ${d['Nomor MoU']}\nTanggal: ${formatDate(d['Tanggal'])}\nTempat: ${d['Tempat']}\n\nPihak 1: ${d['Nama Pihak 1']} (${d['Jabatan Pihak 1']})\nPihak 2: ${d['Nama Pihak 2']} - ${d['Instansi Pihak 2']} (${d['Jabatan Pihak 2']})\n\nJangka Waktu: ${d['Jangka Waktu']}`);
+        alert(`Detail MoU:\n\nNomor: ${d['Nomor MoU']}\nTanggal: ${formatTanggalLengkap(d['Tanggal'])}\nTempat: ${d['Tempat']}\n\nPihak 1: ${d['Nama Pihak 1']} (${d['Jabatan Pihak 1']})\nPihak 2: ${d['Nama Pihak 2']} - ${d['Instansi Pihak 2']} (${d['Jabatan Pihak 2']})\n\nJangka Waktu: ${d['Jangka Waktu']}`);
     };
 
     window.regenerateMoUPDF = (nomor) => {
@@ -830,13 +862,6 @@
         switchTab('tabMou');
         alert('Data MoU dimuat. Klik "Generate PDF & Simpan" untuk download ulang.');
     };
-
-    function formatDate(str) {
-        if (!str) return '-';
-        const d = new Date(str);
-        if (isNaN(d)) return str;
-        return `${d.getDate()} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][d.getMonth()]} ${d.getFullYear()}`;
-    }
 </script>
 </body>
 </html>
