@@ -83,6 +83,8 @@
         .search-container { background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
         .search-input { border-radius: 10px; border: 2px solid #e0e0e0; padding: 10px 15px; }
         .result-info { color: #666; font-size: 13px; margin-bottom: 10px; }
+        .mou-section { background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .mou-section h6 { color: var(--primary-green); font-weight: 700; margin-bottom: 15px; }
         @media (max-width: 768px) { .header-title { font-size: 16px; } .user-info { display: none; } .table-custom { font-size: 12px; } }
         @media (min-width: 769px) { .bottom-nav { display: none; } }
     </style>
@@ -140,10 +142,12 @@
         <div class="main-container">
             <ul class="nav nav-tabs nav-tabs-custom">
                 <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form">Input Data</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#mou">Buat MoU</button></li>
                 <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#data">Data Transaksi</button></li>
             </ul>
 
             <div class="tab-content">
+                <!-- FORM INPUT DATA -->
                 <div class="tab-pane fade show active" id="form">
                     <div class="card-custom">
                         <div class="card-header-custom">Form Surat Jalan</div>
@@ -268,6 +272,142 @@
                     </div>
                 </div>
 
+                <!-- FORM BUAT MoU -->
+                <div class="tab-pane fade" id="mou">
+                    <div class="card-custom">
+                        <div class="card-header-custom">Pembuatan MoU (Memorandum of Understanding)</div>
+                        <div class="card-body p-4">
+                            <form id="mouForm">
+                                <div class="mou-section">
+                                    <h6><i class="fas fa-file-contract"></i> Informasi MoU</h6>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Nomor MoU</label>
+                                            <input type="text" class="form-control" id="mouNomor" placeholder="___/MoU/RAJ/___/2026">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Tanggal Penandatanganan</label>
+                                            <input type="date" class="form-control" id="mouTanggal">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <label class="form-label fw-bold">Tempat Penandatanganan</label>
+                                            <input type="text" class="form-control" id="mouTempat" value="Kota Tangerang" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mou-section">
+                                    <h6><i class="fas fa-users"></i> Pihak Pertama (CV Rezeki Amanah Jaya)</h6>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Nama Lengkap</label>
+                                            <input type="text" class="form-control" id="pihak1Nama" value="Sidik Dwi Kuncahyo" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Jabatan</label>
+                                            <input type="text" class="form-control" id="pihak1Jabatan" value="Direktur CV Rezeki Amanah Jaya" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mou-section">
+                                    <h6><i class="fas fa-building"></i> Pihak Kedua</h6>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Nama Instansi/Perusahaan</label>
+                                            <input type="text" class="form-control" id="pihak2Instansi" placeholder="Contoh: ZChicken Baznas Kota Tangerang" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Nama Perwakilan</label>
+                                            <input type="text" class="form-control" id="pihak2Nama" placeholder="Nama lengkap perwakilan" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Jabatan Perwakilan</label>
+                                            <input type="text" class="form-control" id="pihak2Jabatan" placeholder="Jabatan perwakilan" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mou-section">
+                                    <h6><i class="fas fa-tasks"></i> Isi MoU</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Maksud dan Tujuan</label>
+                                        <textarea class="form-control" id="mouTujuan" rows="3" placeholder="Contoh: Kerja sama pengumpulan dan pengelolaan minyak jelantah...">Kerja sama pengumpulan dan pengelolaan minyak jelantah dari operasional Pihak Kedua kepada Pihak Pertama guna mendukung pengelolaan limbah yang ramah lingkungan dan bernilai ekonomi.</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Ruang Lingkup Kerja Sama</label>
+                                        <textarea class="form-control" id="mouRuangLingkup" rows="4" placeholder="Poin-poin ruang lingkup (pisahkan dengan enter)">1. Penyerahan minyak jelantah dari Pihak Kedua kepada Pihak Pertama
+2. Pengambilan minyak jelantah secara berkala
+3. Pengelolaan dan penyaluran minyak jelantah ke industri pengolahan/biodiesel yang sesuai ketentuan
+4. Berlaku untuk seluruh lokasi yang disepakati</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Hak dan Kewajiban Pihak Pertama</label>
+                                        <textarea class="form-control" id="mouHakKewajiban1" rows="3">Menyediakan sarana penampungan bila diperlukan, melakukan penimbangan transparan, memberikan bukti serah terima, dan memberikan kompensasi sesuai kesepakatan.</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Hak dan Kewajiban Pihak Kedua</label>
+                                        <textarea class="form-control" id="mouHakKewajiban2" rows="3">Mengumpulkan minyak jelantah dengan baik, tidak mencampur dengan limbah lain, dan memberikan akses pengambilan kepada Pihak Pertama.</textarea>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Harga dan Pembayaran</label>
+                                            <textarea class="form-control" id="mouHarga" rows="2">Harga pembelian mengikuti kesepakatan dan kondisi pasar. Pembayaran dilakukan sesuai mekanisme yang disepakati kedua belah pihak.</textarea>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Jangka Waktu</label>
+                                            <input type="text" class="form-control" id="mouJangkaWaktu" value="1 (satu) tahun sejak ditandatangani">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mou-section">
+                                    <h6><i class="fas fa-signature"></i> Tanda Tangan</h6>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="includeSignature" checked onchange="toggleSignatureOption()">
+                                            <label class="form-check-label" for="includeSignature">
+                                                Sertakan Tanda Tangan di MoU
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="signatureOptions">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label fw-bold">Tanda Tangan Pihak Pertama</label>
+                                                <div id="statusTTDPihak1" class="signature-status signature-pending mt-2">Belum ada tanda tangan</div>
+                                                <button type="button" class="btn-signature mt-2" onclick="openMouSignatureModal('pihak1')">Buat Tanda Tangan Pihak 1</button>
+                                                <input type="hidden" id="ttdPihak1Data">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label fw-bold">Tanda Tangan Pihak Kedua</label>
+                                                <div id="statusTTDPihak2" class="signature-status signature-pending mt-2">Belum ada tanda tangan</div>
+                                                <button type="button" class="btn-signature mt-2" onclick="openMouSignatureModal('pihak2')">Buat Tanda Tangan Pihak 2</button>
+                                                <input type="hidden" id="ttdPihak2Data">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <button type="button" class="btn btn-submit me-2" onclick="generateMoUPDF()">
+                                        <i class="fas fa-file-pdf"></i> Generate PDF
+                                    </button>
+                                    <button type="reset" class="btn btn-outline-secondary">
+                                        <i class="fas fa-redo"></i> Reset Form
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DATA TABLE -->
                 <div class="tab-pane fade" id="data">
                     <div class="card-custom">
                         <div class="card-header-custom d-flex justify-content-between flex-wrap gap-2">
@@ -331,10 +471,12 @@
 
         <div class="bottom-nav d-md-none">
             <div class="bottom-nav-item active" onclick="switchTab('form')"><i class="fas fa-file-alt"></i><span>Input</span></div>
+            <div class="bottom-nav-item" onclick="switchTab('mou')"><i class="fas fa-file-contract"></i><span>MoU</span></div>
             <div class="bottom-nav-item" onclick="switchTab('data')"><i class="fas fa-database"></i><span>Data</span></div>
         </div>
     </div>
 
+    <!-- Signature Modal -->
     <div id="signatureModal" class="signature-modal">
         <div class="signature-modal-content">
             <button class="btn-close-modal" onclick="closeSignatureModal()"><i class="fas fa-times"></i></button>
@@ -344,6 +486,20 @@
             <div class="signature-buttons">
                 <button class="btn-clear-signature" onclick="clearModalSignature()">Hapus</button>
                 <button class="btn-save-signature" onclick="saveModalSignature()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MoU Signature Modal -->
+    <div id="mouSignatureModal" class="signature-modal">
+        <div class="signature-modal-content">
+            <button class="btn-close-modal" onclick="closeMouSignatureModal()"><i class="fas fa-times"></i></button>
+            <h5 class="text-center mb-3">Tanda Tangan MoU</h5>
+            <div class="text-muted text-center mb-3" id="mouModalSignerName">Pihak 1 / Pihak 2</div>
+            <div class="signature-canvas-container"><canvas id="mouModalSignatureCanvas"></canvas></div>
+            <div class="signature-buttons">
+                <button class="btn-clear-signature" onclick="clearMouModalSignature()">Hapus</button>
+                <button class="btn-save-signature" onclick="saveMouModalSignature()">Simpan</button>
             </div>
         </div>
     </div>
@@ -366,6 +522,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         let currentUser = null, modalSignaturePad = null, currentSignatureType = '';
+        let mouSignaturePad = null, mouSignatureType = '';
         let allTransactions = [], filteredTransactions = [];
         let logoBase64 = null, kopSuratBase64 = null, stempelBase64 = null;
         let fotoLokasiBase64 = null, fotoLokasiNama = '', fotoArmadaBase64 = null, fotoArmadaNama = '';
@@ -384,7 +541,6 @@
                 kopReader.onloadend = () => { kopSuratBase64 = kopReader.result; console.log('✅ Kop surat loaded'); };
                 kopReader.readAsDataURL(kopBlob);
 
-                // Load stempel/watermark dari gambar yang sama
                 const stempelResp = await fetch('stempel-raj.png');
                 const stempelBlob = await stempelResp.blob();
                 const stempelReader = new FileReader();
@@ -534,15 +690,7 @@
                 params.append('createdByEmail', currentUser.email);
                 params.append('createdByName', currentUser.displayName || currentUser.email);
                 
-                console.log('=== SENDING DATA ===');
-                for (let [key, value] of params.entries()) {
-                    console.log(key + ': ' + value);
-                }
-                
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: params
-                });
+                await fetch(APPS_SCRIPT_URL, { method: 'POST', body: params });
                 
                 hideLoading();
                 alert('✅ Data berhasil disimpan!');
@@ -592,13 +740,6 @@
                 hideLoading();
                 allTransactions = data;
                 filteredTransactions = data;
-                
-                console.log('=== DATA LOADED ===');
-                console.log('Total records:', data.length);
-                if (data.length > 0) {
-                    console.log('First record keys:', Object.keys(data[0]));
-                    console.log('First record:', data[0]);
-                }
                 
                 document.getElementById('searchInput').value = '';
                 document.getElementById('filterKode').value = '';
@@ -714,7 +855,6 @@
             return new Promise((resolve) => {
                 if (!url || url === '-') { resolve(null); return; }
                 const directUrl = getDriveDirectUrl(url);
-                console.log('Loading image from:', directUrl);
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
                 img.onload = function() {
@@ -723,25 +863,21 @@
                         canvas.width = img.width;
                         canvas.height = img.height;
                         canvas.getContext('2d').drawImage(img, 0, 0);
-                        const base64 = canvas.toDataURL('image/jpeg', 0.8);
-                        console.log('✅ Image loaded, base64 length:', base64.length);
-                        resolve(base64);
-                    } catch(e) { console.log('❌ Canvas error:', e); resolve(null); }
+                        resolve(canvas.toDataURL('image/jpeg', 0.8));
+                    } catch(e) { resolve(null); }
                 };
-                img.onerror = () => { console.log('❌ Image load error'); resolve(null); };
+                img.onerror = () => resolve(null);
                 img.src = directUrl;
-                setTimeout(() => { if (!img.complete) { console.log('⏰ Timeout'); resolve(null); } }, 5000);
+                setTimeout(() => { if (!img.complete) resolve(null); }, 5000);
             });
         }
 
-        // FUNGSI: Tambah header ke setiap halaman
         function addHeaderToPDF(pdf, yPos) {
             if (kopSuratBase64) {
                 pdf.addImage(kopSuratBase64, 'PNG', 15, yPos, 180, 40);
             }
         }
 
-        // FUNGSI: Tambah footer ke setiap halaman
         function addFooterToPDF(pdf, pageNum, totalPages, createdBy) {
             pdf.setFontSize(8);
             pdf.setFont(undefined, 'normal');
@@ -753,35 +889,18 @@
             pdf.text(`Halaman ${pageNum} dari ${totalPages}`, 195, 286, {align:'right'});
         }
 
-        // FUNGSI: Tambah watermark di background
         function addWatermarkToPDF(pdf, yPos) {
             if (!stempelBase64) return;
-            
-            // Simpan state graphics
-            const currentOpacity = pdf.internal.getCurrentPageInfo().pageContext.opacity;
-            
-            // Set opacity rendah untuk watermark
             pdf.setGState(new pdf.GState({opacity: 0.08}));
-            
-            // Tambah watermark di tengah halaman
             const watermarkY = yPos + 60;
             pdf.addImage(stempelBase64, 'PNG', 60, watermarkY, 90, 90);
-            
-            // Restore opacity
             pdf.setGState(new pdf.GState({opacity: 1}));
         }
 
-        // FUNGSI: Tambah stempel di belakang tanda tangan
         function addStempelToPDF(pdf, xPos, yPos, width, height) {
             if (!stempelBase64) return;
-            
-            // Simpan state
             pdf.setGState(new pdf.GState({opacity: 0.6}));
-            
-            // Tambah stempel
             pdf.addImage(stempelBase64, 'PNG', xPos, yPos, width, height);
-            
-            // Restore
             pdf.setGState(new pdf.GState({opacity: 1}));
         }
 
@@ -791,58 +910,46 @@
             showLoading('Membuat PDF...');
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
-            
-            // Set default font
             pdf.setFont("helvetica");
             
             const totalPages = transactions.length;
             
             for (let i = 0; i < transactions.length; i++) {
                 const t = transactions[i];
-                console.log('=== Generating PDF', i+1, '===');
-                console.log('Transaction data:', t);
                 
                 if (i > 0) {
                     pdf.addPage();
-                    // TAMBAHKAN KOP SURAT DI SETIAP HALAMAN BARU
                     addHeaderToPDF(pdf, 15);
                 } else {
-                    // Halaman pertama juga punya header
                     addHeaderToPDF(pdf, 15);
                 }
                 
-                // Tambah watermark di background
                 addWatermarkToPDF(pdf, 15);
                 
-                let y = 60; // Start below header
+                let y = 60;
                 
-                // GARIS PEMISAH TEBAL
                 pdf.setDrawColor(27, 94, 32);
                 pdf.setLineWidth(1.5);
                 pdf.line(15, y, 195, y);
                 y += 8;
                 
-                // JUDUL SURAT JALAN
                 pdf.setFontSize(16);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
                 pdf.text('SURAT JALAN', 105, y, {align:'center'});
                 y += 8;
                 
-                // NOMOR SURAT
                 pdf.setFontSize(10);
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(0, 0, 0);
                 pdf.text(`No: ${t['No. Surat Jalan'] || '-'}`, 105, y, {align:'center'});
                 y += 12;
                 
-                // GARIS TIPIS
                 pdf.setDrawColor(200, 200, 200);
                 pdf.setLineWidth(0.5);
                 pdf.line(15, y, 195, y);
                 y += 8;
                 
-                // INFORMASI TRANSAKSI - BOX
                 pdf.setFontSize(11);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
@@ -873,7 +980,6 @@
                 
                 y += 3;
                 
-                // DETAIL WASTE - TABLE
                 pdf.setFontSize(11);
                 pdf.setFont(undefined, 'bold');
                 pdf.setTextColor(27, 94, 32);
@@ -888,35 +994,18 @@
                     head: [['Jenis Waste', 'Jumlah (KG)', 'Keterangan']],
                     body: [[t['Jenis Waste']||'-', t['Jumlah (KG)']||'0', t['Keterangan']||'-']],
                     theme: 'striped',
-                    headStyles: {
-                        fillColor: [27, 94, 32], 
-                        textColor: 255, 
-                        fontStyle: 'bold',
-                        fontSize: 10,
-                        halign: 'center'
-                    },
-                    bodyStyles: {
-                        fontSize: 9,
-                        cellPadding: 4
-                    },
-                    styles: {
-                        overflow: 'linebreak',
-                        cellWidth: 'auto'
-                    },
+                    headStyles: { fillColor: [27, 94, 32], textColor: 255, fontStyle: 'bold', fontSize: 10, halign: 'center' },
+                    bodyStyles: { fontSize: 9, cellPadding: 4 },
+                    styles: { overflow: 'linebreak', cellWidth: 'auto' },
                     margin: {left: 15, right: 15}
                 });
                 
                 y = pdf.lastAutoTable.finalY + 10;
                 
-                // DOKUMENTASI FOTO
                 const fotoLokasi = t['Foto Lokasi URL'];
                 const fotoArmada = t['Foto Armada URL'];
                 
-                console.log('Foto Lokasi URL:', fotoLokasi);
-                console.log('Foto Armada URL:', fotoArmada);
-                
                 if (fotoLokasi || fotoArmada) {
-                    // Cek apakah perlu halaman baru untuk foto
                     if (y > 160) { 
                         pdf.addPage(); 
                         addHeaderToPDF(pdf, 15);
@@ -941,70 +1030,45 @@
                     const w = 80, h = 60, gap = 15;
                     let x = 15;
                     
-                    // Foto Lokasi
                     if (imgLokasi) {
                         pdf.setDrawColor(27, 94, 32);
                         pdf.setLineWidth(0.5);
                         pdf.rect(x, y, w, h);
                         pdf.addImage(imgLokasi, 'JPEG', x+2, y+2, w-4, h-4);
-                        
                         pdf.setFontSize(9);
                         pdf.setFont(undefined, 'bold');
                         pdf.setTextColor(27, 94, 32);
                         pdf.text('Foto Lokasi', x+w/2, y+h+6, {align:'center'});
-                        
                         if (t['Foto Lokasi Timestamp']) {
                             pdf.setFont(undefined, 'normal');
                             pdf.setTextColor(100, 100, 100);
                             pdf.setFontSize(7);
                             pdf.text(t['Foto Lokasi Timestamp'], x+w/2, y+h+11, {align:'center'});
                         }
-                    } else if (fotoLokasi) {
-                        pdf.setDrawColor(200, 200, 200);
-                        pdf.setLineWidth(0.5);
-                        pdf.setFillColor(245, 245, 245);
-                        pdf.rect(x, y, w, h, 'F');
-                        pdf.setFontSize(9);
-                        pdf.setTextColor(150, 150, 150);
-                        pdf.text('Foto Lokasi', x+w/2, y+h/2-3, {align:'center'});
-                        pdf.text('(tidak dapat dimuat)', x+w/2, y+h/2+3, {align:'center'});
                     }
                     
                     x += w + gap;
                     
-                    // Foto Armada
                     if (imgArmada) {
                         pdf.setDrawColor(27, 94, 32);
                         pdf.setLineWidth(0.5);
                         pdf.rect(x, y, w, h);
                         pdf.addImage(imgArmada, 'JPEG', x+2, y+2, w-4, h-4);
-                        
                         pdf.setFontSize(9);
                         pdf.setFont(undefined, 'bold');
                         pdf.setTextColor(27, 94, 32);
                         pdf.text('Foto Armada', x+w/2, y+h+6, {align:'center'});
-                        
                         if (t['Foto Armada Timestamp']) {
                             pdf.setFont(undefined, 'normal');
                             pdf.setTextColor(100, 100, 100);
                             pdf.setFontSize(7);
                             pdf.text(t['Foto Armada Timestamp'], x+w/2, y+h+11, {align:'center'});
                         }
-                    } else if (fotoArmada) {
-                        pdf.setDrawColor(200, 200, 200);
-                        pdf.setLineWidth(0.5);
-                        pdf.setFillColor(245, 245, 245);
-                        pdf.rect(x, y, w, h, 'F');
-                        pdf.setFontSize(9);
-                        pdf.setTextColor(150, 150, 150);
-                        pdf.text('Foto Armada', x+w/2, y+h/2-3, {align:'center'});
-                        pdf.text('(tidak dapat dimuat)', x+w/2, y+h/2+3, {align:'center'});
                     }
                     
                     y += h + 18;
                 }
                 
-                // TANDA TANGAN
                 if (y > 190) { 
                     pdf.addPage(); 
                     addHeaderToPDF(pdf, 15);
@@ -1025,22 +1089,17 @@
                 const sw = 55, sh = 25;
                 const stampPlacement = t['Penempatan Stempel'] || 'customer';
                 
-                // PIC
                 pdf.setFont(undefined, 'normal');
                 pdf.setTextColor(0, 0, 0);
                 pdf.setFontSize(9);
                 pdf.text('PIC (Penanggung Jawab),', 20, signY);
                 
-                // Tambah stempel di PIC jika dipilih
                 if (stampPlacement === 'pic' && stempelBase64) {
                     addStempelToPDF(pdf, 15, signY-5, 65, 65);
                 }
                 
                 if (t['TTD PIC'] && t['TTD PIC'] !== '-' && t['TTD PIC'].length > 100) {
-                    try { 
-                        pdf.addImage(t['TTD PIC'], 'PNG', 20, signY+5, sw, sh); 
-                        console.log('✅ TTD PIC rendered');
-                    } catch(e) { console.log('❌ TTD PIC error:', e); }
+                    try { pdf.addImage(t['TTD PIC'], 'PNG', 20, signY+5, sw, sh); } catch(e) {}
                 }
                 pdf.setDrawColor(0, 0, 0);
                 pdf.setLineWidth(0.3);
@@ -1048,26 +1107,20 @@
                 pdf.setFont(undefined, 'bold');
                 pdf.text(t['Nama PIC'] || '-', 47, signY+41, {align:'center'});
                 
-                // Customer
                 pdf.setFont(undefined, 'normal');
                 pdf.text('Customer,', 125, signY);
                 
-                // Tambah stempel di Customer jika dipilih
                 if (stampPlacement === 'customer' && stempelBase64) {
                     addStempelToPDF(pdf, 120, signY-5, 65, 65);
                 }
                 
                 if (t['TTD Customer'] && t['TTD Customer'] !== '-' && t['TTD Customer'].length > 100) {
-                    try { 
-                        pdf.addImage(t['TTD Customer'], 'PNG', 125, signY+5, sw, sh); 
-                        console.log('✅ TTD Customer rendered');
-                    } catch(e) { console.log('❌ TTD Customer error:', e); }
+                    try { pdf.addImage(t['TTD Customer'], 'PNG', 125, signY+5, sw, sh); } catch(e) {}
                 }
                 pdf.line(125, signY+35, 180, signY+35);
                 pdf.setFont(undefined, 'bold');
                 pdf.text(t['Nama Customer'] || '-', 152, signY+41, {align:'center'});
                 
-                // FOOTER dengan nomor halaman
                 addFooterToPDF(pdf, i+1, totalPages, t['Dibuat Oleh']||'User');
             }
             
@@ -1082,6 +1135,296 @@
                 pdf.save(`${safeName}.pdf`);
             }
         }
+
+        // ============ MoU FUNCTIONS ============
+        window.toggleSignatureOption = function() {
+            const includeSig = document.getElementById('includeSignature').checked;
+            const sigOptions = document.getElementById('signatureOptions');
+            if (includeSig) {
+                sigOptions.classList.remove('hidden');
+            } else {
+                sigOptions.classList.add('hidden');
+            }
+        };
+
+        window.openMouSignatureModal = function(type) {
+            mouSignatureType = type;
+            const signerName = type === 'pihak1' ? 
+                document.getElementById('pihak1Nama').value : 
+                document.getElementById('pihak2Nama').value;
+            
+            if (!signerName) { 
+                alert('Isi nama ' + (type==='pihak1'?'Pihak Pertama':'Pihak Kedua') + ' dulu!'); 
+                return; 
+            }
+            
+            document.getElementById('mouModalSignerName').textContent = 
+                (type==='pihak1'?'Pihak Pertama: ':'Pihak Kedua: ') + signerName;
+            document.getElementById('mouSignatureModal').classList.add('active');
+            
+            setTimeout(() => {
+                const canvas = document.getElementById('mouModalSignatureCanvas');
+                const ratio = Math.max(window.devicePixelRatio||1, 1);
+                canvas.width = canvas.offsetWidth * ratio;
+                canvas.height = canvas.offsetHeight * ratio;
+                canvas.getContext('2d').scale(ratio, ratio);
+                if (mouSignaturePad) mouSignaturePad.clear();
+                mouSignaturePad = new SignaturePad(canvas, {
+                    backgroundColor: 'rgba(0,0,0,0)',
+                    penColor: 'rgb(0,0,0)',
+                    minWidth: 2,
+                    maxWidth: 4
+                });
+            }, 100);
+        };
+
+        window.closeMouSignatureModal = function() { 
+            document.getElementById('mouSignatureModal').classList.remove('active'); 
+        };
+        
+        window.clearMouModalSignature = function() { 
+            if (mouSignaturePad) mouSignaturePad.clear(); 
+        };
+        
+        window.saveMouModalSignature = function() {
+            if (!mouSignaturePad || mouSignaturePad.isEmpty()) { 
+                alert('Buat tanda tangan dulu!'); 
+                return; 
+            }
+            const data = mouSignaturePad.toDataURL();
+            if (mouSignatureType === 'pihak1') {
+                document.getElementById('ttdPihak1Data').value = data;
+                document.getElementById('statusTTDPihak1').className = 'signature-status signature-completed mt-2';
+                document.getElementById('statusTTDPihak1').innerHTML = '<i class="fas fa-check-circle"></i> Tanda tangan sudah dibuat';
+            } else {
+                document.getElementById('ttdPihak2Data').value = data;
+                document.getElementById('statusTTDPihak2').className = 'signature-status signature-completed mt-2';
+                document.getElementById('statusTTDPihak2').innerHTML = '<i class="fas fa-check-circle"></i> Tanda tangan sudah dibuat';
+            }
+            closeMouSignatureModal();
+        };
+        document.getElementById('mouSignatureModal').addEventListener('click', function(e) { 
+            if (e.target === this) closeMouSignatureModal(); 
+        });
+
+        window.generateMoUPDF = async function() {
+            if (!kopSuratBase64) { alert('Kop surat belum dimuat!'); return; }
+            
+            const includeSignature = document.getElementById('includeSignature').checked;
+            if (includeSignature) {
+                const ttd1 = document.getElementById('ttdPihak1Data').value;
+                const ttd2 = document.getElementById('ttdPihak2Data').value;
+                if (!ttd1 || !ttd2) {
+                    alert('Lengkapi tanda tangan kedua pihak!');
+                    return;
+                }
+            }
+            
+            showLoading('Membuat MoU PDF...');
+            
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.setFont("times");
+                
+                let y = 20;
+                
+                // Header Kop Surat
+                if (kopSuratBase64) {
+                    pdf.addImage(kopSuratBase64, 'PNG', 15, y, 180, 35);
+                    y += 40;
+                }
+                
+                // Judul
+                pdf.setFontSize(14);
+                pdf.setFont(undefined, 'bold');
+                pdf.setTextColor(27, 94, 32);
+                pdf.text('MEMORANDUM OF UNDERSTANDING (MoU)', 105, y, {align:'center'});
+                y += 6;
+                pdf.text('KERJA SAMA PENGUMPULAN MINYAK JELANTAH', 105, y, {align:'center'});
+                y += 10;
+                
+                // Nomor MoU
+                const nomorMou = document.getElementById('mouNomor').value || '___/MoU/RAJ/___/2026';
+                pdf.setFontSize(10);
+                pdf.setFont(undefined, 'normal');
+                pdf.setTextColor(0, 0, 0);
+                pdf.text(`Nomor: ${nomorMou}`, 105, y, {align:'center'});
+                y += 15;
+                
+                // Tanggal dan Tempat
+                const tanggal = document.getElementById('mouTanggal').value;
+                const tempat = document.getElementById('mouTempat').value || 'Kota Tangerang';
+                const formattedDate = tanggal ? formatDate(tanggal) : '__________';
+                pdf.setFontSize(10);
+                pdf.text(`Pada hari ini, __________ tanggal ${formattedDate} bulan __________ tahun 2026, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman (Memorandum of Understanding/MoU) antara:`, 15, y, {maxWidth: 180});
+                y += 20;
+                
+                // Pihak Pertama
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PIHAK PERTAMA', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                const pihak1Nama = document.getElementById('pihak1Nama').value;
+                const pihak1Jabatan = document.getElementById('pihak1Jabatan').value;
+                pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', 15, y);
+                y += 6;
+                pdf.text(`Nama: ${pihak1Nama}`, 20, y);
+                y += 6;
+                pdf.text(`Jabatan: ${pihak1Jabatan}`, 20, y);
+                y += 6;
+                pdf.text('Selanjutnya disebut PIHAK PERTAMA.', 20, y);
+                y += 12;
+                
+                // Pihak Kedua
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PIHAK KEDUA', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                const pihak2Instansi = document.getElementById('pihak2Instansi').value;
+                const pihak2Nama = document.getElementById('pihak2Nama').value;
+                const pihak2Jabatan = document.getElementById('pihak2Jabatan').value;
+                pdf.text(`${pihak2Instansi}, diwakili oleh:`, 15, y);
+                y += 6;
+                pdf.text(`Nama: ${pihak2Nama}`, 20, y);
+                y += 6;
+                pdf.text(`Jabatan: ${pihak2Jabatan}`, 20, y);
+                y += 6;
+                pdf.text('Selanjutnya disebut PIHAK KEDUA.', 20, y);
+                y += 15;
+                
+                // Pasal-pasal
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PASAL 1 - MAKSUD DAN TUJUAN', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                const tujuan = document.getElementById('mouTujuan').value;
+                const tujuanLines = pdf.splitTextToSize(tujuan, 180);
+                pdf.text(tujuanLines, 15, y);
+                y += tujuanLines.length * 5 + 8;
+                
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PASAL 2 - RUANG LINGKUP KERJA SAMA', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                const ruangLingkup = document.getElementById('mouRuangLingkup').value;
+                const ruangLines = pdf.splitTextToSize(ruangLingkup, 180);
+                pdf.text(ruangLines, 15, y);
+                y += ruangLines.length * 5 + 8;
+                
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PASAL 3 - HAK DAN KEWAJIBAN PIHAK PERTAMA', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                const hak1 = document.getElementById('mouHakKewajiban1').value;
+                const hak1Lines = pdf.splitTextToSize(hak1, 180);
+                pdf.text(hak1Lines, 15, y);
+                y += hak1Lines.length * 5 + 8;
+                
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PASAL 4 - HAK DAN KEWAJIBAN PIHAK KEDUA', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                const hak2 = document.getElementById('mouHakKewajiban2').value;
+                const hak2Lines = pdf.splitTextToSize(hak2, 180);
+                pdf.text(hak2Lines, 15, y);
+                y += hak2Lines.length * 5 + 8;
+                
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PASAL 5 - HARGA DAN PEMBAYARAN', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                const harga = document.getElementById('mouHarga').value;
+                const hargaLines = pdf.splitTextToSize(harga, 180);
+                pdf.text(hargaLines, 15, y);
+                y += hargaLines.length * 5 + 8;
+                
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PASAL 6 - JANGKA WAKTU', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                const jangkaWaktu = document.getElementById('mouJangkaWaktu').value;
+                pdf.text(`MoU berlaku selama ${jangkaWaktu} dan dapat diperpanjang berdasarkan kesepakatan kedua belah pihak.`, 15, y, {maxWidth: 180});
+                y += 12;
+                
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PASAL 7 - PENYELESAIAN PERSELISIHAN', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                pdf.text('Setiap perselisihan akan diselesaikan secara musyawarah dan mufakat.', 15, y, {maxWidth: 180});
+                y += 12;
+                
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PASAL 8 - PENUTUP', 15, y);
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                pdf.text('MoU dibuat dalam rangkap dua dan mempunyai kekuatan hukum yang sama.', 15, y, {maxWidth: 180});
+                y += 20;
+                
+                // Tanda Tangan
+                if (includeSignature) {
+                    pdf.text('Dibuat di: ' + tempat, 15, y);
+                    y += 6;
+                    pdf.text(`Tanggal: ${formattedDate}`, 15, y);
+                    y += 20;
+                    
+                    const signY = y;
+                    
+                    // Pihak Pertama
+                    pdf.setFont(undefined, 'bold');
+                    pdf.text('PIHAK PERTAMA', 30, signY, {align:'center'});
+                    y += 25;
+                    
+                    const ttd1 = document.getElementById('ttdPihak1Data').value;
+                    if (ttd1 && ttd1.length > 100) {
+                        try {
+                            pdf.addImage(ttd1, 'PNG', 15, signY + 5, 50, 25);
+                        } catch(e) {}
+                    }
+                    pdf.line(15, signY + 35, 65, signY + 35);
+                    pdf.text(pihak1Nama, 40, signY + 41, {align:'center'});
+                    
+                    // Pihak Kedua
+                    pdf.setFont(undefined, 'bold');
+                    pdf.text('PIHAK KEDUA', 155, signY, {align:'center'});
+                    
+                    const ttd2 = document.getElementById('ttdPihak2Data').value;
+                    if (ttd2 && ttd2.length > 100) {
+                        try {
+                            pdf.addImage(ttd2, 'PNG', 130, signY + 5, 50, 25);
+                        } catch(e) {}
+                    }
+                    pdf.line(130, signY + 35, 180, signY + 35);
+                    pdf.text(pihak2Nama, 155, signY + 41, {align:'center'});
+                } else {
+                    // Tanpa tanda tangan
+                    y += 10;
+                    pdf.setFont(undefined, 'italic');
+                    pdf.setTextColor(100, 100, 100);
+                    pdf.text('(Dokumen ini dibuat tanpa tanda tangan)', 105, y, {align:'center'});
+                }
+                
+                // Footer
+                pdf.setFontSize(8);
+                pdf.setFont(undefined, 'normal');
+                pdf.setTextColor(128, 128, 128);
+                pdf.setDrawColor(200, 200, 200);
+                pdf.setLineWidth(0.3);
+                pdf.line(15, 280, 195, 280);
+                pdf.text(`Dicetak oleh: ${currentUser?.displayName || currentUser?.email || 'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
+                
+                hideLoading();
+                
+                // Download
+                const nomorFile = nomorMou.replace(/\//g, '_').replace(/:/g, '-');
+                pdf.save(`MoU_${nomorFile}.pdf`);
+                
+            } catch (err) {
+                hideLoading();
+                alert('Gagal membuat PDF: ' + err.message);
+                console.error('Error:', err);
+            }
+        };
 
         function formatDate(str) {
             if (!str) return '-';
