@@ -522,7 +522,7 @@
         let currentUser = null, currentSigner = '', modalSignaturePad = null, currentSignatureType = '';
         let allTransactions = [], filteredTransactions = [];
         let allMoUData = [], filteredMoUData = [];
-        let logoBase64 = null, kopBase64 = null, stempelBase64 = null;  // ✅ DEKLARASI VARIABEL
+        let logoBase64 = null, kopBase64 = null, stempelBase64 = null;
         let fotoLokasiBase64 = null, fotoLokasiNama = '', fotoArmadaBase64 = null, fotoArmadaNama = '';
 
         // ============ LOAD IMAGES ============
@@ -549,7 +549,7 @@
                 } catch(e) { console.log('Stempel tidak ada, skip'); }
             } catch (error) { 
                 console.error('❌ Error loading images:', error);
-                kopBase64 = null; // Fallback jika gagal load
+                kopBase64 = null;
             }
         }
 
@@ -583,7 +583,7 @@
                 document.getElementById('appSection').classList.remove('hidden');
                 document.getElementById('tanggal').valueAsDate = new Date();
                 updateNoSurat();
-                loadImages(); // Load images setelah login
+                loadImages();
             } else {
                 currentUser = null;
                 document.getElementById('appSection').classList.add('hidden');
@@ -1268,16 +1268,11 @@
                 
                 let y = 20;
 
-                // HEADER KOP SURAT - dengan check jika null
+                // HEADER KOP SURAT
                 if (kopBase64) { 
-                    try { 
-                        pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); 
-                    } catch(e) { 
-                        console.log('Kop surat tidak bisa ditampilkan');
-                    }
+                    try { pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); } catch(e) {} 
                     y += 40; 
                 } else {
-                    // Fallback: Tampilkan teks jika kop surat tidak ada
                     pdf.setFontSize(16);
                     pdf.setFont(undefined, 'bold');
                     pdf.text('CV REZEKI AMANAH JAYA GROUP', 105, y, {align:'center'});
@@ -1330,9 +1325,9 @@
                 pdf.text(pembukaanLines, MARGIN_LEFT, y);
                 y += pembukaanLines.length * 5 + 10;
 
-                // PIHAK PERTAMA
+                // PIHAK PERTAMA - CENTER
                 pdf.setFont(undefined, 'bold');
-                pdf.text('PIHAK PERTAMA', MARGIN_LEFT, y);
+                pdf.text('PIHAK PERTAMA', 105, y, {align:'center'});
                 y += 6;
                 
                 pdf.setFont(undefined, 'normal');
@@ -1353,9 +1348,9 @@
                 pdf.text('Selanjutnya disebut PIHAK PERTAMA.', MARGIN_LEFT, y);
                 y += 10;
 
-                // PIHAK KEDUA
+                // PIHAK KEDUA - CENTER
                 pdf.setFont(undefined, 'bold');
-                pdf.text('PIHAK KEDUA', MARGIN_LEFT, y);
+                pdf.text('PIHAK KEDUA', 105, y, {align:'center'});
                 y += 6;
                 
                 pdf.setFont(undefined, 'normal');
@@ -1387,16 +1382,16 @@
                     ['PASAL 8', 'PENUTUP', document.getElementById('mouPasal8').value]
                 ];
 
-               pasal.forEach(([pasalNum, pasalTitle, content]) => {
-    if (y > 235) { 
-        pdf.addPage(); 
-        if(kopBase64) { try { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } catch(e) {} }
-        y = 60;  // ← UBAH KE 60 (header di 15+35=50, jadi content mulai di 60)
-    }
+                pasal.forEach(([pasalNum, pasalTitle, content]) => {
+                    if (y > 235) { 
+                        pdf.addPage(); 
+                        if(kopBase64) { try { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } catch(e) {} }
+                        y = 60;  // ✅ FIXED: Y position setelah header
+                    }
                     
                     pdf.setFont(undefined, 'bold');
                     pdf.setFontSize(10);
-                    pdf.text(`${pasalNum} - ${pasalTitle}`, MARGIN_LEFT, y);
+                    pdf.text(`${pasalNum} - ${pasalTitle}`, 105, y, {align:'center'});  // ✅ CENTER
                     y += 6;
                     
                     pdf.setFont(undefined, 'normal');
@@ -1409,7 +1404,7 @@
                 // TANDA TANGAN KOSONG UNTUK FISIK
                 if (y > 200) { 
                     pdf.addPage(); 
-                    y = 30; 
+                    y = 60; 
                 }
                 
                 y += 5;
@@ -1419,27 +1414,28 @@
                 pdf.text(`Dibuat di: ${tempat}`, MARGIN_LEFT, y);
                 y += 5;
                 pdf.text(`Tanggal: ${fmtTglLengkap}`, MARGIN_LEFT, y);
-                y += 25;
+                y += 30;
                 
                 const signY = y;
                 const leftColX = 40;
                 const rightColX = 140;
                 
+                // Nama DI ATAS garis
                 pdf.setFont(undefined, 'bold');
-                pdf.setFontSize(10);
-                pdf.text('PIHAK PERTAMA', leftColX, signY, {align:'center'});
-                pdf.text('PIHAK KEDUA', rightColX, signY, {align:'center'});
+                pdf.text(p1Nama, leftColX, signY, {align:'center'});
+                pdf.text(p2Nama, rightColX, signY, {align:'center'});
                 
-                y += 30;
-                
+                // Garis tanda tangan
                 pdf.setDrawColor(0, 0, 0);
                 pdf.setLineWidth(0.3);
-                pdf.line(leftColX - 25, signY + 35, leftColX + 25, signY + 35);
-                pdf.line(rightColX - 25, signY + 35, rightColX + 25, signY + 35);
+                pdf.line(leftColX - 25, signY + 5, leftColX + 25, signY + 5);
+                pdf.line(rightColX - 25, signY + 5, rightColX + 25, signY + 5);
                 
-                pdf.setFont(undefined, 'bold');
-                pdf.text(p1Nama, leftColX, signY + 41, {align:'center'});
-                pdf.text(p2Nama, rightColX, signY + 41, {align:'center'});
+                // Jabatan DI BAWAH garis
+                pdf.setFont(undefined, 'normal');
+                pdf.setFontSize(9);
+                pdf.text(p1Jab, leftColX, signY + 12, {align:'center'});
+                pdf.text(p2Jab, rightColX, signY + 12, {align:'center'});
 
                 // FOOTER
                 pdf.setFontSize(8);
@@ -1566,7 +1562,6 @@
             document.getElementById('mouPasal7').value = d['Penyelesaian'] || '';
             document.getElementById('mouPasal8').value = d['Penutup'] || '';
             
-            // Pindah ke tab MoU
             const tab = new bootstrap.Tab(document.querySelector('[data-bs-target="#mou"]'));
             tab.show();
             alert('Data MoU dimuat. Klik "Generate PDF & Simpan" untuk download ulang.');
