@@ -1387,12 +1387,12 @@
                     ['PASAL 8', 'PENUTUP', document.getElementById('mouPasal8').value]
                 ];
 
-                pasal.forEach(([pasalNum, pasalTitle, content]) => {
-                    if (y > 235) { 
-                        pdf.addPage(); 
-                        if(kopBase64) { try { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } catch(e) {} }
-                        y = 25; 
-                    }
+               pasal.forEach(([pasalNum, pasalTitle, content]) => {
+    if (y > 235) { 
+        pdf.addPage(); 
+        if(kopBase64) { try { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } catch(e) {} }
+        y = 60;  // ← UBAH KE 60 (header di 15+35=50, jadi content mulai di 60)
+    }
                     
                     pdf.setFont(undefined, 'bold');
                     pdf.setFontSize(10);
