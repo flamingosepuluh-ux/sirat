@@ -3,1479 +3,599 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1b5e20">
-    <title>SIRAT - CV REZEKI AMANAH JAYA Group</title>
+    <title>SIRAT - CV REZEKI AMANAH JAYA</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
     <style>
-        :root { --primary-green: #1b5e20; --secondary-green: #2e7d32; --light-green: #4caf50; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
-        .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); padding: 30px 25px; max-width: 400px; width: 100%; text-align: center; }
-        .logo-container img { max-width: 150px; height: auto; margin-bottom: 15px; }
-        .company-name { color: var(--primary-green); font-size: 20px; font-weight: 700; margin-bottom: 5px; }
-        .company-tagline { color: var(--secondary-green); font-size: 12px; font-weight: 500; margin-bottom: 20px; }
-        .form-control, .form-select { border-radius: 12px; padding: 14px 16px; border: 2px solid #e0e0e0; font-size: 16px; margin-bottom: 15px; }
-        .form-control:focus, .form-select:focus { border-color: var(--light-green); box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25); }
-        .btn-login { background: linear-gradient(135deg, var(--primary-green), var(--secondary-green)); border: none; border-radius: 12px; padding: 14px; font-weight: 600; color: white; width: 100%; cursor: pointer; font-size: 16px; }
-        .btn-register { background: #6c757d; border: none; border-radius: 12px; padding: 14px; font-weight: 600; color: white; width: 100%; margin-top: 10px; cursor: pointer; }
-        .auth-toggle { margin-top: 20px; color: var(--primary-green); cursor: pointer; font-weight: 600; font-size: 14px; }
-        .user-info { background: rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 20px; margin-right: 8px; font-size: 13px; }
-        .app-header { background: linear-gradient(135deg, var(--primary-green), var(--secondary-green)); color: white; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-        .header-logo { max-height: 50px; margin-right: 12px; }
-        .header-title { font-size: 18px; font-weight: 700; }
-        .header-subtitle { font-size: 11px; opacity: 0.9; }
-        .main-container { padding: 20px 15px; max-width: 1200px; margin: 0 auto; padding-bottom: 80px; }
-        .card-custom { background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: none; margin-bottom: 20px; overflow: hidden; }
-        .card-header-custom { background: linear-gradient(135deg, var(--primary-green), var(--secondary-green)); color: white; padding: 16px 20px; font-weight: 600; font-size: 16px; }
-        .nav-tabs-custom { border-bottom: 3px solid var(--light-green); margin-bottom: 20px; display: flex; gap: 8px; }
-        .nav-tabs-custom .nav-link { color: var(--primary-green); font-weight: 600; padding: 12px 20px; border: none; border-radius: 10px 10px 0 0; cursor: pointer; font-size: 14px; flex: 1; text-align: center; }
-        .nav-tabs-custom .nav-link.active { background: var(--light-green); color: white; }
-        .btn-signature { background: var(--light-green); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-weight: 600; margin-top: 10px; cursor: pointer; font-size: 15px; min-height: 48px; }
-        .signature-status { padding: 12px; border-radius: 10px; margin-top: 10px; font-size: 14px; }
-        .signature-completed { background: #e8f5e9; color: var(--primary-green); border: 2px solid var(--light-green); }
-        .signature-pending { background: #fff3e0; color: #e65100; border: 2px solid #ffb74d; }
-        .btn-submit { background: linear-gradient(135deg, var(--primary-green), var(--secondary-green)); border: none; border-radius: 12px; padding: 16px; font-weight: 600; font-size: 16px; width: 100%; color: white; cursor: pointer; min-height: 52px; }
-        .signature-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; }
+        :root { --primary: #1b5e20; --secondary: #2e7d32; --light: #4caf50; }
+        body { background: #f5f7fa; font-family: 'Segoe UI', sans-serif; }
+        .app-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 15px; position: sticky; top: 0; z-index: 100; }
+        .card-custom { border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; margin-bottom: 20px; }
+        .card-header-custom { background: var(--primary); color: white; padding: 12px 20px; border-radius: 12px 12px 0 0; font-weight: 600; }
+        .nav-tabs-custom { border-bottom: 3px solid var(--light); margin-bottom: 20px; }
+        .nav-tabs-custom .nav-link { color: var(--primary); font-weight: 600; border: none; }
+        .nav-tabs-custom .nav-link.active { background: var(--light); color: white; border-radius: 8px 8px 0 0; }
+        .btn-primary-custom { background: var(--primary); border: none; }
+        .btn-primary-custom:hover { background: var(--secondary); }
+        .signature-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; }
         .signature-modal.active { display: flex; }
-        .signature-modal-content { background: white; border-radius: 20px; padding: 25px; width: 95%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; }
-        .signature-modal-title { color: var(--primary-green); font-size: 20px; font-weight: 700; text-align: center; margin-bottom: 5px; }
-        .signature-canvas-container { border: 3px dashed var(--light-green); border-radius: 15px; background: #f9f9f9; margin: 20px 0; touch-action: none; }
-        .signature-canvas-container canvas { width: 100%; height: 300px; display: block; border-radius: 12px; touch-action: none; background-color: white; }
-        .signature-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-        .btn-save-signature, .btn-clear-signature { color: white; border: none; padding: 14px 28px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 15px; min-height: 48px; }
-        .btn-save-signature { background: var(--light-green); }
-        .btn-clear-signature { background: #f44336; }
-        .btn-close-modal { position: absolute; top: 15px; right: 15px; background: #f44336; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; cursor: pointer; }
-        .table-custom { background: white; border-radius: 12px; overflow: hidden; font-size: 14px; }
-        .table-custom thead { background: var(--primary-green); color: white; }
-        .table-custom th { font-weight: 600; padding: 12px 8px; font-size: 13px; }
-        .table-custom td { padding: 10px 8px; vertical-align: middle; font-size: 13px; }
-        .btn-action { color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 12px; min-height: 36px; margin: 2px; }
-        .btn-view-pdf { background: #ff9800; }
-        .btn-download-pdf { background: #2196f3; }
-        .stamp-option { background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #dee2e6; margin-top: 15px; }
-        .stamp-option label { font-weight: 600; color: var(--primary-green); font-size: 14px; }
-        .foto-upload-box { border: 2px dashed var(--light-green); border-radius: 12px; padding: 20px; text-align: center; background: #f9f9f9; margin-top: 15px; }
-        .foto-preview { max-width: 100%; border-radius: 8px; margin-top: 10px; max-height: 200px; object-fit: contain; }
+        .signature-canvas { border: 2px dashed var(--light); background: white; border-radius: 10px; touch-action: none; }
         .hidden { display: none !important; }
-        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 99999; }
-        .alert-custom { position: fixed; top: 20px; right: 20px; z-index: 10000; min-width: 280px; animation: slideIn 0.3s; border-radius: 12px; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; justify-content: center; align-items: center; color: white; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
-        .bottom-nav-item { flex: 1; text-align: center; padding: 8px; cursor: pointer; border-radius: 10px; }
-        .bottom-nav-item.active { background: var(--light-green); color: white; }
-        .bottom-nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
-        .bottom-nav-item span { font-size: 11px; font-weight: 600; }
-        .btn-light { cursor: pointer; }
-        .kop-surat { background: #e8f5e9; padding: 20px; border-radius: 12px; border-left: 5px solid var(--primary-green); margin-bottom: 20px; }
-        .kop-surat h5 { color: var(--primary-green); margin: 0; font-size: 16px; }
-        .kop-surat p { margin: 5px 0 0 0; color: #666; font-size: 13px; }
-        .no-surat-display { background: #e8f5e9; padding: 15px; border-radius: 12px; border: 2px solid var(--light-green); margin-bottom: 15px; }
-        .no-surat-display strong { color: var(--primary-green); font-size: 18px; }
-        .section-title { color: var(--primary-green); font-weight: 700; margin: 20px 0 10px 0; font-size: 16px; border-bottom: 2px solid var(--light-green); padding-bottom: 5px; }
-        .search-container { background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-        .search-input { border-radius: 10px; border: 2px solid #e0e0e0; padding: 10px 15px; }
-        .result-info { color: #666; font-size: 13px; margin-bottom: 10px; }
-        .mou-section { background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
-        .mou-section h6 { color: var(--primary-green); font-weight: 700; margin-bottom: 15px; }
-        @media (max-width: 768px) { .header-title { font-size: 16px; } .user-info { display: none; } .table-custom { font-size: 12px; } }
+        .bottom-nav-item { text-align: center; padding: 5px; cursor: pointer; font-size: 12px; }
+        .bottom-nav-item i { font-size: 20px; display: block; margin-bottom: 2px; }
+        .bottom-nav-item.active { color: var(--primary); font-weight: bold; }
         @media (min-width: 769px) { .bottom-nav { display: none; } }
+        .table-custom th { background: var(--primary); color: white; }
+        .mou-section { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
-    <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="text-white text-center">
-            <i class="fas fa-spinner fa-spin fa-3x"></i>
-            <p class="mt-2" id="loadingText">Memuat...</p>
+<div id="loadingOverlay" class="loading-overlay hidden"><div><i class="fas fa-spinner fa-spin fa-2x"></i><p class="mt-2" id="loadingText">Memuat...</p></div></div>
+
+<!-- LOGIN -->
+<div id="loginSection" class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
+        <h4 class="text-center text-success mb-4">SIRAT Login</h4>
+        <input type="email" id="loginEmail" class="form-control mb-3" placeholder="Email">
+        <input type="password" id="loginPassword" class="form-control mb-3" placeholder="Password">
+        <button onclick="loginUser()" class="btn btn-primary-custom w-100 text-white">Masuk</button>
+    </div>
+</div>
+
+<!-- APP -->
+<div id="appSection" class="hidden">
+    <div class="app-header">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div><h5 class="mb-0">SIRAT - CV REZEKI AMANAH JAYA</h5><small>Sistem Informasi Terpadu</small></div>
+            <div><span class="me-3" id="userName">User</span><button onclick="logoutUser()" class="btn btn-sm btn-light"><i class="fas fa-sign-out-alt"></i></button></div>
         </div>
     </div>
 
-    <div id="loginSection" class="login-container">
-        <div class="login-card">
-            <div class="logo-container">
-                <img src="logo-raj.png" alt="Logo">
-                <div class="company-name">CV REZEKI AMANAH JAYA GROUP</div>
-                <div class="company-tagline">SUPPLIER & WASTE SOLUTION PARTNER</div>
-            </div>
-            <div id="loginForm">
-                <input type="email" id="loginEmail" class="form-control" placeholder="Email">
-                <input type="password" id="loginPassword" class="form-control" placeholder="Password">
-                <button onclick="loginUser()" class="btn btn-login">Masuk</button>
-                <div class="auth-toggle" onclick="toggleAuthMode()">Belum punya akun? Daftar di sini</div>
-            </div>
-            <div id="registerForm" class="hidden">
-                <input type="text" id="registerName" class="form-control" placeholder="Nama Lengkap">
-                <input type="email" id="registerEmail" class="form-control" placeholder="Email">
-                <input type="password" id="registerPassword" class="form-control" placeholder="Password">
-                <input type="password" id="registerPasswordConfirm" class="form-control" placeholder="Konfirmasi Password">
-                <button onclick="registerUser()" class="btn btn-register">Daftar Akun</button>
-                <div class="auth-toggle" onclick="toggleAuthMode()">Sudah punya akun? Login di sini</div>
-            </div>
-        </div>
-    </div>
+    <div class="container mt-4 mb-5 pb-5">
+        <ul class="nav nav-tabs nav-tabs-custom" id="mainTab">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabSJ"><i class="fas fa-truck"></i> Surat Jalan</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabMou"><i class="fas fa-file-contract"></i> Buat MoU</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabDataSJ"><i class="fas fa-database"></i> Data SJ</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabDataMou"><i class="fas fa-list"></i> Data MoU</button></li>
+        </ul>
 
-    <div id="appSection" class="hidden">
-        <div class="app-header">
-            <div class="container">
-                <div class="d-flex align-items-center">
-                    <img src="logo-raj.png" alt="RAJ" class="header-logo">
-                    <div>
-                        <div class="header-title">SIRAT - CV REZEKI AMANAH JAYA GROUP</div>
-                        <div class="header-subtitle">Sistem Informasi RAJ Terpadu</div>
-                    </div>
-                    <div class="ms-auto d-flex align-items-center">
-                        <span class="user-info"><i class="fas fa-user"></i> <span id="userName">User</span></span>
-                        <button onclick="logoutUser()" class="btn btn-light btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+        <div class="tab-content">
+            <!-- TAB 1: INPUT SURAT JALAN -->
+            <div class="tab-pane fade show active" id="tabSJ">
+                <div class="card card-custom">
+                    <div class="card-header-custom">Form Surat Jalan</div>
+                    <div class="card-body p-4">
+                        <form id="formSJ">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Kode</label>
+                                    <select class="form-select" id="sjKode" required><option value="P">P - Pickup (SJP)</option><option value="D">D - Delivery (SJD)</option></select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Tanggal</label>
+                                    <input type="date" class="form-control" id="sjTanggal" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Lokasi Customer</label>
+                                <input type="text" class="form-control" id="sjLokasi" required>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-8">
+                                    <label class="form-label fw-bold">Jenis Waste</label>
+                                    <input type="text" class="form-control" id="sjWaste" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Jumlah (KG)</label>
+                                    <input type="number" class="form-control" id="sjJumlah" step="0.1" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Keterangan</label>
+                                <textarea class="form-control" id="sjKeterangan" rows="2"></textarea>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Nama PIC</label>
+                                    <input type="text" class="form-control" id="sjPIC" required>
+                                    <button type="button" class="btn btn-sm btn-outline-success mt-2" onclick="openSignModal('sjPIC')">Tanda Tangan PIC</button>
+                                    <input type="hidden" id="sjTTDPIC">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Nama Customer</label>
+                                    <input type="text" class="form-control" id="sjCustomer" required>
+                                    <button type="button" class="btn btn-sm btn-outline-success mt-2" onclick="openSignModal('sjCust')">Tanda Tangan Customer</button>
+                                    <input type="hidden" id="sjTTDCust">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary-custom w-100 text-white py-2">Simpan Surat Jalan</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="main-container">
-            <ul class="nav nav-tabs nav-tabs-custom">
-                <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form">Input Data</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#mou">Buat MoU</button></li>
-                <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#data">Data Transaksi</button></li>
-            </ul>
-
-            <div class="tab-content">
-                <!-- FORM INPUT DATA -->
-                <div class="tab-pane fade show active" id="form">
-                    <div class="card-custom">
-                        <div class="card-header-custom">Form Surat Jalan</div>
-                        <div class="card-body p-4">
-                            <form id="siratForm">
-                                <div class="kop-surat">
-                                    <h5>CV REZEKI AMANAH JAYA GROUP</h5>
-                                    <p>SUPPLIER & WASTE SOLUTION PARTNER</p>
-                                    <p>Cluster Puri Flamingo FLA 06/19 Sukamantri Pasarkemis Kab Tangerang</p>
-                                    <p>HP. 081296580968</p>
-                                </div>
-
-                                <div class="no-surat-display">
-                                    <small class="text-muted">No. Surat Jalan (Otomatis)</small>
-                                    <div><strong id="noSuratDisplay">SJP/---/RAJ/-/----</strong></div>
-                                </div>
-
-                                <div class="section-title">Informasi Transaksi</div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6 mb-2">
-                                        <label class="form-label fw-bold">Kode Transaksi</label>
-                                        <select class="form-select" id="kode" required onchange="updateNoSurat()">
-                                            <option value="P">P - Pickup (SJP)</option>
-                                            <option value="D">D - Delivery (SJD)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold" id="lokasiLabel">Lokasi Pengambilan</label>
-                                        <input type="text" class="form-control" id="lokasiCustomer" required>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold">Tanggal</label>
-                                        <input type="date" class="form-control" id="tanggal" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-bold">Jenis Transaksi</label>
-                                        <select class="form-select" id="jenisTransaksi" required>
-                                            <option value="Pengambilan Waste">Pengambilan Waste</option>
-                                            <option value="Pengiriman Waste">Pengiriman Waste</option>
-                                            <option value="Pengolahan Waste">Pengolahan Waste</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="section-title">Detail Waste</div>
-                                <div class="row mb-3">
-                                    <div class="col-md-8 mb-2">
-                                        <label class="form-label fw-bold">Jenis Waste</label>
-                                        <input type="text" class="form-control" id="jenisWaste" required>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-bold">Jumlah (KG)</label>
-                                        <input type="number" class="form-control" id="jumlah" step="0.1" required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Keterangan</label>
-                                    <textarea class="form-control" id="keterangan" rows="3"></textarea>
-                                </div>
-
-                                <div class="section-title">Dokumentasi Foto</div>
+            <!-- TAB 2: BUAT MoU -->
+            <div class="tab-pane fade" id="tabMou">
+                <div class="card card-custom">
+                    <div class="card-header-custom">Pembuatan MoU</div>
+                    <div class="card-body p-4">
+                        <form id="formMou">
+                            <div class="mou-section">
+                                <h6 class="fw-bold text-success">Informasi MoU</h6>
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="foto-upload-box">
-                                            <label class="fw-bold"><i class="fas fa-map-marker-alt"></i> Foto Lokasi</label>
-                                            <input type="file" class="form-control" id="fotoLokasi" accept="image/*" capture="environment" onchange="handleFotoUpload(event, 'lokasi')">
-                                            <img id="fotoLokasiPreview" class="foto-preview hidden">
-                                            <div id="fotoLokasiTimestamp" class="text-muted mt-2 small"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="foto-upload-box">
-                                            <label class="fw-bold"><i class="fas fa-truck"></i> Foto Armada</label>
-                                            <input type="file" class="form-control" id="fotoArmada" accept="image/*" capture="environment" onchange="handleFotoUpload(event, 'armada')">
-                                            <img id="fotoArmadaPreview" class="foto-preview hidden">
-                                            <div id="fotoArmadaTimestamp" class="text-muted mt-2 small"></div>
-                                        </div>
-                                    </div>
+                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Nomor MoU</label><input type="text" class="form-control" id="mouNomor" placeholder="___/MoU/RAJ/___/2026"></div>
+                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Tanggal</label><input type="date" class="form-control" id="mouTanggal"></div>
+                                    <div class="col-md-12 mb-2"><label class="form-label fw-bold">Tempat</label><input type="text" class="form-control" id="mouTempat" value="Kota Tangerang"></div>
                                 </div>
-
-                                <div class="section-title">Tanda Tangan</div>
+                            </div>
+                            <div class="mou-section">
+                                <h6 class="fw-bold text-success">Pihak Pertama (CV Rezeki Amanah Jaya)</h6>
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label fw-bold">Nama PIC</label>
-                                        <input type="text" class="form-control" id="namaPIC" required>
-                                        <div id="statusPIC" class="signature-status signature-pending mt-2">Belum ada tanda tangan</div>
-                                        <button type="button" class="btn-signature mt-2" onclick="openSignatureModal('pic')">Buat Tanda Tangan PIC</button>
-                                        <input type="hidden" id="ttdPICData">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label fw-bold">Nama Customer</label>
-                                        <input type="text" class="form-control" id="namaCustomer" required>
-                                        <div id="statusCustomer" class="signature-status signature-pending mt-2">Belum ada tanda tangan</div>
-                                        <button type="button" class="btn-signature mt-2" onclick="openSignatureModal('customer')">Buat Tanda Tangan Customer</button>
-                                        <input type="hidden" id="ttdCustomerData">
+                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Nama</label><input type="text" class="form-control" id="mouP1Nama" value="Sidik Dwi Kuncahyo"></div>
+                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Jabatan</label><input type="text" class="form-control" id="mouP1Jabatan" value="Direktur"></div>
+                                </div>
+                            </div>
+                            <div class="mou-section">
+                                <h6 class="fw-bold text-success">Pihak Kedua</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Instansi</label><input type="text" class="form-control" id="mouP2Instansi" placeholder="Nama Instansi"></div>
+                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Nama Perwakilan</label><input type="text" class="form-control" id="mouP2Nama"></div>
+                                    <div class="col-md-12 mb-2"><label class="form-label fw-bold">Jabatan</label><input type="text" class="form-control" id="mouP2Jabatan"></div>
+                                </div>
+                            </div>
+                            <div class="mou-section">
+                                <h6 class="fw-bold text-success">Isi MoU</h6>
+                                <div class="mb-2"><label class="form-label fw-bold">Maksud & Tujuan</label><textarea class="form-control" id="mouTujuan" rows="2">Kerja sama pengumpulan dan pengelolaan minyak jelantah.</textarea></div>
+                                <div class="mb-2"><label class="form-label fw-bold">Ruang Lingkup</label><textarea class="form-control" id="mouRuang" rows="3">1. Penyerahan minyak jelantah&#10;2. Pengambilan berkala&#10;3. Pengelolaan ke industri biodiesel</textarea></div>
+                                <div class="mb-2"><label class="form-label fw-bold">Jangka Waktu</label><input type="text" class="form-control" id="mouJangka" value="1 (satu) tahun"></div>
+                            </div>
+                            <div class="mou-section">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="mouIncludeTTD" checked>
+                                    <label class="form-check-label fw-bold" for="mouIncludeTTD">Sertakan Tanda Tangan</label>
+                                </div>
+                                <div id="mouTTDSection">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">TTD Pihak 1</label>
+                                            <button type="button" class="btn btn-sm btn-outline-success" onclick="openSignModal('mouP1')">Buat TTD Pihak 1</button>
+                                            <input type="hidden" id="mouTTDP1">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">TTD Pihak 2</label>
+                                            <button type="button" class="btn btn-sm btn-outline-success" onclick="openSignModal('mouP2')">Buat TTD Pihak 2</button>
+                                            <input type="hidden" id="mouTTDP2">
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="button" onclick="generateMoUPDF()" class="btn btn-primary-custom text-white flex-grow-1"><i class="fas fa-file-pdf"></i> Generate & Simpan PDF</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-                                <div class="stamp-option">
-                                    <label class="fw-bold mb-2">Penempatan Stempel:</label>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="stampPlacement" id="stampPIC" value="pic">
-                                        <label class="form-check-label">Di PIC</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="stampPlacement" id="stampCustomer" value="customer" checked>
-                                        <label class="form-check-label">Di Customer</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="stampPlacement" id="stampNone" value="none">
-                                        <label class="form-check-label">Tanpa Stempel</label>
-                                    </div>
-                                </div>
-
-                                <button type="submit" class="btn btn-submit mt-4" id="btnSubmit">Simpan</button>
-                            </form>
+            <!-- TAB 3: DATA SURAT JALAN -->
+            <div class="tab-pane fade" id="tabDataSJ">
+                <div class="card card-custom">
+                    <div class="card-header-custom d-flex justify-content-between">
+                        <span>Data Surat Jalan</span>
+                        <button onclick="loadSJData()" class="btn btn-sm btn-light"><i class="fas fa-sync"></i> Refresh</button>
+                    </div>
+                    <div class="card-body">
+                        <input type="text" id="searchSJ" class="form-control mb-3" placeholder="Cari No. Surat, PIC, Customer..." oninput="renderSJTable()">
+                        <div class="table-responsive">
+                            <table class="table table-custom table-hover">
+                                <thead><tr><th>No. Surat</th><th>Tanggal</th><th>Waste</th><th>KG</th><th>PIC</th><th>Customer</th><th>Aksi</th></tr></thead>
+                                <tbody id="tbodySJ"><tr><td colspan="7" class="text-center">Memuat...</td></tr></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- FORM BUAT MoU -->
-                <div class="tab-pane fade" id="mou">
-                    <div class="card-custom">
-                        <div class="card-header-custom">Pembuatan MoU (Memorandum of Understanding)</div>
-                        <div class="card-body p-4">
-                            <form id="mouForm">
-                                <div class="mou-section">
-                                    <h6><i class="fas fa-file-contract"></i> Informasi MoU</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Nomor MoU</label>
-                                            <input type="text" class="form-control" id="mouNomor" placeholder="___/MoU/RAJ/___/2026">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Tanggal Penandatanganan</label>
-                                            <input type="date" class="form-control" id="mouTanggal">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-12">
-                                            <label class="form-label fw-bold">Tempat Penandatanganan</label>
-                                            <input type="text" class="form-control" id="mouTempat" value="Kota Tangerang" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mou-section">
-                                    <h6><i class="fas fa-users"></i> Pihak Pertama (CV Rezeki Amanah Jaya)</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Nama Lengkap</label>
-                                            <input type="text" class="form-control" id="pihak1Nama" value="Sidik Dwi Kuncahyo" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Jabatan</label>
-                                            <input type="text" class="form-control" id="pihak1Jabatan" value="Direktur CV Rezeki Amanah Jaya" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mou-section">
-                                    <h6><i class="fas fa-building"></i> Pihak Kedua</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Nama Instansi/Perusahaan</label>
-                                            <input type="text" class="form-control" id="pihak2Instansi" placeholder="Contoh: ZChicken Baznas Kota Tangerang" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Nama Perwakilan</label>
-                                            <input type="text" class="form-control" id="pihak2Nama" placeholder="Nama lengkap perwakilan" required>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Jabatan Perwakilan</label>
-                                            <input type="text" class="form-control" id="pihak2Jabatan" placeholder="Jabatan perwakilan" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mou-section">
-                                    <h6><i class="fas fa-tasks"></i> Isi MoU</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Maksud dan Tujuan</label>
-                                        <textarea class="form-control" id="mouTujuan" rows="3" placeholder="Contoh: Kerja sama pengumpulan dan pengelolaan minyak jelantah...">Kerja sama pengumpulan dan pengelolaan minyak jelantah dari operasional Pihak Kedua kepada Pihak Pertama guna mendukung pengelolaan limbah yang ramah lingkungan dan bernilai ekonomi.</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Ruang Lingkup Kerja Sama</label>
-                                        <textarea class="form-control" id="mouRuangLingkup" rows="4" placeholder="Poin-poin ruang lingkup (pisahkan dengan enter)">1. Penyerahan minyak jelantah dari Pihak Kedua kepada Pihak Pertama
-2. Pengambilan minyak jelantah secara berkala
-3. Pengelolaan dan penyaluran minyak jelantah ke industri pengolahan/biodiesel yang sesuai ketentuan
-4. Berlaku untuk seluruh lokasi yang disepakati</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Hak dan Kewajiban Pihak Pertama</label>
-                                        <textarea class="form-control" id="mouHakKewajiban1" rows="3">Menyediakan sarana penampungan bila diperlukan, melakukan penimbangan transparan, memberikan bukti serah terima, dan memberikan kompensasi sesuai kesepakatan.</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Hak dan Kewajiban Pihak Kedua</label>
-                                        <textarea class="form-control" id="mouHakKewajiban2" rows="3">Mengumpulkan minyak jelantah dengan baik, tidak mencampur dengan limbah lain, dan memberikan akses pengambilan kepada Pihak Pertama.</textarea>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Harga dan Pembayaran</label>
-                                            <textarea class="form-control" id="mouHarga" rows="2">Harga pembelian mengikuti kesepakatan dan kondisi pasar. Pembayaran dilakukan sesuai mekanisme yang disepakati kedua belah pihak.</textarea>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label fw-bold">Jangka Waktu</label>
-                                            <input type="text" class="form-control" id="mouJangkaWaktu" value="1 (satu) tahun sejak ditandatangani">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mou-section">
-                                    <h6><i class="fas fa-signature"></i> Tanda Tangan</h6>
-                                    <div class="mb-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="includeSignature" checked onchange="toggleSignatureOption()">
-                                            <label class="form-check-label" for="includeSignature">
-                                                Sertakan Tanda Tangan di MoU
-                                            </label>
-                                        </div>
-                                    </div>
-                                    
-                                    <div id="signatureOptions">
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label fw-bold">Tanda Tangan Pihak Pertama</label>
-                                                <div id="statusTTDPihak1" class="signature-status signature-pending mt-2">Belum ada tanda tangan</div>
-                                                <button type="button" class="btn-signature mt-2" onclick="openMouSignatureModal('pihak1')">Buat Tanda Tangan Pihak 1</button>
-                                                <input type="hidden" id="ttdPihak1Data">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label fw-bold">Tanda Tangan Pihak Kedua</label>
-                                                <div id="statusTTDPihak2" class="signature-status signature-pending mt-2">Belum ada tanda tangan</div>
-                                                <button type="button" class="btn-signature mt-2" onclick="openMouSignatureModal('pihak2')">Buat Tanda Tangan Pihak 2</button>
-                                                <input type="hidden" id="ttdPihak2Data">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-4">
-                                    <button type="button" class="btn btn-submit me-2" onclick="generateMoUPDF()">
-                                        <i class="fas fa-file-pdf"></i> Generate PDF
-                                    </button>
-                                    <button type="reset" class="btn btn-outline-secondary">
-                                        <i class="fas fa-redo"></i> Reset Form
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+            <!-- TAB 4: DATA MoU -->
+            <div class="tab-pane fade" id="tabDataMou">
+                <div class="card card-custom">
+                    <div class="card-header-custom d-flex justify-content-between">
+                        <span>Data MoU</span>
+                        <button onclick="loadMoUData()" class="btn btn-sm btn-light"><i class="fas fa-sync"></i> Refresh</button>
                     </div>
-                </div>
-
-                <!-- DATA TABLE -->
-                <div class="tab-pane fade" id="data">
-                    <div class="card-custom">
-                        <div class="card-header-custom d-flex justify-content-between flex-wrap gap-2">
-                            <span>Riwayat Transaksi</span>
-                            <div>
-                                <button onclick="loadData()" class="btn btn-light btn-sm me-2"><i class="fas fa-sync"></i> Refresh</button>
-                                <button onclick="viewAllPDF()" class="btn btn-light btn-sm me-2"><i class="fas fa-eye"></i> Lihat PDF</button>
-                                <button onclick="downloadAllPDF()" class="btn btn-light btn-sm"><i class="fas fa-download"></i> Download</button>
-                            </div>
-                        </div>
-                        <div class="card-body p-3">
-                            <div class="search-container">
-                                <div class="row g-2">
-                                    <div class="col-md-5">
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-search"></i></span>
-                                            <input type="text" class="form-control search-input" id="searchInput" placeholder="Cari..." oninput="filterData()">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select search-input" id="filterKode" onchange="filterData()">
-                                            <option value="">Semua Kode</option>
-                                            <option value="P">P - Pickup</option>
-                                            <option value="D">D - Delivery</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <select class="form-select search-input" id="filterBulan" onchange="filterData()">
-                                            <option value="">Semua Bulan</option>
-                                            <option value="1">Januari</option><option value="2">Februari</option>
-                                            <option value="3">Maret</option><option value="4">April</option>
-                                            <option value="5">Mei</option><option value="6">Juni</option>
-                                            <option value="7">Juli</option><option value="8">Agustus</option>
-                                            <option value="9">September</option><option value="10">Oktober</option>
-                                            <option value="11">November</option><option value="12">Desember</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button onclick="resetFilter()" class="btn btn-outline-secondary w-100">Reset</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="result-info" id="resultInfo"></div>
-                            <div class="table-responsive">
-                                <table class="table table-custom">
-                                    <thead>
-                                        <tr>
-                                            <th>No. Surat</th><th>Tanggal</th><th>Kode</th>
-                                            <th>Lokasi</th><th>Waste</th><th>KG</th>
-                                            <th>PIC</th><th>Customer</th><th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tableBody"><tr><td colspan="9" class="text-center">Memuat...</td></tr></tbody>
-                                </table>
-                            </div>
+                    <div class="card-body">
+                        <input type="text" id="searchMou" class="form-control mb-3" placeholder="Cari Nomor MoU, Instansi..." oninput="renderMoUTable()">
+                        <div class="table-responsive">
+                            <table class="table table-custom table-hover">
+                                <thead><tr><th>Nomor MoU</th><th>Tanggal</th><th>Pihak 1</th><th>Pihak 2 (Instansi)</th><th>Aksi</th></tr></thead>
+                                <tbody id="tbodyMou"><tr><td colspan="5" class="text-center">Memuat...</td></tr></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="bottom-nav d-md-none">
-            <div class="bottom-nav-item active" onclick="switchTab('form')"><i class="fas fa-file-alt"></i><span>Input</span></div>
-            <div class="bottom-nav-item" onclick="switchTab('mou')"><i class="fas fa-file-contract"></i><span>MoU</span></div>
-            <div class="bottom-nav-item" onclick="switchTab('data')"><i class="fas fa-database"></i><span>Data</span></div>
-        </div>
     </div>
 
-    <!-- Signature Modal -->
-    <div id="signatureModal" class="signature-modal">
-        <div class="signature-modal-content">
-            <button class="btn-close-modal" onclick="closeSignatureModal()"><i class="fas fa-times"></i></button>
-            <h5 class="text-center mb-3">Tanda Tangan Digital</h5>
-            <div class="text-muted text-center mb-3" id="modalSignerName">PIC / Customer</div>
-            <div class="signature-canvas-container"><canvas id="modalSignatureCanvas"></canvas></div>
-            <div class="signature-buttons">
-                <button class="btn-clear-signature" onclick="clearModalSignature()">Hapus</button>
-                <button class="btn-save-signature" onclick="saveModalSignature()">Simpan</button>
-            </div>
+    <!-- Bottom Nav Mobile -->
+    <div class="bottom-nav d-md-none">
+        <div class="bottom-nav-item active" onclick="switchTab('tabSJ')"><i class="fas fa-truck"></i>SJ</div>
+        <div class="bottom-nav-item" onclick="switchTab('tabMou')"><i class="fas fa-file-contract"></i>MoU</div>
+        <div class="bottom-nav-item" onclick="switchTab('tabDataSJ')"><i class="fas fa-database"></i>Data SJ</div>
+        <div class="bottom-nav-item" onclick="switchTab('tabDataMou')"><i class="fas fa-list"></i>Data MoU</div>
+    </div>
+</div>
+
+<!-- SIGNATURE MODAL -->
+<div id="signModal" class="signature-modal">
+    <div class="card p-3" style="width: 90%; max-width: 500px;">
+        <h5 class="text-center mb-3">Tanda Tangan Digital</h5>
+        <canvas id="signCanvas" class="signature-canvas" width="460" height="200"></canvas>
+        <div class="d-flex justify-content-between mt-3">
+            <button onclick="clearSign()" class="btn btn-danger">Hapus</button>
+            <button onclick="saveSign()" class="btn btn-success">Simpan</button>
+            <button onclick="closeSignModal()" class="btn btn-secondary">Batal</button>
         </div>
     </div>
+</div>
 
-    <!-- MoU Signature Modal -->
-    <div id="mouSignatureModal" class="signature-modal">
-        <div class="signature-modal-content">
-            <button class="btn-close-modal" onclick="closeMouSignatureModal()"><i class="fas fa-times"></i></button>
-            <h5 class="text-center mb-3">Tanda Tangan MoU</h5>
-            <div class="text-muted text-center mb-3" id="mouModalSignerName">Pihak 1 / Pihak 2</div>
-            <div class="signature-canvas-container"><canvas id="mouModalSignatureCanvas"></canvas></div>
-            <div class="signature-buttons">
-                <button class="btn-clear-signature" onclick="clearMouModalSignature()">Hapus</button>
-                <button class="btn-save-signature" onclick="saveMouModalSignature()">Simpan</button>
-            </div>
-        </div>
-    </div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKrGnwNqngv5vYbrjbLPgjkuunONfin1U2fqSP3Dm4IXqf7_JdXd_4TxLx1XR7x3i2Uw/exec';
+    const firebaseConfig = { apiKey: "AIzaSyBOAUrCY6YZAzO80vUdt1ZLEZHJO2G55Cw", authDomain: "sirat-eb39e.firebaseapp.com", projectId: "sirat-eb39e", storageBucket: "sirat-eb39e.appspot.com", messagingSenderId: "533739459364", appId: "1:533739459364:web:dd76673f2d9e8cefc919b1" };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    let currentUser = null;
+    let sjData = [], mouData = [];
+    let signPad = null, currentSignTarget = '';
+    let kopBase64 = null, stempelBase64 = null;
 
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKrGnwNqngv5vYbrjbLPgjkuunONfin1U2fqSP3Dm4IXqf7_JdXd_4TxLx1XR7x3i2Uw/exec';
+    // Load Images
+    async function loadAssets() {
+        try {
+            const kopResp = await fetch('kop-surat.png');
+            kopBase64 = await (await kopResp.blob()).arrayBuffer();
+            const stampResp = await fetch('stempel-raj.png');
+            stempelBase64 = await (await stampResp.blob()).arrayBuffer();
+            console.log('Assets loaded');
+        } catch(e) { console.error('Asset load error:', e); }
+    }
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBOAUrCY6YZAzO80vUdt1ZLEZHJO2G55Cw",
-            authDomain: "sirat-eb39e.firebaseapp.com",
-            projectId: "sirat-eb39e",
-            storageBucket: "sirat-eb39e.appspot.com",
-            messagingSenderId: "533739459364",
-            appId: "1:533739459364:web:dd76673f2d9e8cefc919b1"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        let currentUser = null, modalSignaturePad = null, currentSignatureType = '';
-        let mouSignaturePad = null, mouSignatureType = '';
-        let allTransactions = [], filteredTransactions = [];
-        let logoBase64 = null, kopSuratBase64 = null, stempelBase64 = null;
-        let fotoLokasiBase64 = null, fotoLokasiNama = '', fotoArmadaBase64 = null, fotoArmadaNama = '';
-
-        async function loadImages() {
-            try {
-                const logoResp = await fetch('logo-raj.png');
-                const logoBlob = await logoResp.blob();
-                const logoReader = new FileReader();
-                logoReader.onloadend = () => { logoBase64 = logoReader.result; };
-                logoReader.readAsDataURL(logoBlob);
-                
-                const kopResp = await fetch('kop-surat.png');
-                const kopBlob = await kopResp.blob();
-                const kopReader = new FileReader();
-                kopReader.onloadend = () => { kopSuratBase64 = kopReader.result; console.log('✅ Kop surat loaded'); };
-                kopReader.readAsDataURL(kopBlob);
-
-                const stempelResp = await fetch('stempel-raj.png');
-                const stempelBlob = await stempelResp.blob();
-                const stempelReader = new FileReader();
-                stempelReader.onloadend = () => { stempelBase64 = stempelReader.result; console.log('✅ Stempel loaded'); };
-                stempelReader.readAsDataURL(stempelBlob);
-            } catch (e) { console.error('Error load images:', e); }
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            currentUser = user;
+            document.getElementById('userName').textContent = user.email;
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('appSection').classList.remove('hidden');
+            document.getElementById('sjTanggal').valueAsDate = new Date();
+            loadAssets();
+        } else {
+            currentUser = null;
+            document.getElementById('appSection').classList.add('hidden');
+            document.getElementById('loginSection').classList.remove('hidden');
         }
+    });
 
-        window.updateNoSurat = function() {
-            const now = new Date();
-            const tahun = now.getFullYear();
-            const bulan = now.getMonth() + 1;
-            const bulanRomawi = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][bulan-1];
-            const kode = document.getElementById('kode').value;
-            const prefix = kode === 'D' ? 'SJD' : 'SJP';
-            document.getElementById('noSuratDisplay').textContent = `${prefix}/---/RAJ/${bulanRomawi}/${tahun}`;
-            
-            const label = document.getElementById('lokasiLabel');
-            const input = document.getElementById('lokasiCustomer');
-            if (kode === 'P') {
-                label.innerHTML = 'Lokasi Pengambilan';
-                input.placeholder = 'Alamat pengambilan waste';
-            } else {
-                label.innerHTML = 'Lokasi Pengiriman';
-                input.placeholder = 'Alamat pengiriman waste';
-            }
-        };
+    window.loginUser = async () => {
+        const email = document.getElementById('loginEmail').value;
+        const pass = document.getElementById('loginPassword').value;
+        try { await signInWithEmailAndPassword(auth, email, pass); } catch(e) { alert('Login gagal: ' + e.message); }
+    };
+    window.logoutUser = () => { if(confirm('Logout?')) signOut(auth); };
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                document.getElementById('userName').textContent = user.displayName || user.email;
-                document.getElementById('loginSection').classList.add('hidden');
-                document.getElementById('appSection').classList.remove('hidden');
-                document.getElementById('tanggal').valueAsDate = new Date();
-                updateNoSurat();
-                loadImages();
-            } else {
-                currentUser = null;
-                document.getElementById('appSection').classList.add('hidden');
-                document.getElementById('loginSection').classList.remove('hidden');
-            }
-        });
+    // UI Helpers
+    const showLoad = (t) => { document.getElementById('loadingText').textContent = t; document.getElementById('loadingOverlay').classList.remove('hidden'); };
+    const hideLoad = () => document.getElementById('loadingOverlay').classList.add('hidden');
+    window.switchTab = (id) => { new bootstrap.Tab(document.querySelector(`[data-bs-target="#${id}"]`)).show(); document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); };
 
-        window.loginUser = async function() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            if (!email || !password) { alert('Isi email dan password!'); return; }
-            try { await signInWithEmailAndPassword(auth, email, password); } 
-            catch (e) { alert('Login gagal: ' + e.message); }
-        };
+    // Signature Pad
+    window.openSignModal = (target) => {
+        currentSignTarget = target;
+        document.getElementById('signModal').classList.add('active');
+        setTimeout(() => {
+            const canvas = document.getElementById('signCanvas');
+            signPad = new SignaturePad(canvas, { backgroundColor: 'rgba(255,255,255,0)' });
+        }, 100);
+    };
+    window.closeSignModal = () => document.getElementById('signModal').classList.remove('active');
+    window.clearSign = () => signPad.clear();
+    window.saveSign = () => {
+        if (signPad.isEmpty()) { alert('Buat tanda tangan dulu!'); return; }
+        document.getElementById(currentSignTarget).value = signPad.toDataURL();
+        closeSignModal();
+    };
 
-        window.registerUser = async function() {
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const pass2 = document.getElementById('registerPasswordConfirm').value;
-            if (!name || !email || !password || !pass2) { alert('Lengkapi semua field!'); return; }
-            if (password !== pass2) { alert('Password tidak cocok!'); return; }
-            if (password.length < 6) { alert('Password minimal 6 karakter!'); return; }
-            try {
-                const cred = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(cred.user, { displayName: name });
-                alert('Registrasi berhasil!');
-                toggleAuthMode();
-            } catch (e) { alert('Registrasi gagal: ' + e.message); }
-        };
+    document.getElementById('mouIncludeTTD').addEventListener('change', (e) => {
+        document.getElementById('mouTTDSection').classList.toggle('hidden', !e.target.checked);
+    });
 
-        window.logoutUser = async function() {
-            if (confirm('Logout?')) {
-                try { await signOut(auth); } catch (e) { alert(e.message); }
-            }
-        };
+    // SUBMIT SURAT JALAN
+    document.getElementById('formSJ').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!document.getElementById('sjTTDPIC').value || !document.getElementById('sjTTDCust').value) { alert('Lengkapi tanda tangan!'); return; }
+        showLoad('Menyimpan SJ...');
+        const params = new URLSearchParams();
+        params.append('type', 'sj');
+        params.append('kode', document.getElementById('sjKode').value);
+        params.append('tanggal', document.getElementById('sjTanggal').value);
+        params.append('lokasiCustomer', document.getElementById('sjLokasi').value);
+        params.append('jenisWaste', document.getElementById('sjWaste').value);
+        params.append('jumlah', document.getElementById('sjJumlah').value);
+        params.append('keterangan', document.getElementById('sjKeterangan').value);
+        params.append('namaPIC', document.getElementById('sjPIC').value);
+        params.append('ttdPIC', document.getElementById('sjTTDPIC').value);
+        params.append('namaCustomer', document.getElementById('sjCustomer').value);
+        params.append('ttdCustomer', document.getElementById('sjTTDCust').value);
+        params.append('createdByName', currentUser.displayName || currentUser.email);
+        params.append('createdByEmail', currentUser.email);
 
-        window.toggleAuthMode = function() {
-            const login = document.getElementById('loginForm');
-            const reg = document.getElementById('registerForm');
-            if (login.classList.contains('hidden')) {
-                login.classList.remove('hidden'); reg.classList.add('hidden');
-            } else {
-                login.classList.add('hidden'); reg.classList.remove('hidden');
-            }
-        };
+        await fetch(APPS_SCRIPT_URL, { method: 'POST', body: params });
+        hideLoad();
+        alert('Surat Jalan disimpan!');
+        e.target.reset();
+        document.getElementById('sjTanggal').valueAsDate = new Date();
+    });
 
-        function showLoading(text) { 
-            document.getElementById('loadingText').textContent = text; 
-            document.getElementById('loadingOverlay').classList.remove('hidden'); 
+    // LOAD DATA SJ
+    window.loadSJData = async () => {
+        showLoad('Memuat Data SJ...');
+        const resp = await fetch(`${APPS_SCRIPT_URL}?sheet=Surat Jalan&t=${Date.now()}`);
+        sjData = await resp.json();
+        hideLoad();
+        renderSJTable();
+    };
+
+    window.renderSJTable = () => {
+        const search = document.getElementById('searchSJ').value.toLowerCase();
+        const filtered = sjData.filter(d => !search || (d['No. Surat Jalan']||'').toLowerCase().includes(search) || (d['Nama PIC']||'').toLowerCase().includes(search));
+        const tbody = document.getElementById('tbodySJ');
+        tbody.innerHTML = filtered.length ? filtered.map(d => `
+            <tr>
+                <td><strong>${d['No. Surat Jalan']||'-'}</strong></td>
+                <td>${formatDate(d['Tanggal'])}</td>
+                <td>${d['Jenis Waste']||'-'}</td>
+                <td>${d['Jumlah (KG)']||'0'}</td>
+                <td>${d['Nama PIC']||'-'}</td>
+                <td>${d['Nama Customer']||'-'}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning" onclick="viewSJPDF('${d['No. Surat Jalan']}')"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-sm btn-info" onclick="downloadSJPDF('${d['No. Surat Jalan']}')"><i class="fas fa-download"></i></button>
+                </td>
+            </tr>
+        `).join('') : '<tr><td colspan="7" class="text-center">Tidak ada data</td></tr>';
+    };
+
+    // SUBMIT / GENERATE MoU
+    window.generateMoUPDF = async () => {
+        if (document.getElementById('mouIncludeTTD').checked) {
+            if (!document.getElementById('mouTTDP1').value || !document.getElementById('mouTTDP2').value) { alert('Lengkapi tanda tangan!'); return; }
         }
-        function hideLoading() { document.getElementById('loadingOverlay').classList.add('hidden'); }
+        showLoad('Membuat MoU PDF...');
+        
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        pdf.setFont("times");
+        let y = 20;
 
-        window.handleFotoUpload = function(event, type) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const ts = new Date().toLocaleString('id-ID');
-            const fname = `${ts.replace(/[/,: ]/g,'_')}_${file.name}`;
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                if (type === 'lokasi') {
-                    fotoLokasiBase64 = reader.result;
-                    fotoLokasiNama = fname;
-                    document.getElementById('fotoLokasiPreview').src = fotoLokasiBase64;
-                    document.getElementById('fotoLokasiPreview').classList.remove('hidden');
-                    document.getElementById('fotoLokasiTimestamp').textContent = ts;
-                } else {
-                    fotoArmadaBase64 = reader.result;
-                    fotoArmadaNama = fname;
-                    document.getElementById('fotoArmadaPreview').src = fotoArmadaBase64;
-                    document.getElementById('fotoArmadaPreview').classList.remove('hidden');
-                    document.getElementById('fotoArmadaTimestamp').textContent = ts;
-                }
-            };
-            reader.readAsDataURL(file);
-        };
+        // Header
+        if (kopBase64) { pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); y += 40; }
+        
+        // Judul
+        pdf.setFontSize(14); pdf.setFont(undefined, 'bold'); pdf.setTextColor(27, 94, 32);
+        pdf.text('MEMORANDUM OF UNDERSTANDING (MoU)', 105, y, {align:'center'}); y += 6;
+        pdf.text('KERJA SAMA PENGUMPULAN MINYAK JELANTAH', 105, y, {align:'center'}); y += 10;
+        
+        const nomor = document.getElementById('mouNomor').value || '___/MoU/RAJ/___/2026';
+        pdf.setFontSize(10); pdf.setFont(undefined, 'normal'); pdf.setTextColor(0,0,0);
+        pdf.text(`Nomor: ${nomor}`, 105, y, {align:'center'}); y += 15;
 
-        document.getElementById('siratForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            if (!currentUser) { alert('Harus login!'); return; }
-            
-            const ttdPIC = document.getElementById('ttdPICData').value;
-            const ttdCust = document.getElementById('ttdCustomerData').value;
-            if (!ttdPIC || !ttdCust) { alert('Lengkapi kedua tanda tangan!'); return; }
-            
-            const btn = document.getElementById('btnSubmit');
-            const origText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-            showLoading('Menyimpan data...');
-            
-            try {
-                const params = new URLSearchParams();
-                params.append('kode', document.getElementById('kode').value);
-                params.append('lokasiCustomer', document.getElementById('lokasiCustomer').value);
-                params.append('tanggal', document.getElementById('tanggal').value);
-                params.append('jenisTransaksi', document.getElementById('jenisTransaksi').value);
-                params.append('jenisWaste', document.getElementById('jenisWaste').value);
-                params.append('jumlah', document.getElementById('jumlah').value);
-                params.append('keterangan', document.getElementById('keterangan').value);
-                params.append('namaPIC', document.getElementById('namaPIC').value);
-                params.append('ttdPIC', ttdPIC);
-                params.append('namaCustomer', document.getElementById('namaCustomer').value);
-                params.append('ttdCustomer', ttdCust);
-                params.append('stampPlacement', document.querySelector('input[name="stampPlacement"]:checked').value);
-                params.append('fotoLokasi', fotoLokasiBase64 || '');
-                params.append('fotoLokasiNama', fotoLokasiNama || '');
-                params.append('fotoArmada', fotoArmadaBase64 || '');
-                params.append('fotoArmadaNama', fotoArmadaNama || '');
-                params.append('createdByEmail', currentUser.email);
-                params.append('createdByName', currentUser.displayName || currentUser.email);
-                
-                await fetch(APPS_SCRIPT_URL, { method: 'POST', body: params });
-                
-                hideLoading();
-                alert('✅ Data berhasil disimpan!');
-                
-                document.getElementById('siratForm').reset();
-                document.getElementById('ttdPICData').value = '';
-                document.getElementById('ttdCustomerData').value = '';
-                document.getElementById('statusPIC').className = 'signature-status signature-pending mt-2';
-                document.getElementById('statusPIC').innerHTML = 'Belum ada tanda tangan';
-                document.getElementById('statusCustomer').className = 'signature-status signature-pending mt-2';
-                document.getElementById('statusCustomer').innerHTML = 'Belum ada tanda tangan';
-                document.getElementById('tanggal').valueAsDate = new Date();
-                document.getElementById('fotoLokasiPreview').classList.add('hidden');
-                document.getElementById('fotoArmadaPreview').classList.add('hidden');
-                document.getElementById('fotoLokasiTimestamp').textContent = '';
-                document.getElementById('fotoArmadaTimestamp').textContent = '';
-                fotoLokasiBase64 = null; fotoLokasiNama = '';
-                fotoArmadaBase64 = null; fotoArmadaNama = '';
-                updateNoSurat();
-                
-            } catch (err) { 
-                hideLoading(); 
-                alert('Gagal: ' + err.message); 
-                console.error('Error:', err);
-            } finally { 
-                btn.disabled = false; 
-                btn.innerHTML = origText; 
-            }
-        });
+        const tgl = document.getElementById('mouTanggal').value;
+        const tempat = document.getElementById('mouTempat').value;
+        const fmtTgl = tgl ? formatDate(tgl) : '__________';
+        pdf.text(`Pada hari ini, __________ tanggal ${fmtTgl} bulan __________ tahun 2026, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman antara:`, 15, y, {maxWidth: 180}); y += 20;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('data-tab')?.addEventListener('shown.bs.tab', () => loadData());
-        });
+        // Pihak 1
+        pdf.setFont(undefined, 'bold'); pdf.text('PIHAK PERTAMA', 15, y); y += 6;
+        pdf.setFont(undefined, 'normal');
+        const p1Nama = document.getElementById('mouP1Nama').value;
+        const p1Jab = document.getElementById('mouP1Jabatan').value;
+        pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', 15, y); y += 6;
+        pdf.text(`Nama: ${p1Nama}`, 20, y); y += 6;
+        pdf.text(`Jabatan: ${p1Jab}`, 20, y); y += 6;
+        pdf.text('Selanjutnya disebut PIHAK PERTAMA.', 20, y); y += 12;
 
-        window.switchTab = function(tab) {
-            new bootstrap.Tab(document.getElementById(tab + '-tab')).show();
-            document.querySelectorAll('.bottom-nav-item').forEach(i => i.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-        };
+        // Pihak 2
+        pdf.setFont(undefined, 'bold'); pdf.text('PIHAK KEDUA', 15, y); y += 6;
+        pdf.setFont(undefined, 'normal');
+        const p2Inst = document.getElementById('mouP2Instansi').value;
+        const p2Nama = document.getElementById('mouP2Nama').value;
+        const p2Jab = document.getElementById('mouP2Jabatan').value;
+        pdf.text(`${p2Inst}, diwakili oleh:`, 15, y); y += 6;
+        pdf.text(`Nama: ${p2Nama}`, 20, y); y += 6;
+        pdf.text(`Jabatan: ${p2Jab}`, 20, y); y += 6;
+        pdf.text('Selanjutnya disebut PIHAK KEDUA.', 20, y); y += 15;
 
-        window.loadData = async function() {
-            const tbody = document.getElementById('tableBody');
-            try {
-                showLoading('Memuat...');
-                const resp = await fetch(`${APPS_SCRIPT_URL}?t=${Date.now()}`);
-                const data = await resp.json();
-                hideLoading();
-                allTransactions = data;
-                filteredTransactions = data;
-                
-                document.getElementById('searchInput').value = '';
-                document.getElementById('filterKode').value = '';
-                document.getElementById('filterBulan').value = '';
-                
-                renderTable(data);
-            } catch (err) {
-                hideLoading();
-                tbody.innerHTML = `<tr><td colspan="9" class="text-center text-danger">Error: ${err.message}</td></tr>`;
-            }
-        };
+        // Pasal
+        const pasal = [
+            ['PASAL 1 - MAKSUD DAN TUJUAN', document.getElementById('mouTujuan').value],
+            ['PASAL 2 - RUANG LINGKUP', document.getElementById('mouRuang').value],
+            ['PASAL 3 - JANGKA WAKTU', `MoU berlaku selama ${document.getElementById('mouJangka').value}.`]
+        ];
 
-        function renderTable(data) {
-            const tbody = document.getElementById('tableBody');
-            const info = document.getElementById('resultInfo');
-            tbody.innerHTML = '';
-            
-            if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9" class="text-center">Tidak ada data</td></tr>';
-                info.innerHTML = '';
-                return;
-            }
-            
-            info.innerHTML = `Menampilkan <strong>${data.length}</strong> dari <strong>${allTransactions.length}</strong> data`;
-            
-            data.forEach(d => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${d['No. Surat Jalan']||'-'}</strong></td>
-                    <td>${formatDate(d['Tanggal'])}</td>
-                    <td><span class="badge bg-${d['Kode']==='D'?'warning':'success'}">${d['Kode']||'-'}</span></td>
-                    <td>${d['Lokasi Customer']||'-'}</td>
-                    <td>${d['Jenis Waste']||'-'}</td>
-                    <td>${d['Jumlah (KG)']||'0'}</td>
-                    <td>${d['Nama PIC']||'-'}</td>
-                    <td>${d['Nama Customer']||'-'}</td>
-                    <td>
-                        <button class="btn-action btn-view-pdf" onclick="viewSinglePDF('${d['No. Surat Jalan']}')"><i class="fas fa-eye"></i></button>
-                        <button class="btn-action btn-download-pdf" onclick="downloadSinglePDF('${d['No. Surat Jalan']}')"><i class="fas fa-download"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        window.filterData = function() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const kode = document.getElementById('filterKode').value;
-            const bulan = document.getElementById('filterBulan').value;
-            
-            filteredTransactions = allTransactions.filter(d => {
-                const matchSearch = !search || 
-                    (d['No. Surat Jalan']&&d['No. Surat Jalan'].toLowerCase().includes(search)) ||
-                    (d['Nama PIC']&&d['Nama PIC'].toLowerCase().includes(search)) ||
-                    (d['Nama Customer']&&d['Nama Customer'].toLowerCase().includes(search)) ||
-                    (d['Lokasi Customer']&&d['Lokasi Customer'].toLowerCase().includes(search)) ||
-                    (d['Jenis Waste']&&d['Jenis Waste'].toLowerCase().includes(search));
-                
-                const matchKode = !kode || d['Kode'] === kode;
-                
-                let matchBulan = true;
-                if (bulan && d['Tanggal']) {
-                    const parts = d['Tanggal'].toString().split('-');
-                    if (parts.length >= 2) {
-                        matchBulan = parseInt(parts[1]) === parseInt(bulan);
-                    }
-                }
-                
-                return matchSearch && matchKode && matchBulan;
-            });
-            
-            renderTable(filteredTransactions);
-        };
-
-        window.resetFilter = function() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('filterKode').value = '';
-            document.getElementById('filterBulan').value = '';
-            filteredTransactions = allTransactions;
-            renderTable(allTransactions);
-        };
-
-        window.viewSinglePDF = function(no) {
-            const t = allTransactions.find(x => x['No. Surat Jalan'] === no);
-            if (!t) { alert('Data tidak ditemukan!'); return; }
-            generatePDF([t], 'view');
-        };
-
-        window.downloadSinglePDF = function(no) {
-            const t = allTransactions.find(x => x['No. Surat Jalan'] === no);
-            if (!t) { alert('Data tidak ditemukan!'); return; }
-            generatePDF([t], 'download');
-        };
-
-        window.viewAllPDF = function() {
-            if (filteredTransactions.length === 0) { alert('Tidak ada data!'); return; }
-            generatePDF(filteredTransactions, 'view');
-        };
-
-        window.downloadAllPDF = function() {
-            if (filteredTransactions.length === 0) { alert('Tidak ada data!'); return; }
-            generatePDF(filteredTransactions, 'download');
-        };
-
-        function getDriveDirectUrl(url) {
-            if (!url || url === '-') return null;
-            const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (m) return `https://lh3.googleusercontent.com/d/${m[1]}=w800`;
-            return url;
-        }
-
-        function loadImageToBase64(url) {
-            return new Promise((resolve) => {
-                if (!url || url === '-') { resolve(null); return; }
-                const directUrl = getDriveDirectUrl(url);
-                const img = new Image();
-                img.crossOrigin = 'anonymous';
-                img.onload = function() {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        canvas.getContext('2d').drawImage(img, 0, 0);
-                        resolve(canvas.toDataURL('image/jpeg', 0.8));
-                    } catch(e) { resolve(null); }
-                };
-                img.onerror = () => resolve(null);
-                img.src = directUrl;
-                setTimeout(() => { if (!img.complete) resolve(null); }, 5000);
-            });
-        }
-
-        function addHeaderToPDF(pdf, yPos) {
-            if (kopSuratBase64) {
-                pdf.addImage(kopSuratBase64, 'PNG', 15, yPos, 180, 40);
-            }
-        }
-
-        function addFooterToPDF(pdf, pageNum, totalPages, createdBy) {
-            pdf.setFontSize(8);
+        pasal.forEach(([title, content]) => {
+            if (y > 250) { pdf.addPage(); if(kopBase64) { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } y = 60; }
+            pdf.setFont(undefined, 'bold'); pdf.text(title, 15, y); y += 6;
             pdf.setFont(undefined, 'normal');
-            pdf.setTextColor(128, 128, 128);
-            pdf.setDrawColor(200, 200, 200);
-            pdf.setLineWidth(0.3);
-            pdf.line(15, 280, 195, 280);
-            pdf.text(`Dicetak oleh: ${createdBy||'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
-            pdf.text(`Halaman ${pageNum} dari ${totalPages}`, 195, 286, {align:'right'});
-        }
-
-        function addWatermarkToPDF(pdf, yPos) {
-            if (!stempelBase64) return;
-            pdf.setGState(new pdf.GState({opacity: 0.08}));
-            const watermarkY = yPos + 60;
-            pdf.addImage(stempelBase64, 'PNG', 60, watermarkY, 90, 90);
-            pdf.setGState(new pdf.GState({opacity: 1}));
-        }
-
-        function addStempelToPDF(pdf, xPos, yPos, width, height) {
-            if (!stempelBase64) return;
-            pdf.setGState(new pdf.GState({opacity: 0.6}));
-            pdf.addImage(stempelBase64, 'PNG', xPos, yPos, width, height);
-            pdf.setGState(new pdf.GState({opacity: 1}));
-        }
-
-        async function generatePDF(transactions, mode) {
-            if (!kopSuratBase64) { alert('Kop surat belum dimuat!'); return; }
-            
-            showLoading('Membuat PDF...');
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            pdf.setFont("helvetica");
-            
-            const totalPages = transactions.length;
-            
-            for (let i = 0; i < transactions.length; i++) {
-                const t = transactions[i];
-                
-                if (i > 0) {
-                    pdf.addPage();
-                    addHeaderToPDF(pdf, 15);
-                } else {
-                    addHeaderToPDF(pdf, 15);
-                }
-                
-                addWatermarkToPDF(pdf, 15);
-                
-                let y = 60;
-                
-                pdf.setDrawColor(27, 94, 32);
-                pdf.setLineWidth(1.5);
-                pdf.line(15, y, 195, y);
-                y += 8;
-                
-                pdf.setFontSize(16);
-                pdf.setFont(undefined, 'bold');
-                pdf.setTextColor(27, 94, 32);
-                pdf.text('SURAT JALAN', 105, y, {align:'center'});
-                y += 8;
-                
-                pdf.setFontSize(10);
-                pdf.setFont(undefined, 'normal');
-                pdf.setTextColor(0, 0, 0);
-                pdf.text(`No: ${t['No. Surat Jalan'] || '-'}`, 105, y, {align:'center'});
-                y += 12;
-                
-                pdf.setDrawColor(200, 200, 200);
-                pdf.setLineWidth(0.5);
-                pdf.line(15, y, 195, y);
-                y += 8;
-                
-                pdf.setFontSize(11);
-                pdf.setFont(undefined, 'bold');
-                pdf.setTextColor(27, 94, 32);
-                pdf.text('INFORMASI TRANSAKSI', 15, y);
-                y += 2;
-                pdf.setDrawColor(27, 94, 32);
-                pdf.setLineWidth(0.5);
-                pdf.line(15, y, 195, y);
-                y += 7;
-                
-                pdf.setFont(undefined, 'normal');
-                pdf.setTextColor(0, 0, 0);
-                pdf.setFontSize(9);
-                
-                const infoData = [
-                    ['Kode Transaksi', ':', t['Kode'] || '-'],
-                    ['Tanggal', ':', formatDate(t['Tanggal'])],
-                    ['Jenis Transaksi', ':', t['Jenis Transaksi'] || '-'],
-                    ['Lokasi Customer', ':', t['Lokasi Customer'] || '-']
-                ];
-                
-                infoData.forEach(row => {
-                    pdf.text(row[0], 15, y);
-                    pdf.text(row[1], 65, y);
-                    pdf.text(row[2], 70, y);
-                    y += 6;
-                });
-                
-                y += 3;
-                
-                pdf.setFontSize(11);
-                pdf.setFont(undefined, 'bold');
-                pdf.setTextColor(27, 94, 32);
-                pdf.text('DETAIL WASTE', 15, y);
-                y += 2;
-                pdf.setDrawColor(27, 94, 32);
-                pdf.line(15, y, 195, y);
-                y += 7;
-                
-                pdf.autoTable({
-                    startY: y,
-                    head: [['Jenis Waste', 'Jumlah (KG)', 'Keterangan']],
-                    body: [[t['Jenis Waste']||'-', t['Jumlah (KG)']||'0', t['Keterangan']||'-']],
-                    theme: 'striped',
-                    headStyles: { fillColor: [27, 94, 32], textColor: 255, fontStyle: 'bold', fontSize: 10, halign: 'center' },
-                    bodyStyles: { fontSize: 9, cellPadding: 4 },
-                    styles: { overflow: 'linebreak', cellWidth: 'auto' },
-                    margin: {left: 15, right: 15}
-                });
-                
-                y = pdf.lastAutoTable.finalY + 10;
-                
-                const fotoLokasi = t['Foto Lokasi URL'];
-                const fotoArmada = t['Foto Armada URL'];
-                
-                if (fotoLokasi || fotoArmada) {
-                    if (y > 160) { 
-                        pdf.addPage(); 
-                        addHeaderToPDF(pdf, 15);
-                        addWatermarkToPDF(pdf, 15);
-                        y = 60; 
-                    }
-                    
-                    pdf.setFontSize(11);
-                    pdf.setFont(undefined, 'bold');
-                    pdf.setTextColor(27, 94, 32);
-                    pdf.text('DOKUMENTASI FOTO', 15, y);
-                    y += 2;
-                    pdf.setDrawColor(27, 94, 32);
-                    pdf.line(15, y, 195, y);
-                    y += 8;
-                    
-                    const [imgLokasi, imgArmada] = await Promise.all([
-                        loadImageToBase64(fotoLokasi),
-                        loadImageToBase64(fotoArmada)
-                    ]);
-                    
-                    const w = 80, h = 60, gap = 15;
-                    let x = 15;
-                    
-                    if (imgLokasi) {
-                        pdf.setDrawColor(27, 94, 32);
-                        pdf.setLineWidth(0.5);
-                        pdf.rect(x, y, w, h);
-                        pdf.addImage(imgLokasi, 'JPEG', x+2, y+2, w-4, h-4);
-                        pdf.setFontSize(9);
-                        pdf.setFont(undefined, 'bold');
-                        pdf.setTextColor(27, 94, 32);
-                        pdf.text('Foto Lokasi', x+w/2, y+h+6, {align:'center'});
-                        if (t['Foto Lokasi Timestamp']) {
-                            pdf.setFont(undefined, 'normal');
-                            pdf.setTextColor(100, 100, 100);
-                            pdf.setFontSize(7);
-                            pdf.text(t['Foto Lokasi Timestamp'], x+w/2, y+h+11, {align:'center'});
-                        }
-                    }
-                    
-                    x += w + gap;
-                    
-                    if (imgArmada) {
-                        pdf.setDrawColor(27, 94, 32);
-                        pdf.setLineWidth(0.5);
-                        pdf.rect(x, y, w, h);
-                        pdf.addImage(imgArmada, 'JPEG', x+2, y+2, w-4, h-4);
-                        pdf.setFontSize(9);
-                        pdf.setFont(undefined, 'bold');
-                        pdf.setTextColor(27, 94, 32);
-                        pdf.text('Foto Armada', x+w/2, y+h+6, {align:'center'});
-                        if (t['Foto Armada Timestamp']) {
-                            pdf.setFont(undefined, 'normal');
-                            pdf.setTextColor(100, 100, 100);
-                            pdf.setFontSize(7);
-                            pdf.text(t['Foto Armada Timestamp'], x+w/2, y+h+11, {align:'center'});
-                        }
-                    }
-                    
-                    y += h + 18;
-                }
-                
-                if (y > 190) { 
-                    pdf.addPage(); 
-                    addHeaderToPDF(pdf, 15);
-                    addWatermarkToPDF(pdf, 15);
-                    y = 60; 
-                }
-                
-                pdf.setFontSize(11);
-                pdf.setFont(undefined, 'bold');
-                pdf.setTextColor(27, 94, 32);
-                pdf.text('TANDA TANGAN', 15, y);
-                y += 2;
-                pdf.setDrawColor(27, 94, 32);
-                pdf.line(15, y, 195, y);
-                y += 12;
-                
-                const signY = y;
-                const sw = 55, sh = 25;
-                const stampPlacement = t['Penempatan Stempel'] || 'customer';
-                
-                pdf.setFont(undefined, 'normal');
-                pdf.setTextColor(0, 0, 0);
-                pdf.setFontSize(9);
-                pdf.text('PIC (Penanggung Jawab),', 20, signY);
-                
-                if (stampPlacement === 'pic' && stempelBase64) {
-                    addStempelToPDF(pdf, 15, signY-5, 65, 65);
-                }
-                
-                if (t['TTD PIC'] && t['TTD PIC'] !== '-' && t['TTD PIC'].length > 100) {
-                    try { pdf.addImage(t['TTD PIC'], 'PNG', 20, signY+5, sw, sh); } catch(e) {}
-                }
-                pdf.setDrawColor(0, 0, 0);
-                pdf.setLineWidth(0.3);
-                pdf.line(20, signY+35, 75, signY+35);
-                pdf.setFont(undefined, 'bold');
-                pdf.text(t['Nama PIC'] || '-', 47, signY+41, {align:'center'});
-                
-                pdf.setFont(undefined, 'normal');
-                pdf.text('Customer,', 125, signY);
-                
-                if (stampPlacement === 'customer' && stempelBase64) {
-                    addStempelToPDF(pdf, 120, signY-5, 65, 65);
-                }
-                
-                if (t['TTD Customer'] && t['TTD Customer'] !== '-' && t['TTD Customer'].length > 100) {
-                    try { pdf.addImage(t['TTD Customer'], 'PNG', 125, signY+5, sw, sh); } catch(e) {}
-                }
-                pdf.line(125, signY+35, 180, signY+35);
-                pdf.setFont(undefined, 'bold');
-                pdf.text(t['Nama Customer'] || '-', 152, signY+41, {align:'center'});
-                
-                addFooterToPDF(pdf, i+1, totalPages, t['Dibuat Oleh']||'User');
-            }
-            
-            hideLoading();
-            
-            if (mode === 'view') {
-                const blob = pdf.output('blob');
-                window.open(URL.createObjectURL(blob), '_blank');
-            } else {
-                const no = transactions[0]['No. Surat Jalan'] || 'Surat_Jalan';
-                const safeName = no.replace(/\//g,'_').replace(/:/g,'-');
-                pdf.save(`${safeName}.pdf`);
-            }
-        }
-
-        // ============ MoU FUNCTIONS ============
-        window.toggleSignatureOption = function() {
-            const includeSig = document.getElementById('includeSignature').checked;
-            const sigOptions = document.getElementById('signatureOptions');
-            if (includeSig) {
-                sigOptions.classList.remove('hidden');
-            } else {
-                sigOptions.classList.add('hidden');
-            }
-        };
-
-        window.openMouSignatureModal = function(type) {
-            mouSignatureType = type;
-            const signerName = type === 'pihak1' ? 
-                document.getElementById('pihak1Nama').value : 
-                document.getElementById('pihak2Nama').value;
-            
-            if (!signerName) { 
-                alert('Isi nama ' + (type==='pihak1'?'Pihak Pertama':'Pihak Kedua') + ' dulu!'); 
-                return; 
-            }
-            
-            document.getElementById('mouModalSignerName').textContent = 
-                (type==='pihak1'?'Pihak Pertama: ':'Pihak Kedua: ') + signerName;
-            document.getElementById('mouSignatureModal').classList.add('active');
-            
-            setTimeout(() => {
-                const canvas = document.getElementById('mouModalSignatureCanvas');
-                const ratio = Math.max(window.devicePixelRatio||1, 1);
-                canvas.width = canvas.offsetWidth * ratio;
-                canvas.height = canvas.offsetHeight * ratio;
-                canvas.getContext('2d').scale(ratio, ratio);
-                if (mouSignaturePad) mouSignaturePad.clear();
-                mouSignaturePad = new SignaturePad(canvas, {
-                    backgroundColor: 'rgba(0,0,0,0)',
-                    penColor: 'rgb(0,0,0)',
-                    minWidth: 2,
-                    maxWidth: 4
-                });
-            }, 100);
-        };
-
-        window.closeMouSignatureModal = function() { 
-            document.getElementById('mouSignatureModal').classList.remove('active'); 
-        };
-        
-        window.clearMouModalSignature = function() { 
-            if (mouSignaturePad) mouSignaturePad.clear(); 
-        };
-        
-        window.saveMouModalSignature = function() {
-            if (!mouSignaturePad || mouSignaturePad.isEmpty()) { 
-                alert('Buat tanda tangan dulu!'); 
-                return; 
-            }
-            const data = mouSignaturePad.toDataURL();
-            if (mouSignatureType === 'pihak1') {
-                document.getElementById('ttdPihak1Data').value = data;
-                document.getElementById('statusTTDPihak1').className = 'signature-status signature-completed mt-2';
-                document.getElementById('statusTTDPihak1').innerHTML = '<i class="fas fa-check-circle"></i> Tanda tangan sudah dibuat';
-            } else {
-                document.getElementById('ttdPihak2Data').value = data;
-                document.getElementById('statusTTDPihak2').className = 'signature-status signature-completed mt-2';
-                document.getElementById('statusTTDPihak2').innerHTML = '<i class="fas fa-check-circle"></i> Tanda tangan sudah dibuat';
-            }
-            closeMouSignatureModal();
-        };
-        document.getElementById('mouSignatureModal').addEventListener('click', function(e) { 
-            if (e.target === this) closeMouSignatureModal(); 
+            const lines = pdf.splitTextToSize(content, 180);
+            pdf.text(lines, 15, y); y += lines.length * 5 + 8;
         });
 
-        window.generateMoUPDF = async function() {
-            if (!kopSuratBase64) { alert('Kop surat belum dimuat!'); return; }
+        // TTD
+        if (document.getElementById('mouIncludeTTD').checked) {
+            if (y > 220) { pdf.addPage(); y = 60; }
+            y += 10;
+            pdf.text(`Dibuat di: ${tempat}`, 15, y); y += 6;
+            pdf.text(`Tanggal: ${fmtTgl}`, 15, y); y += 20;
             
-            const includeSignature = document.getElementById('includeSignature').checked;
-            if (includeSignature) {
-                const ttd1 = document.getElementById('ttdPihak1Data').value;
-                const ttd2 = document.getElementById('ttdPihak2Data').value;
-                if (!ttd1 || !ttd2) {
-                    alert('Lengkapi tanda tangan kedua pihak!');
-                    return;
-                }
-            }
+            const signY = y;
+            pdf.setFont(undefined, 'bold'); pdf.text('PIHAK PERTAMA', 40, signY, {align:'center'});
+            pdf.text('PIHAK KEDUA', 155, signY, {align:'center'});
             
-            showLoading('Membuat MoU PDF...');
+            const ttd1 = document.getElementById('mouTTDP1').value;
+            const ttd2 = document.getElementById('mouTTDP2').value;
+            if (ttd1) pdf.addImage(ttd1, 'PNG', 15, signY+5, 50, 25);
+            if (ttd2) pdf.addImage(ttd2, 'PNG', 130, signY+5, 50, 25);
             
-            try {
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                pdf.setFont("times");
-                
-                let y = 20;
-                
-                // Header Kop Surat
-                if (kopSuratBase64) {
-                    pdf.addImage(kopSuratBase64, 'PNG', 15, y, 180, 35);
-                    y += 40;
-                }
-                
-                // Judul
-                pdf.setFontSize(14);
-                pdf.setFont(undefined, 'bold');
-                pdf.setTextColor(27, 94, 32);
-                pdf.text('MEMORANDUM OF UNDERSTANDING (MoU)', 105, y, {align:'center'});
-                y += 6;
-                pdf.text('KERJA SAMA PENGUMPULAN MINYAK JELANTAH', 105, y, {align:'center'});
-                y += 10;
-                
-                // Nomor MoU
-                const nomorMou = document.getElementById('mouNomor').value || '___/MoU/RAJ/___/2026';
-                pdf.setFontSize(10);
-                pdf.setFont(undefined, 'normal');
-                pdf.setTextColor(0, 0, 0);
-                pdf.text(`Nomor: ${nomorMou}`, 105, y, {align:'center'});
-                y += 15;
-                
-                // Tanggal dan Tempat
-                const tanggal = document.getElementById('mouTanggal').value;
-                const tempat = document.getElementById('mouTempat').value || 'Kota Tangerang';
-                const formattedDate = tanggal ? formatDate(tanggal) : '__________';
-                pdf.setFontSize(10);
-                pdf.text(`Pada hari ini, __________ tanggal ${formattedDate} bulan __________ tahun 2026, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman (Memorandum of Understanding/MoU) antara:`, 15, y, {maxWidth: 180});
-                y += 20;
-                
-                // Pihak Pertama
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PIHAK PERTAMA', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                const pihak1Nama = document.getElementById('pihak1Nama').value;
-                const pihak1Jabatan = document.getElementById('pihak1Jabatan').value;
-                pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', 15, y);
-                y += 6;
-                pdf.text(`Nama: ${pihak1Nama}`, 20, y);
-                y += 6;
-                pdf.text(`Jabatan: ${pihak1Jabatan}`, 20, y);
-                y += 6;
-                pdf.text('Selanjutnya disebut PIHAK PERTAMA.', 20, y);
-                y += 12;
-                
-                // Pihak Kedua
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PIHAK KEDUA', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                const pihak2Instansi = document.getElementById('pihak2Instansi').value;
-                const pihak2Nama = document.getElementById('pihak2Nama').value;
-                const pihak2Jabatan = document.getElementById('pihak2Jabatan').value;
-                pdf.text(`${pihak2Instansi}, diwakili oleh:`, 15, y);
-                y += 6;
-                pdf.text(`Nama: ${pihak2Nama}`, 20, y);
-                y += 6;
-                pdf.text(`Jabatan: ${pihak2Jabatan}`, 20, y);
-                y += 6;
-                pdf.text('Selanjutnya disebut PIHAK KEDUA.', 20, y);
-                y += 15;
-                
-                // Pasal-pasal
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PASAL 1 - MAKSUD DAN TUJUAN', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                const tujuan = document.getElementById('mouTujuan').value;
-                const tujuanLines = pdf.splitTextToSize(tujuan, 180);
-                pdf.text(tujuanLines, 15, y);
-                y += tujuanLines.length * 5 + 8;
-                
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PASAL 2 - RUANG LINGKUP KERJA SAMA', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                const ruangLingkup = document.getElementById('mouRuangLingkup').value;
-                const ruangLines = pdf.splitTextToSize(ruangLingkup, 180);
-                pdf.text(ruangLines, 15, y);
-                y += ruangLines.length * 5 + 8;
-                
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PASAL 3 - HAK DAN KEWAJIBAN PIHAK PERTAMA', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                const hak1 = document.getElementById('mouHakKewajiban1').value;
-                const hak1Lines = pdf.splitTextToSize(hak1, 180);
-                pdf.text(hak1Lines, 15, y);
-                y += hak1Lines.length * 5 + 8;
-                
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PASAL 4 - HAK DAN KEWAJIBAN PIHAK KEDUA', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                const hak2 = document.getElementById('mouHakKewajiban2').value;
-                const hak2Lines = pdf.splitTextToSize(hak2, 180);
-                pdf.text(hak2Lines, 15, y);
-                y += hak2Lines.length * 5 + 8;
-                
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PASAL 5 - HARGA DAN PEMBAYARAN', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                const harga = document.getElementById('mouHarga').value;
-                const hargaLines = pdf.splitTextToSize(harga, 180);
-                pdf.text(hargaLines, 15, y);
-                y += hargaLines.length * 5 + 8;
-                
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PASAL 6 - JANGKA WAKTU', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                const jangkaWaktu = document.getElementById('mouJangkaWaktu').value;
-                pdf.text(`MoU berlaku selama ${jangkaWaktu} dan dapat diperpanjang berdasarkan kesepakatan kedua belah pihak.`, 15, y, {maxWidth: 180});
-                y += 12;
-                
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PASAL 7 - PENYELESAIAN PERSELISIHAN', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                pdf.text('Setiap perselisihan akan diselesaikan secara musyawarah dan mufakat.', 15, y, {maxWidth: 180});
-                y += 12;
-                
-                pdf.setFont(undefined, 'bold');
-                pdf.text('PASAL 8 - PENUTUP', 15, y);
-                y += 6;
-                pdf.setFont(undefined, 'normal');
-                pdf.text('MoU dibuat dalam rangkap dua dan mempunyai kekuatan hukum yang sama.', 15, y, {maxWidth: 180});
-                y += 20;
-                
-                // Tanda Tangan
-                if (includeSignature) {
-                    pdf.text('Dibuat di: ' + tempat, 15, y);
-                    y += 6;
-                    pdf.text(`Tanggal: ${formattedDate}`, 15, y);
-                    y += 20;
-                    
-                    const signY = y;
-                    
-                    // Pihak Pertama
-                    pdf.setFont(undefined, 'bold');
-                    pdf.text('PIHAK PERTAMA', 30, signY, {align:'center'});
-                    y += 25;
-                    
-                    const ttd1 = document.getElementById('ttdPihak1Data').value;
-                    if (ttd1 && ttd1.length > 100) {
-                        try {
-                            pdf.addImage(ttd1, 'PNG', 15, signY + 5, 50, 25);
-                        } catch(e) {}
-                    }
-                    pdf.line(15, signY + 35, 65, signY + 35);
-                    pdf.text(pihak1Nama, 40, signY + 41, {align:'center'});
-                    
-                    // Pihak Kedua
-                    pdf.setFont(undefined, 'bold');
-                    pdf.text('PIHAK KEDUA', 155, signY, {align:'center'});
-                    
-                    const ttd2 = document.getElementById('ttdPihak2Data').value;
-                    if (ttd2 && ttd2.length > 100) {
-                        try {
-                            pdf.addImage(ttd2, 'PNG', 130, signY + 5, 50, 25);
-                        } catch(e) {}
-                    }
-                    pdf.line(130, signY + 35, 180, signY + 35);
-                    pdf.text(pihak2Nama, 155, signY + 41, {align:'center'});
-                } else {
-                    // Tanpa tanda tangan
-                    y += 10;
-                    pdf.setFont(undefined, 'italic');
-                    pdf.setTextColor(100, 100, 100);
-                    pdf.text('(Dokumen ini dibuat tanpa tanda tangan)', 105, y, {align:'center'});
-                }
-                
-                // Footer
-                pdf.setFontSize(8);
-                pdf.setFont(undefined, 'normal');
-                pdf.setTextColor(128, 128, 128);
-                pdf.setDrawColor(200, 200, 200);
-                pdf.setLineWidth(0.3);
-                pdf.line(15, 280, 195, 280);
-                pdf.text(`Dicetak oleh: ${currentUser?.displayName || currentUser?.email || 'User'} | ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
-                
-                hideLoading();
-                
-                // Download
-                const nomorFile = nomorMou.replace(/\//g, '_').replace(/:/g, '-');
-                pdf.save(`MoU_${nomorFile}.pdf`);
-                
-            } catch (err) {
-                hideLoading();
-                alert('Gagal membuat PDF: ' + err.message);
-                console.error('Error:', err);
-            }
-        };
-
-        function formatDate(str) {
-            if (!str) return '-';
-            const s = str.toString();
-            if (s.includes('T')) {
-                const d = new Date(s);
-                return `${d.getDate()} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][d.getMonth()]} ${d.getFullYear()}`;
-            }
-            const [y,m,d] = s.split('-');
-            return `${d} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][parseInt(m)-1]} ${y}`;
+            pdf.line(15, signY+35, 65, signY+35); pdf.line(130, signY+35, 180, signY+35);
+            pdf.text(p1Nama, 40, signY+41, {align:'center'}); pdf.text(p2Nama, 155, signY+41, {align:'center'});
         }
 
-        window.openSignatureModal = function(type) {
-            currentSignatureType = type;
-            const name = type === 'pic' ? document.getElementById('namaPIC').value : document.getElementById('namaCustomer').value;
-            if (!name) { alert('Isi nama ' + (type==='pic'?'PIC':'Customer') + ' dulu!'); return; }
-            document.getElementById('modalSignerName').textContent = (type==='pic'?'PIC: ':'Customer: ') + name;
-            document.getElementById('signatureModal').classList.add('active');
-            setTimeout(() => {
-                const canvas = document.getElementById('modalSignatureCanvas');
-                const ratio = Math.max(window.devicePixelRatio||1, 1);
-                canvas.width = canvas.offsetWidth * ratio;
-                canvas.height = canvas.offsetHeight * ratio;
-                canvas.getContext('2d').scale(ratio, ratio);
-                if (modalSignaturePad) modalSignaturePad.clear();
-                modalSignaturePad = new SignaturePad(canvas, {
-                    backgroundColor: 'rgba(0,0,0,0)',
-                    penColor: 'rgb(0,0,0)',
-                    minWidth: 2,
-                    maxWidth: 4
-                });
-            }, 100);
-        };
+        // Footer
+        pdf.setFontSize(8); pdf.setTextColor(128,128,128);
+        pdf.line(15, 280, 195, 280);
+        pdf.text(`Dicetak: ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
 
-        window.closeSignatureModal = function() { document.getElementById('signatureModal').classList.remove('active'); };
-        window.clearModalSignature = function() { if (modalSignaturePad) modalSignaturePad.clear(); };
-        window.saveModalSignature = function() {
-            if (!modalSignaturePad || modalSignaturePad.isEmpty()) { alert('Buat tanda tangan dulu!'); return; }
-            const data = modalSignaturePad.toDataURL();
-            if (currentSignatureType === 'pic') {
-                document.getElementById('ttdPICData').value = data;
-                document.getElementById('statusPIC').className = 'signature-status signature-completed mt-2';
-                document.getElementById('statusPIC').innerHTML = '<i class="fas fa-check-circle"></i> Tanda tangan sudah dibuat';
-            } else {
-                document.getElementById('ttdCustomerData').value = data;
-                document.getElementById('statusCustomer').className = 'signature-status signature-completed mt-2';
-                document.getElementById('statusCustomer').innerHTML = '<i class="fas fa-check-circle"></i> Tanda tangan sudah dibuat';
-            }
-            closeSignatureModal();
-        };
-        document.getElementById('signatureModal').addEventListener('click', function(e) { if (e.target === this) closeSignatureModal(); });
-    </script>
+        // Save to Sheets
+        const params = new URLSearchParams();
+        params.append('type', 'mou');
+        params.append('nomorMou', nomor);
+        params.append('tanggal', tgl);
+        params.append('tempat', tempat);
+        params.append('namaPihak1', p1Nama);
+        params.append('jabatanPihak1', p1Jab);
+        params.append('namaPihak2', p2Nama);
+        params.append('jabatanPihak2', p2Jab);
+        params.append('instansiPihak2', p2Inst);
+        params.append('maksudTujuan', document.getElementById('mouTujuan').value);
+        params.append('ruangLingkup', document.getElementById('mouRuang').value);
+        params.append('jangkaWaktu', document.getElementById('mouJangka').value);
+        params.append('ttdPihak1', document.getElementById('mouTTDP1').value || '');
+        params.append('ttdPihak2', document.getElementById('mouTTDP2').value || '');
+        params.append('createdByName', currentUser.displayName || currentUser.email);
+        params.append('createdByEmail', currentUser.email);
+
+        await fetch(APPS_SCRIPT_URL, { method: 'POST', body: params });
+
+        hideLoad();
+        pdf.save(`MoU_${nomor.replace(/\//g,'_')}.pdf`);
+        alert('MoU berhasil dibuat dan disimpan!');
+    };
+
+    // LOAD DATA MoU
+    window.loadMoUData = async () => {
+        showLoad('Memuat Data MoU...');
+        const resp = await fetch(`${APPS_SCRIPT_URL}?sheet=MoU&t=${Date.now()}`);
+        mouData = await resp.json();
+        hideLoad();
+        renderMoUTable();
+    };
+
+    window.renderMoUTable = () => {
+        const search = document.getElementById('searchMou').value.toLowerCase();
+        const filtered = mouData.filter(d => !search || (d['Nomor MoU']||'').toLowerCase().includes(search) || (d['Instansi Pihak 2']||'').toLowerCase().includes(search));
+        const tbody = document.getElementById('tbodyMou');
+        tbody.innerHTML = filtered.length ? filtered.map(d => `
+            <tr>
+                <td><strong>${d['Nomor MoU']||'-'}</strong></td>
+                <td>${formatDate(d['Tanggal'])}</td>
+                <td>${d['Nama Pihak 1']||'-'}</td>
+                <td>${d['Instansi Pihak 2']||'-'}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning" onclick="viewMoUDetail('${d['Nomor MoU']}')"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-sm btn-info" onclick="regenerateMoUPDF('${d['Nomor MoU']}')"><i class="fas fa-download"></i></button>
+                </td>
+            </tr>
+        `).join('') : '<tr><td colspan="5" class="text-center">Tidak ada data</td></tr>';
+    };
+
+    window.viewMoUDetail = (nomor) => {
+        const d = mouData.find(x => x['Nomor MoU'] === nomor);
+        if (!d) return;
+        alert(`Detail MoU:\n\nNomor: ${d['Nomor MoU']}\nTanggal: ${formatDate(d['Tanggal'])}\nTempat: ${d['Tempat']}\n\nPihak 1: ${d['Nama Pihak 1']} (${d['Jabatan Pihak 1']})\nPihak 2: ${d['Nama Pihak 2']} - ${d['Instansi Pihak 2']} (${d['Jabatan Pihak 2']})\n\nJangka Waktu: ${d['Jangka Waktu']}`);
+    };
+
+    window.regenerateMoUPDF = (nomor) => {
+        const d = mouData.find(x => x['Nomor MoU'] === nomor);
+        if (!d) return;
+        // Populate form
+        document.getElementById('mouNomor').value = d['Nomor MoU'] || '';
+        document.getElementById('mouTanggal').value = d['Tanggal'] || '';
+        document.getElementById('mouTempat').value = d['Tempat'] || '';
+        document.getElementById('mouP1Nama').value = d['Nama Pihak 1'] || '';
+        document.getElementById('mouP1Jabatan').value = d['Jabatan Pihak 1'] || '';
+        document.getElementById('mouP2Instansi').value = d['Instansi Pihak 2'] || '';
+        document.getElementById('mouP2Nama').value = d['Nama Pihak 2'] || '';
+        document.getElementById('mouP2Jabatan').value = d['Jabatan Pihak 2'] || '';
+        document.getElementById('mouTujuan').value = d['Maksud Tujuan'] || '';
+        document.getElementById('mouRuang').value = d['Ruang Lingkup'] || '';
+        document.getElementById('mouJangka').value = d['Jangka Waktu'] || '';
+        document.getElementById('mouTTDP1').value = d['TTD Pihak 1'] !== '-' ? d['TTD Pihak 1'] : '';
+        document.getElementById('mouTTDP2').value = d['TTD Pihak 2'] !== '-' ? d['TTD Pihak 2'] : '';
+        document.getElementById('mouIncludeTTD').checked = !!(d['TTD Pihak 1'] !== '-' || d['TTD Pihak 2'] !== '-');
+        document.getElementById('mouTTDSection').classList.toggle('hidden', !document.getElementById('mouIncludeTTD').checked);
+        
+        switchTab('tabMou');
+        alert('Data MoU dimuat. Klik "Generate & Simpan PDF" untuk download ulang.');
+    };
+
+    // PDF SJ Functions (Simplified for length)
+    window.viewSJPDF = (no) => generateSJPDF(no, 'view');
+    window.downloadSJPDF = (no) => generateSJPDF(no, 'download');
+    
+    async function generateSJPDF(no, mode) {
+        const d = sjData.find(x => x['No. Surat Jalan'] === no);
+        if (!d) return;
+        showLoad('Membuat PDF SJ...');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        let y = 15;
+        if (kopBase64) { pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); y += 40; }
+        pdf.setDrawColor(27,94,32); pdf.setLineWidth(1.5); pdf.line(15, y, 195, y); y += 10;
+        pdf.setFontSize(16); pdf.setFont(undefined, 'bold'); pdf.setTextColor(27,94,32);
+        pdf.text('SURAT JALAN', 105, y, {align:'center'}); y += 8;
+        pdf.setFontSize(10); pdf.setTextColor(0,0,0); pdf.setFont(undefined, 'normal');
+        pdf.text(`No: ${d['No. Surat Jalan']}`, 105, y, {align:'center'}); y += 15;
+        
+        pdf.autoTable({
+            startY: y,
+            body: [
+                ['Kode', d['Kode']], ['Tanggal', formatDate(d['Tanggal'])],
+                ['Lokasi', d['Lokasi Customer']], ['Waste', d['Jenis Waste']],
+                ['Jumlah', d['Jumlah (KG)'] + ' KG'], ['Keterangan', d['Keterangan']]
+            ],
+            theme: 'grid', styles: { fontSize: 10 }
+        });
+        y = pdf.lastAutoTable.finalY + 20;
+        
+        if (y > 200) { pdf.addPage(); y = 20; }
+        const signY = y;
+        pdf.text('PIC:', 20, signY); pdf.text('Customer:', 120, signY);
+        if (d['TTD PIC'] && d['TTD PIC'] !== '-') pdf.addImage(d['TTD PIC'], 'PNG', 20, signY+5, 40, 20);
+        if (d['TTD Customer'] && d['TTD Customer'] !== '-') pdf.addImage(d['TTD Customer'], 'PNG', 120, signY+5, 40, 20);
+        pdf.line(20, signY+30, 60, signY+30); pdf.line(120, signY+30, 160, signY+30);
+        pdf.text(d['Nama PIC']||'-', 40, signY+35, {align:'center'}); pdf.text(d['Nama Customer']||'-', 140, signY+35, {align:'center'});
+        
+        hideLoad();
+        if (mode === 'view') window.open(pdf.output('bloburl'), '_blank');
+        else pdf.save(`${d['No. Surat Jalan'].replace(/\//g,'_')}.pdf`);
+    }
+
+    function formatDate(str) {
+        if (!str) return '-';
+        const d = new Date(str);
+        if (isNaN(d)) return str;
+        return `${d.getDate()} ${['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][d.getMonth()]} ${d.getFullYear()}`;
+    }
+</script>
 </body>
 </html>
