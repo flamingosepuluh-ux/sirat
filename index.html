@@ -14,56 +14,68 @@
         :root { --primary: #1b5e20; --secondary: #2e7d32; --light: #4caf50; }
         body { background: #f5f7fa; font-family: 'Segoe UI', sans-serif; }
         .app-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 15px; position: sticky; top: 0; z-index: 100; }
+        .app-header img { height: 45px; margin-right: 15px; background: white; border-radius: 8px; padding: 2px; }
         .card-custom { border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; margin-bottom: 20px; }
         .card-header-custom { background: var(--primary); color: white; padding: 12px 20px; border-radius: 12px 12px 0 0; font-weight: 600; }
         .nav-tabs-custom { border-bottom: 3px solid var(--light); margin-bottom: 20px; }
         .nav-tabs-custom .nav-link { color: var(--primary); font-weight: 600; border: none; }
         .nav-tabs-custom .nav-link.active { background: var(--light); color: white; border-radius: 8px 8px 0 0; }
-        .btn-primary-custom { background: var(--primary); border: none; }
-        .btn-primary-custom:hover { background: var(--secondary); }
+        .btn-primary-custom { background: var(--primary); border: none; color: white; }
+        .btn-primary-custom:hover { background: var(--secondary); color: white; }
         .signature-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; }
         .signature-modal.active { display: flex; }
-        .signature-canvas { border: 2px dashed var(--light); background: white; border-radius: 10px; touch-action: none; }
+        .signature-canvas { border: 2px dashed var(--light); background: white; border-radius: 10px; touch-action: none; width: 100%; height: 200px; }
         .hidden { display: none !important; }
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; justify-content: center; align-items: center; color: white; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
-        .bottom-nav-item { text-align: center; padding: 5px; cursor: pointer; font-size: 12px; }
+        .bottom-nav-item { text-align: center; padding: 5px; cursor: pointer; font-size: 12px; color: #666; }
         .bottom-nav-item i { font-size: 20px; display: block; margin-bottom: 2px; }
         .bottom-nav-item.active { color: var(--primary); font-weight: bold; }
         @media (min-width: 769px) { .bottom-nav { display: none; } }
         .table-custom th { background: var(--primary); color: white; }
-        .mou-section { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .mou-section { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid var(--primary); }
     </style>
 </head>
 <body>
 
-<div id="loadingOverlay" class="loading-overlay hidden"><div><i class="fas fa-spinner fa-spin fa-2x"></i><p class="mt-2" id="loadingText">Memuat...</p></div></div>
+<div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="text-center">
+        <i class="fas fa-spinner fa-spin fa-2x"></i>
+        <p class="mt-2" id="loadingText">Memuat...</p>
+    </div>
+</div>
 
 <!-- LOGIN -->
 <div id="loginSection" class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
-        <h4 class="text-center text-success mb-4">SIRAT Login</h4>
+        <div class="text-center mb-4">
+            <img src="logo-raj.png" alt="Logo" style="height: 80px;" onerror="this.style.display='none'">
+            <h4 class="text-success mt-2">SIRAT Login</h4>
+            <small class="text-muted">CV Rezeki Amanah Jaya Group</small>
+        </div>
         <input type="email" id="loginEmail" class="form-control mb-3" placeholder="Email">
         <input type="password" id="loginPassword" class="form-control mb-3" placeholder="Password">
-        <button onclick="loginUser()" class="btn btn-primary-custom w-100 text-white">Masuk</button>
+        <button onclick="loginUser()" class="btn btn-primary-custom w-100">Masuk</button>
     </div>
 </div>
 
 <!-- APP -->
 <div id="appSection" class="hidden">
-    <!-- Di bagian app-header, tambahkan logo -->
-<div class="app-header">
-    <div class="container d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-            <img src="logo-raj.png" alt="Logo" style="height: 50px; margin-right: 15px;" onerror="this.style.display='none'">
+    <div class="app-header">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img src="logo-raj.png" alt="Logo" onerror="this.style.display='none'">
+                <div>
+                    <h5 class="mb-0">SIRAT - CV REZEKI AMANAH JAYA</h5>
+                    <small>Sistem Informasi Terpadu</small>
+                </div>
+            </div>
             <div>
-                <h5 class="mb-0">SIRAT - CV REZEKI AMANAH JAYA</h5>
-                <small>Sistem Informasi Terpadu</small>
+                <span class="me-3" id="userName">User</span>
+                <button onclick="logoutUser()" class="btn btn-sm btn-light"><i class="fas fa-sign-out-alt"></i></button>
             </div>
         </div>
-        <div><span class="me-3" id="userName">User</span><button onclick="logoutUser()" class="btn btn-sm btn-light"><i class="fas fa-sign-out-alt"></i></button></div>
     </div>
-</div>
 
     <div class="container mt-4 mb-5 pb-5">
         <ul class="nav nav-tabs nav-tabs-custom" id="mainTab">
@@ -83,7 +95,10 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Kode</label>
-                                    <select class="form-select" id="sjKode" required><option value="P">P - Pickup (SJP)</option><option value="D">D - Delivery (SJD)</option></select>
+                                    <select class="form-select" id="sjKode" required>
+                                        <option value="P">P - Pickup (SJP)</option>
+                                        <option value="D">D - Delivery (SJD)</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Tanggal</label>
@@ -112,17 +127,25 @@
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Nama PIC</label>
                                     <input type="text" class="form-control" id="sjPIC" required>
-                                    <button type="button" class="btn btn-sm btn-outline-success mt-2" onclick="openSignModal('sjPIC')">Tanda Tangan PIC</button>
+                                    <button type="button" class="btn btn-sm btn-outline-success mt-2" onclick="openSignModal('sjTTDPIC')">
+                                        <i class="fas fa-signature"></i> Tanda Tangan PIC
+                                    </button>
                                     <input type="hidden" id="sjTTDPIC">
+                                    <div id="sjTTDPICStatus" class="text-muted small mt-1">Belum ada TTD</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Nama Customer</label>
                                     <input type="text" class="form-control" id="sjCustomer" required>
-                                    <button type="button" class="btn btn-sm btn-outline-success mt-2" onclick="openSignModal('sjCust')">Tanda Tangan Customer</button>
+                                    <button type="button" class="btn btn-sm btn-outline-success mt-2" onclick="openSignModal('sjTTDCust')">
+                                        <i class="fas fa-signature"></i> Tanda Tangan Customer
+                                    </button>
                                     <input type="hidden" id="sjTTDCust">
+                                    <div id="sjTTDCustStatus" class="text-muted small mt-1">Belum ada TTD</div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary-custom w-100 text-white py-2">Simpan Surat Jalan</button>
+                            <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                                <i class="fas fa-save"></i> Simpan Surat Jalan
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -135,57 +158,128 @@
                     <div class="card-body p-4">
                         <form id="formMou">
                             <div class="mou-section">
-                                <h6 class="fw-bold text-success">Informasi MoU</h6>
+                                <h6 class="fw-bold text-success"><i class="fas fa-info-circle"></i> Informasi MoU</h6>
                                 <div class="row">
-                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Nomor MoU</label><input type="text" class="form-control" id="mouNomor" placeholder="___/MoU/RAJ/___/2026"></div>
-                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Tanggal</label><input type="date" class="form-control" id="mouTanggal"></div>
-                                    <div class="col-md-12 mb-2"><label class="form-label fw-bold">Tempat</label><input type="text" class="form-control" id="mouTempat" value="Kota Tangerang"></div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">Nomor MoU</label>
+                                        <input type="text" class="form-control" id="mouNomor" placeholder="_____/MoU/RAJ/_____/2026">
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">Tanggal</label>
+                                        <input type="date" class="form-control" id="mouTanggal">
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label class="form-label fw-bold">Tempat</label>
+                                        <input type="text" class="form-control" id="mouTempat" value="Kota Tangerang">
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="mou-section">
-                                <h6 class="fw-bold text-success">Pihak Pertama (CV Rezeki Amanah Jaya)</h6>
+                                <h6 class="fw-bold text-success"><i class="fas fa-user-tie"></i> PIHAK PERTAMA</h6>
                                 <div class="row">
-                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Nama</label><input type="text" class="form-control" id="mouP1Nama" value="Sidik Dwi Kuncahyo"></div>
-                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Jabatan</label><input type="text" class="form-control" id="mouP1Jabatan" value="Direktur"></div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">Nama</label>
+                                        <input type="text" class="form-control" id="mouP1Nama" value="Sidik Dwi Kuncahyo">
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">Jabatan</label>
+                                        <input type="text" class="form-control" id="mouP1Jabatan" value="Direktur CV Rezeki Amanah Jaya">
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="mou-section">
-                                <h6 class="fw-bold text-success">Pihak Kedua</h6>
+                                <h6 class="fw-bold text-success"><i class="fas fa-building"></i> PIHAK KEDUA</h6>
                                 <div class="row">
-                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Instansi</label><input type="text" class="form-control" id="mouP2Instansi" placeholder="Nama Instansi"></div>
-                                    <div class="col-md-6 mb-2"><label class="form-label fw-bold">Nama Perwakilan</label><input type="text" class="form-control" id="mouP2Nama"></div>
-                                    <div class="col-md-12 mb-2"><label class="form-label fw-bold">Jabatan</label><input type="text" class="form-control" id="mouP2Jabatan"></div>
+                                    <div class="col-md-12 mb-2">
+                                        <label class="form-label fw-bold">Nama Instansi</label>
+                                        <input type="text" class="form-control" id="mouP2Instansi" value="ZChicken Baznas Kota Tangerang">
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">Nama Perwakilan</label>
+                                        <input type="text" class="form-control" id="mouP2Nama">
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">Jabatan</label>
+                                        <input type="text" class="form-control" id="mouP2Jabatan">
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="mou-section">
-                                <h6 class="fw-bold text-success">Isi MoU</h6>
-                                <div class="mb-2"><label class="form-label fw-bold">Maksud & Tujuan</label><textarea class="form-control" id="mouTujuan" rows="2">Kerja sama pengumpulan dan pengelolaan minyak jelantah.</textarea></div>
-                                <div class="mb-2"><label class="form-label fw-bold">Ruang Lingkup</label><textarea class="form-control" id="mouRuang" rows="3">1. Penyerahan minyak jelantah&#10;2. Pengambilan berkala&#10;3. Pengelolaan ke industri biodiesel</textarea></div>
-                                <div class="mb-2"><label class="form-label fw-bold">Jangka Waktu</label><input type="text" class="form-control" id="mouJangka" value="1 (satu) tahun"></div>
+                                <h6 class="fw-bold text-success"><i class="fas fa-file-alt"></i> Isi MoU</h6>
+                                <div class="mb-2">
+                                    <label class="form-label fw-bold">PASAL 1 - MAKSUD DAN TUJUAN</label>
+                                    <textarea class="form-control" id="mouPasal1" rows="2">Kerja sama pengumpulan dan pengelolaan minyak jelantah dari operasional ZChicken Baznas Kota Tangerang guna mendukung pengelolaan limbah yang ramah lingkungan dan bernilai ekonomi.</textarea>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label fw-bold">PASAL 2 - RUANG LINGKUP KERJA SAMA</label>
+                                    <textarea class="form-control" id="mouPasal2" rows="4">1. Penyerahan minyak jelantah dari PIHAK KEDUA kepada PIHAK PERTAMA.
+2. Pengambilan minyak jelantah secara berkala.
+3. Pengelolaan dan penyaluran minyak jelantah ke industri pengolahan/biodiesel yang sesuai ketentuan.
+4. Berlaku untuk seluruh lokasi ZChicken Baznas di Kota Tangerang yang disepakati.</textarea>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label fw-bold">PASAL 3 - HAK DAN KEWAJIBAN PIHAK PERTAMA</label>
+                                    <textarea class="form-control" id="mouPasal3" rows="2">Menyediakan sarana penampungan bila diperlukan, melakukan penimbangan transparan, memberikan bukti serah terima, dan memberikan kompensasi sesuai kesepakatan.</textarea>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label fw-bold">PASAL 4 - HAK DAN KEWAJIBAN PIHAK KEDUA</label>
+                                    <textarea class="form-control" id="mouPasal4" rows="2">Mengumpulkan minyak jelantah dengan baik, tidak mencampur dengan limbah lain, dan memberikan akses pengambilan kepada PIHAK PERTAMA.</textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">PASAL 5 - HARGA DAN PEMBAYARAN</label>
+                                        <textarea class="form-control" id="mouPasal5" rows="2">Harga pembelian mengikuti kesepakatan dan kondisi pasar. Pembayaran dilakukan sesuai mekanisme yang disepakati kedua belah pihak.</textarea>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label fw-bold">PASAL 6 - JANGKA WAKTU</label>
+                                        <textarea class="form-control" id="mouPasal6" rows="2">MoU berlaku selama 1 (satu) tahun sejak ditandatangani dan dapat diperpanjang berdasarkan kesepakatan kedua belah pihak.</textarea>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label fw-bold">PASAL 7 - PENYELESAIAN PERSELISIHAN</label>
+                                    <textarea class="form-control" id="mouPasal7" rows="2">Setiap perselisihan akan diselesaikan secara musyawarah dan mufakat.</textarea>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label fw-bold">PASAL 8 - PENUTUP</label>
+                                    <textarea class="form-control" id="mouPasal8" rows="2">MoU dibuat dalam rangkap dua dan mempunyai kekuatan hukum yang sama.</textarea>
+                                </div>
                             </div>
+
                             <div class="mou-section">
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" type="checkbox" id="mouIncludeTTD" checked>
-                                    <label class="form-check-label fw-bold" for="mouIncludeTTD">Sertakan Tanda Tangan</label>
+                                    <label class="form-check-label fw-bold" for="mouIncludeTTD">
+                                        <i class="fas fa-signature"></i> Sertakan Tanda Tangan di MoU (Opsional)
+                                    </label>
                                 </div>
                                 <div id="mouTTDSection">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label class="form-label fw-bold">TTD Pihak 1</label>
-                                            <button type="button" class="btn btn-sm btn-outline-success" onclick="openSignModal('mouP1')">Buat TTD Pihak 1</button>
+                                            <label class="form-label fw-bold">TTD Pihak Pertama</label>
+                                            <button type="button" class="btn btn-sm btn-outline-success w-100" onclick="openSignModal('mouTTDP1')">
+                                                <i class="fas fa-pen"></i> Buat TTD Pihak 1
+                                            </button>
                                             <input type="hidden" id="mouTTDP1">
+                                            <div id="mouTTDP1Status" class="text-muted small mt-1">Belum ada TTD</div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label fw-bold">TTD Pihak 2</label>
-                                            <button type="button" class="btn btn-sm btn-outline-success" onclick="openSignModal('mouP2')">Buat TTD Pihak 2</button>
+                                            <label class="form-label fw-bold">TTD Pihak Kedua</label>
+                                            <button type="button" class="btn btn-sm btn-outline-success w-100" onclick="openSignModal('mouTTDP2')">
+                                                <i class="fas fa-pen"></i> Buat TTD Pihak 2
+                                            </button>
                                             <input type="hidden" id="mouTTDP2">
+                                            <div id="mouTTDP2Status" class="text-muted small mt-1">Belum ada TTD</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-flex gap-2">
-                                <button type="button" onclick="generateMoUPDF()" class="btn btn-primary-custom text-white flex-grow-1"><i class="fas fa-file-pdf"></i> Generate & Simpan PDF</button>
-                            </div>
+
+                            <button type="button" onclick="generateMoUPDF()" class="btn btn-primary-custom w-100 py-2">
+                                <i class="fas fa-file-pdf"></i> Generate PDF & Simpan
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -195,15 +289,27 @@
             <div class="tab-pane fade" id="tabDataSJ">
                 <div class="card card-custom">
                     <div class="card-header-custom d-flex justify-content-between">
-                        <span>Data Surat Jalan</span>
+                        <span><i class="fas fa-database"></i> Data Surat Jalan</span>
                         <button onclick="loadSJData()" class="btn btn-sm btn-light"><i class="fas fa-sync"></i> Refresh</button>
                     </div>
                     <div class="card-body">
                         <input type="text" id="searchSJ" class="form-control mb-3" placeholder="Cari No. Surat, PIC, Customer..." oninput="renderSJTable()">
                         <div class="table-responsive">
                             <table class="table table-custom table-hover">
-                                <thead><tr><th>No. Surat</th><th>Tanggal</th><th>Waste</th><th>KG</th><th>PIC</th><th>Customer</th><th>Aksi</th></tr></thead>
-                                <tbody id="tbodySJ"><tr><td colspan="7" class="text-center">Memuat...</td></tr></tbody>
+                                <thead>
+                                    <tr>
+                                        <th>No. Surat</th>
+                                        <th>Tanggal</th>
+                                        <th>Waste</th>
+                                        <th>KG</th>
+                                        <th>PIC</th>
+                                        <th>Customer</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodySJ">
+                                    <tr><td colspan="7" class="text-center">Klik Refresh untuk memuat data</td></tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -214,15 +320,25 @@
             <div class="tab-pane fade" id="tabDataMou">
                 <div class="card card-custom">
                     <div class="card-header-custom d-flex justify-content-between">
-                        <span>Data MoU</span>
+                        <span><i class="fas fa-list"></i> Data MoU</span>
                         <button onclick="loadMoUData()" class="btn btn-sm btn-light"><i class="fas fa-sync"></i> Refresh</button>
                     </div>
                     <div class="card-body">
                         <input type="text" id="searchMou" class="form-control mb-3" placeholder="Cari Nomor MoU, Instansi..." oninput="renderMoUTable()">
                         <div class="table-responsive">
                             <table class="table table-custom table-hover">
-                                <thead><tr><th>Nomor MoU</th><th>Tanggal</th><th>Pihak 1</th><th>Pihak 2 (Instansi)</th><th>Aksi</th></tr></thead>
-                                <tbody id="tbodyMou"><tr><td colspan="5" class="text-center">Memuat...</td></tr></tbody>
+                                <thead>
+                                    <tr>
+                                        <th>Nomor MoU</th>
+                                        <th>Tanggal</th>
+                                        <th>Pihak 1</th>
+                                        <th>Pihak 2 (Instansi)</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyMou">
+                                    <tr><td colspan="5" class="text-center">Klik Refresh untuk memuat data</td></tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -243,12 +359,13 @@
 <!-- SIGNATURE MODAL -->
 <div id="signModal" class="signature-modal">
     <div class="card p-3" style="width: 90%; max-width: 500px;">
-        <h5 class="text-center mb-3">Tanda Tangan Digital</h5>
-        <canvas id="signCanvas" class="signature-canvas" width="460" height="200"></canvas>
-        <div class="d-flex justify-content-between mt-3">
-            <button onclick="clearSign()" class="btn btn-danger">Hapus</button>
-            <button onclick="saveSign()" class="btn btn-success">Simpan</button>
-            <button onclick="closeSignModal()" class="btn btn-secondary">Batal</button>
+        <h5 class="text-center mb-3"><i class="fas fa-signature"></i> Tanda Tangan Digital</h5>
+        <div class="text-muted text-center mb-2" id="signModalTitle">Tanda Tangan</div>
+        <canvas id="signCanvas" class="signature-canvas"></canvas>
+        <div class="d-flex justify-content-between mt-3 gap-2">
+            <button onclick="clearSign()" class="btn btn-danger flex-grow-1"><i class="fas fa-eraser"></i> Hapus</button>
+            <button onclick="saveSign()" class="btn btn-success flex-grow-1"><i class="fas fa-check"></i> Simpan</button>
+            <button onclick="closeSignModal()" class="btn btn-secondary flex-grow-1"><i class="fas fa-times"></i> Batal</button>
         </div>
     </div>
 </div>
@@ -258,7 +375,14 @@
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxKrGnwNqngv5vYbrjbLPgjkuunONfin1U2fqSP3Dm4IXqf7_JdXd_4TxLx1XR7x3i2Uw/exec';
-    const firebaseConfig = { apiKey: "AIzaSyBOAUrCY6YZAzO80vUdt1ZLEZHJO2G55Cw", authDomain: "sirat-eb39e.firebaseapp.com", projectId: "sirat-eb39e", storageBucket: "sirat-eb39e.appspot.com", messagingSenderId: "533739459364", appId: "1:533739459364:web:dd76673f2d9e8cefc919b1" };
+    const firebaseConfig = { 
+        apiKey: "AIzaSyBOAUrCY6YZAzO80vUdt1ZLEZHJO2G55Cw", 
+        authDomain: "sirat-eb39e.firebaseapp.com", 
+        projectId: "sirat-eb39e", 
+        storageBucket: "sirat-eb39e.appspot.com", 
+        messagingSenderId: "533739459364", 
+        appId: "1:533739459364:web:dd76673f2d9e8cefc919b1" 
+    };
     
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -267,22 +391,17 @@
     let signPad = null, currentSignTarget = '';
     let kopBase64 = null;
 
-    // Load Images - FIXED: Convert to base64 properly
     async function loadAssets() {
         try {
-            // Load logo
-            const kopResp = await fetch('kop-surat.png');
-            const kopBlob = await kopResp.blob();
+            const resp = await fetch('logo-raj.png');
+            const blob = await resp.blob();
             kopBase64 = await new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onloadend = () => resolve(reader.result);
-                reader.readAsDataURL(kopBlob);
+                reader.readAsDataURL(blob);
             });
-            console.log('Logo loaded successfully');
-        } catch(e) { 
-            console.error('Asset load error:', e); 
-            alert('Warning: kop-surat.png tidak ditemukan. PDF akan dibuat tanpa logo.');
-        }
+            console.log('✅ Logo loaded successfully');
+        } catch(e) { console.error('❌ Logo load error:', e); }
     }
 
     onAuthStateChanged(auth, (user) => {
@@ -303,21 +422,29 @@
     window.loginUser = async () => {
         const email = document.getElementById('loginEmail').value;
         const pass = document.getElementById('loginPassword').value;
-        try { await signInWithEmailAndPassword(auth, email, pass); } catch(e) { alert('Login gagal: ' + e.message); }
+        try { await signInWithEmailAndPassword(auth, email, pass); } 
+        catch(e) { alert('Login gagal: ' + e.message); }
     };
     window.logoutUser = () => { if(confirm('Logout?')) signOut(auth); };
 
-    // UI Helpers
     const showLoad = (t) => { document.getElementById('loadingText').textContent = t; document.getElementById('loadingOverlay').classList.remove('hidden'); };
     const hideLoad = () => document.getElementById('loadingOverlay').classList.add('hidden');
-    window.switchTab = (id) => { new bootstrap.Tab(document.querySelector(`[data-bs-target="#${id}"]`)).show(); document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); };
+    
+    window.switchTab = (id) => { 
+        new bootstrap.Tab(document.querySelector(`[data-bs-target="#${id}"]`)).show(); 
+        document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active')); 
+        if (event && event.currentTarget) event.currentTarget.classList.add('active'); 
+    };
 
-    // Signature Pad
     window.openSignModal = (target) => {
         currentSignTarget = target;
+        const titles = { 'sjTTDPIC': 'Tanda Tangan PIC', 'sjTTDCust': 'Tanda Tangan Customer', 'mouTTDP1': 'Tanda Tangan Pihak Pertama', 'mouTTDP2': 'Tanda Tangan Pihak Kedua' };
+        document.getElementById('signModalTitle').textContent = titles[target] || 'Tanda Tangan';
         document.getElementById('signModal').classList.add('active');
         setTimeout(() => {
             const canvas = document.getElementById('signCanvas');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 200;
             signPad = new SignaturePad(canvas, { backgroundColor: 'rgba(255,255,255,0)' });
         }, 100);
     };
@@ -325,7 +452,11 @@
     window.clearSign = () => signPad.clear();
     window.saveSign = () => {
         if (signPad.isEmpty()) { alert('Buat tanda tangan dulu!'); return; }
-        document.getElementById(currentSignTarget).value = signPad.toDataURL();
+        const dataURL = signPad.toDataURL();
+        document.getElementById(currentSignTarget).value = dataURL;
+        const statusId = currentSignTarget + 'Status';
+        const statusEl = document.getElementById(statusId);
+        if (statusEl) { statusEl.innerHTML = '<i class="fas fa-check-circle text-success"></i> TTD sudah dibuat'; statusEl.className = 'text-success small mt-1'; }
         closeSignModal();
     };
 
@@ -333,10 +464,12 @@
         document.getElementById('mouTTDSection').classList.toggle('hidden', !e.target.checked);
     });
 
-    // SUBMIT SURAT JALAN
     document.getElementById('formSJ').addEventListener('submit', async (e) => {
         e.preventDefault();
-        if (!document.getElementById('sjTTDPIC').value || !document.getElementById('sjTTDCust').value) { alert('Lengkapi tanda tangan!'); return; }
+        const ttdPIC = document.getElementById('sjTTDPIC').value;
+        const ttdCust = document.getElementById('sjTTDCust').value;
+        if (!ttdPIC || !ttdCust) { alert('Lengkapi tanda tangan PIC dan Customer!'); return; }
+        
         showLoad('Menyimpan SJ...');
         const params = new URLSearchParams();
         params.append('type', 'sj');
@@ -347,20 +480,23 @@
         params.append('jumlah', document.getElementById('sjJumlah').value);
         params.append('keterangan', document.getElementById('sjKeterangan').value);
         params.append('namaPIC', document.getElementById('sjPIC').value);
-        params.append('ttdPIC', document.getElementById('sjTTDPIC').value);
+        params.append('ttdPIC', ttdPIC);
         params.append('namaCustomer', document.getElementById('sjCustomer').value);
-        params.append('ttdCustomer', document.getElementById('sjTTDCust').value);
+        params.append('ttdCustomer', ttdCust);
         params.append('createdByName', currentUser.displayName || currentUser.email);
         params.append('createdByEmail', currentUser.email);
 
-        await fetch(APPS_SCRIPT_URL, { method: 'POST', body: params });
-        hideLoad();
-        alert('Surat Jalan disimpan!');
-        e.target.reset();
-        document.getElementById('sjTanggal').valueAsDate = new Date();
+        try {
+            await fetch(APPS_SCRIPT_URL, { method: 'POST', body: params });
+            hideLoad();
+            alert('✅ Surat Jalan berhasil disimpan!');
+            e.target.reset();
+            document.getElementById('sjTanggal').valueAsDate = new Date();
+            document.getElementById('sjTTDPICStatus').innerHTML = 'Belum ada TTD'; document.getElementById('sjTTDPICStatus').className = 'text-muted small mt-1';
+            document.getElementById('sjTTDCustStatus').innerHTML = 'Belum ada TTD'; document.getElementById('sjTTDCustStatus').className = 'text-muted small mt-1';
+        } catch(err) { hideLoad(); alert('Error: ' + err.message); }
     });
 
-    // LOAD DATA SJ
     window.loadSJData = async () => {
         showLoad('Memuat Data SJ...');
         try {
@@ -368,20 +504,14 @@
             sjData = await resp.json();
             hideLoad();
             renderSJTable();
-        } catch(e) {
-            hideLoad();
-            alert('Error loading data: ' + e.message);
-        }
+        } catch(e) { hideLoad(); alert('Error loading data: ' + e.message); }
     };
 
     window.renderSJTable = () => {
         const search = document.getElementById('searchSJ').value.toLowerCase();
         const filtered = sjData.filter(d => !search || (d['No. Surat Jalan']||'').toLowerCase().includes(search) || (d['Nama PIC']||'').toLowerCase().includes(search));
         const tbody = document.getElementById('tbodySJ');
-        if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Tidak ada data</td></tr>';
-            return;
-        }
+        if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center">Tidak ada data</td></tr>'; return; }
         tbody.innerHTML = filtered.map(d => `
             <tr>
                 <td><strong>${d['No. Surat Jalan']||'-'}</strong></td>
@@ -398,203 +528,110 @@
         `).join('');
     };
 
-    // PDF Functions - FIXED
     window.viewSJPDF = (no) => generateSJPDF(no, 'view');
     window.downloadSJPDF = (no) => generateSJPDF(no, 'download');
     
     async function generateSJPDF(no, mode) {
         const d = sjData.find(x => x['No. Surat Jalan'] === no);
         if (!d) { alert('Data tidak ditemukan!'); return; }
-        
         showLoad('Membuat PDF SJ...');
         try {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
             let y = 15;
-            
-            // Add logo if available
-            if (kopBase64) {
-                try {
-                    pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35);
-                } catch(e) {
-                    console.error('Logo error:', e);
-                }
-                y += 40;
-            }
-            
-            pdf.setDrawColor(27,94,32); 
-            pdf.setLineWidth(1.5); 
-            pdf.line(15, y, 195, y); 
-            y += 10;
-            
-            pdf.setFontSize(16); 
-            pdf.setFont(undefined, 'bold'); 
-            pdf.setTextColor(27,94,32);
-            pdf.text('SURAT JALAN', 105, y, {align:'center'}); 
-            y += 8;
-            
-            pdf.setFontSize(10); 
-            pdf.setTextColor(0,0,0); 
-            pdf.setFont(undefined, 'normal');
-            pdf.text(`No: ${d['No. Surat Jalan']}`, 105, y, {align:'center'}); 
-            y += 15;
-            
+            if (kopBase64) { try { pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); } catch(e) {} y += 40; }
+            pdf.setDrawColor(27,94,32); pdf.setLineWidth(1.5); pdf.line(15, y, 195, y); y += 10;
+            pdf.setFontSize(16); pdf.setFont(undefined, 'bold'); pdf.setTextColor(27,94,32);
+            pdf.text('SURAT JALAN', 105, y, {align:'center'}); y += 8;
+            pdf.setFontSize(10); pdf.setTextColor(0,0,0); pdf.setFont(undefined, 'normal');
+            pdf.text(`No: ${d['No. Surat Jalan']}`, 105, y, {align:'center'}); y += 15;
             pdf.autoTable({
-                startY: y,
-                body: [
-                    ['Kode', d['Kode'] || '-'], 
-                    ['Tanggal', formatDate(d['Tanggal'])],
-                    ['Lokasi', d['Lokasi Customer'] || '-'], 
-                    ['Waste', d['Jenis Waste'] || '-'],
-                    ['Jumlah', (d['Jumlah (KG)'] || '0') + ' KG'], 
-                    ['Keterangan', d['Keterangan'] || '-']
-                ],
-                theme: 'grid', 
-                styles: { fontSize: 10 }
+                startY: y, body: [['Kode', d['Kode'] || '-'], ['Tanggal', formatDate(d['Tanggal'])], ['Lokasi', d['Lokasi Customer'] || '-'], ['Waste', d['Jenis Waste'] || '-'], ['Jumlah', (d['Jumlah (KG)'] || '0') + ' KG'], ['Keterangan', d['Keterangan'] || '-']],
+                theme: 'grid', styles: { fontSize: 10 }
             });
-            
             y = pdf.lastAutoTable.finalY + 20;
-            
             if (y > 200) { pdf.addPage(); y = 20; }
             const signY = y;
-            pdf.text('PIC:', 20, signY); 
-            pdf.text('Customer:', 120, signY);
-            
-            if (d['TTD PIC'] && d['TTD PIC'] !== '-' && d['TTD PIC'].length > 100) {
-                try { pdf.addImage(d['TTD PIC'], 'PNG', 20, signY+5, 40, 20); } catch(e) {}
-            }
-            if (d['TTD Customer'] && d['TTD Customer'] !== '-' && d['TTD Customer'].length > 100) {
-                try { pdf.addImage(d['TTD Customer'], 'PNG', 120, signY+5, 40, 20); } catch(e) {}
-            }
-            
-            pdf.line(20, signY+30, 60, signY+30); 
-            pdf.line(120, signY+30, 160, signY+30);
-            pdf.text(d['Nama PIC']||'-', 40, signY+35, {align:'center'}); 
-            pdf.text(d['Nama Customer']||'-', 140, signY+35, {align:'center'});
-            
+            pdf.text('PIC:', 20, signY); pdf.text('Customer:', 120, signY);
+            if (d['TTD PIC'] && d['TTD PIC'] !== '-' && d['TTD PIC'].length > 100) { try { pdf.addImage(d['TTD PIC'], 'PNG', 20, signY+5, 40, 20); } catch(e) {} }
+            if (d['TTD Customer'] && d['TTD Customer'] !== '-' && d['TTD Customer'].length > 100) { try { pdf.addImage(d['TTD Customer'], 'PNG', 120, signY+5, 40, 20); } catch(e) {} }
+            pdf.line(20, signY+30, 60, signY+30); pdf.line(120, signY+30, 160, signY+30);
+            pdf.text(d['Nama PIC']||'-', 40, signY+35, {align:'center'}); pdf.text(d['Nama Customer']||'-', 140, signY+35, {align:'center'});
             hideLoad();
-            if (mode === 'view') {
-                window.open(pdf.output('bloburl'), '_blank');
-            } else {
-                pdf.save(`${(d['No. Surat Jalan']||'SJ').replace(/\//g,'_')}.pdf`);
-            }
-        } catch(e) {
-            hideLoad();
-            alert('Error membuat PDF: ' + e.message);
-            console.error(e);
-        }
+            if (mode === 'view') { window.open(pdf.output('bloburl'), '_blank'); } else { pdf.save(`${(d['No. Surat Jalan']||'SJ').replace(/\//g,'_')}.pdf`); }
+        } catch(e) { hideLoad(); alert('Error membuat PDF: ' + e.message); }
     }
 
-    // GENERATE MoU PDF
+    // GENERATE MoU PDF - TTD OPSIONAL
     window.generateMoUPDF = async () => {
-        if (document.getElementById('mouIncludeTTD').checked) {
-            if (!document.getElementById('mouTTDP1').value || !document.getElementById('mouTTDP2').value) { 
-                alert('Lengkapi tanda tangan!'); 
-                return; 
-            }
-        }
+        const includeTTD = document.getElementById('mouIncludeTTD').checked;
         showLoad('Membuat MoU PDF...');
         
         try {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
+            pdf.setFont("times");
             let y = 20;
 
-            // Header
-            if (kopBase64) { 
-                try {
-                    pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); 
-                } catch(e) {}
-                y += 40; 
-            }
+            if (kopBase64) { try { pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); } catch(e) {} y += 40; }
             
-            // Judul
-            pdf.setFontSize(14); 
-            pdf.setFont(undefined, 'bold'); 
-            pdf.setTextColor(27, 94, 32);
-            pdf.text('MEMORANDUM OF UNDERSTANDING (MoU)', 105, y, {align:'center'}); 
-            y += 6;
-            pdf.text('KERJA SAMA PENGUMPULAN MINYAK JELANTAH', 105, y, {align:'center'}); 
-            y += 10;
+            pdf.setFontSize(14); pdf.setFont(undefined, 'bold'); pdf.setTextColor(27, 94, 32);
+            pdf.text('MEMORANDUM OF UNDERSTANDING (MoU)', 105, y, {align:'center'}); y += 6;
+            pdf.text('KERJA SAMA PENGUMPULAN MINYAK JELANTAH', 105, y, {align:'center'}); y += 10;
             
-            const nomor = document.getElementById('mouNomor').value || '___/MoU/RAJ/___/2026';
-            pdf.setFontSize(10); 
-            pdf.setFont(undefined, 'normal'); 
-            pdf.setTextColor(0,0,0);
-            pdf.text(`Nomor: ${nomor}`, 105, y, {align:'center'}); 
-            y += 15;
+            const nomor = document.getElementById('mouNomor').value || '_____/MoU/RAJ/_____/2026';
+            pdf.setFontSize(10); pdf.setFont(undefined, 'normal'); pdf.setTextColor(0,0,0);
+            pdf.text(`Nomor: ${nomor}`, 105, y, {align:'center'}); y += 15;
 
             const tgl = document.getElementById('mouTanggal').value;
-            const tempat = document.getElementById('mouTempat').value;
+            const tempat = document.getElementById('mouTempat').value || 'Kota Tangerang';
             const fmtTgl = tgl ? formatDate(tgl) : '__________';
-            pdf.text(`Pada hari ini, __________ tanggal ${fmtTgl} bulan __________ tahun 2026, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman antara:`, 15, y, {maxWidth: 180}); 
-            y += 20;
+            
+            pdf.text(`Pada hari ini, __________ tanggal ${fmtTgl} bulan __________ tahun 2026, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman (Memorandum of Understanding/MoU) antara:`, 15, y, {maxWidth: 180}); y += 20;
 
-            // Pihak 1
-            pdf.setFont(undefined, 'bold'); 
-            pdf.text('PIHAK PERTAMA', 15, y); 
-            y += 6;
+            pdf.setFont(undefined, 'bold'); pdf.text('PIHAK PERTAMA', 15, y); y += 6;
             pdf.setFont(undefined, 'normal');
-            const p1Nama = document.getElementById('mouP1Nama').value;
-            const p1Jab = document.getElementById('mouP1Jabatan').value;
-            pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', 15, y); 
-            y += 6;
-            pdf.text(`Nama: ${p1Nama}`, 20, y); 
-            y += 6;
-            pdf.text(`Jabatan: ${p1Jab}`, 20, y); 
-            y += 6;
-            pdf.text('Selanjutnya disebut PIHAK PERTAMA.', 20, y); 
-            y += 12;
+            const p1Nama = document.getElementById('mouP1Nama').value || 'Sidik Dwi Kuncahyo';
+            const p1Jab = document.getElementById('mouP1Jabatan').value || 'Direktur CV Rezeki Amanah Jaya';
+            pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', 15, y); y += 6;
+            pdf.text(`Nama: ${p1Nama}`, 20, y); y += 6;
+            pdf.text(`Jabatan: ${p1Jab}`, 20, y); y += 6;
+            pdf.text('Selanjutnya disebut PIHAK PERTAMA.', 20, y); y += 12;
 
-            // Pihak 2
-            pdf.setFont(undefined, 'bold'); 
-            pdf.text('PIHAK KEDUA', 15, y); 
-            y += 6;
+            pdf.setFont(undefined, 'bold'); pdf.text('PIHAK KEDUA', 15, y); y += 6;
             pdf.setFont(undefined, 'normal');
-            const p2Inst = document.getElementById('mouP2Instansi').value;
-            const p2Nama = document.getElementById('mouP2Nama').value;
-            const p2Jab = document.getElementById('mouP2Jabatan').value;
-            pdf.text(`${p2Inst}, diwakili oleh:`, 15, y); 
-            y += 6;
-            pdf.text(`Nama: ${p2Nama}`, 20, y); 
-            y += 6;
-            pdf.text(`Jabatan: ${p2Jab}`, 20, y); 
-            y += 6;
-            pdf.text('Selanjutnya disebut PIHAK KEDUA.', 20, y); 
-            y += 15;
+            const p2Inst = document.getElementById('mouP2Instansi').value || '____________________';
+            const p2Nama = document.getElementById('mouP2Nama').value || '____________________';
+            const p2Jab = document.getElementById('mouP2Jabatan').value || '____________________';
+            pdf.text(`${p2Inst}, diwakili oleh:`, 15, y); y += 6;
+            pdf.text(`Nama: ${p2Nama}`, 20, y); y += 6;
+            pdf.text(`Jabatan: ${p2Jab}`, 20, y); y += 6;
+            pdf.text('Selanjutnya disebut PIHAK KEDUA.', 20, y); y += 15;
 
-            // Pasal
             const pasal = [
-                ['PASAL 1 - MAKSUD DAN TUJUAN', document.getElementById('mouTujuan').value],
-                ['PASAL 2 - RUANG LINGKUP', document.getElementById('mouRuang').value],
-                ['PASAL 3 - JANGKA WAKTU', `MoU berlaku selama ${document.getElementById('mouJangka').value}.`]
+                ['PASAL 1 - MAKSUD DAN TUJUAN', document.getElementById('mouPasal1').value],
+                ['PASAL 2 - RUANG LINGKUP KERJA SAMA', document.getElementById('mouPasal2').value],
+                ['PASAL 3 - HAK DAN KEWAJIBAN PIHAK PERTAMA', document.getElementById('mouPasal3').value],
+                ['PASAL 4 - HAK DAN KEWAJIBAN PIHAK KEDUA', document.getElementById('mouPasal4').value],
+                ['PASAL 5 - HARGA DAN PEMBAYARAN', document.getElementById('mouPasal5').value],
+                ['PASAL 6 - JANGKA WAKTU', document.getElementById('mouPasal6').value],
+                ['PASAL 7 - PENYELESAIAN PERSELISIHAN', document.getElementById('mouPasal7').value],
+                ['PASAL 8 - PENUTUP', document.getElementById('mouPasal8').value]
             ];
 
             pasal.forEach(([title, content]) => {
-                if (y > 250) { 
-                    pdf.addPage(); 
-                    if(kopBase64) { 
-                        try { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } catch(e) {}
-                    }
-                    y = 60; 
-                }
-                pdf.setFont(undefined, 'bold'); 
-                pdf.text(title, 15, y); 
-                y += 6;
+                if (y > 240) { pdf.addPage(); if(kopBase64) { try { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } catch(e) {} } y = 60; }
+                pdf.setFont(undefined, 'bold'); pdf.text(title, 15, y); y += 6;
                 pdf.setFont(undefined, 'normal');
                 const lines = pdf.splitTextToSize(content, 180);
-                pdf.text(lines, 15, y); 
-                y += lines.length * 5 + 8;
+                pdf.text(lines, 15, y); y += lines.length * 5 + 8;
             });
 
-            // TTD
-            if (document.getElementById('mouIncludeTTD').checked) {
-                if (y > 220) { pdf.addPage(); y = 60; }
+            if (includeTTD) {
+                if (y > 200) { pdf.addPage(); y = 60; }
                 y += 10;
-                pdf.text(`Dibuat di: ${tempat}`, 15, y); 
-                y += 6;
-                pdf.text(`Tanggal: ${fmtTgl}`, 15, y); 
-                y += 20;
+                pdf.text(`Dibuat di: ${tempat}`, 15, y); y += 6;
+                pdf.text(`Tanggal: ${fmtTgl}`, 15, y); y += 25;
                 
                 const signY = y;
                 pdf.setFont(undefined, 'bold'); 
@@ -603,57 +640,50 @@
                 
                 const ttd1 = document.getElementById('mouTTDP1').value;
                 const ttd2 = document.getElementById('mouTTDP2').value;
-                if (ttd1 && ttd1.length > 100) {
-                    try { pdf.addImage(ttd1, 'PNG', 15, signY+5, 50, 25); } catch(e) {}
-                }
-                if (ttd2 && ttd2.length > 100) {
-                    try { pdf.addImage(ttd2, 'PNG', 130, signY+5, 50, 25); } catch(e) {}
-                }
+                // TTD akan digambar jika ada, jika kosong hanya akan menampilkan garis dan nama
+                if (ttd1 && ttd1.length > 100) { try { pdf.addImage(ttd1, 'PNG', 15, signY+5, 50, 25); } catch(e) {} }
+                if (ttd2 && ttd2.length > 100) { try { pdf.addImage(ttd2, 'PNG', 130, signY+5, 50, 25); } catch(e) {} }
                 
-                pdf.line(15, signY+35, 65, signY+35); 
-                pdf.line(130, signY+35, 180, signY+35);
-                pdf.text(p1Nama, 40, signY+41, {align:'center'}); 
-                pdf.text(p2Nama, 155, signY+41, {align:'center'});
+                pdf.line(15, signY+35, 65, signY+35); pdf.line(130, signY+35, 180, signY+35);
+                pdf.text(p1Nama, 40, signY+41, {align:'center'}); pdf.text(p2Nama, 155, signY+41, {align:'center'});
+            } else {
+                y += 10;
+                pdf.setFont(undefined, 'italic'); pdf.setTextColor(100,100,100);
+                pdf.text('(Dokumen ini dibuat tanpa tanda tangan digital)', 105, y, {align:'center'});
             }
 
-            // Footer
-            pdf.setFontSize(8); 
-            pdf.setTextColor(128,128,128);
+            pdf.setFontSize(8); pdf.setTextColor(128,128,128);
             pdf.line(15, 280, 195, 280);
             pdf.text(`Dicetak: ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
 
-            // Save to Sheets
-            const params = new URLSearchParams();
-            params.append('type', 'mou');
-            params.append('nomorMou', nomor);
-            params.append('tanggal', tgl);
-            params.append('tempat', tempat);
-            params.append('namaPihak1', p1Nama);
-            params.append('jabatanPihak1', p1Jab);
-            params.append('namaPihak2', p2Nama);
-            params.append('jabatanPihak2', p2Jab);
-            params.append('instansiPihak2', p2Inst);
-            params.append('maksudTujuan', document.getElementById('mouTujuan').value);
-            params.append('ruangLingkup', document.getElementById('mouRuang').value);
-            params.append('jangkaWaktu', document.getElementById('mouJangka').value);
-            params.append('ttdPihak1', document.getElementById('mouTTDP1').value || '');
-            params.append('ttdPihak2', document.getElementById('mouTTDP2').value || '');
-            params.append('createdByName', currentUser.displayName || currentUser.email);
-            params.append('createdByEmail', currentUser.email);
+            // Simpan ke Spreadsheet
+            const mouDataObj = {
+                type: 'mou', nomorMou: nomor, tanggal: tgl, tempat: tempat,
+                namaPihak1: p1Nama, jabatanPihak1: p1Jab, namaPihak2: p2Nama, jabatanPihak2: p2Jab, instansiPihak2: p2Inst,
+                maksudTujuan: document.getElementById('mouPasal1').value, ruangLingkup: document.getElementById('mouPasal2').value,
+                hakKewajiban1: document.getElementById('mouPasal3').value, hakKewajiban2: document.getElementById('mouPasal4').value,
+                hargaPembayaran: document.getElementById('mouPasal5').value, jangkaWaktu: document.getElementById('mouPasal6').value,
+                penyelesaian: document.getElementById('mouPasal7').value, penutup: document.getElementById('mouPasal8').value,
+                ttdPihak1: includeTTD ? (document.getElementById('mouTTDP1').value || '-') : '-',
+                ttdPihak2: includeTTD ? (document.getElementById('mouTTDP2').value || '-') : '-',
+                createdByName: currentUser.displayName || currentUser.email, createdByEmail: currentUser.email
+            };
 
-            await fetch(APPS_SCRIPT_URL, { method: 'POST', body: params });
+            await fetch(APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(mouDataObj) });
 
             hideLoad();
             pdf.save(`MoU_${nomor.replace(/\//g,'_')}.pdf`);
-            alert('MoU berhasil dibuat dan disimpan!');
-        } catch(e) {
-            hideLoad();
-            alert('Error membuat MoU: ' + e.message);
-            console.error(e);
-        }
+            alert('✅ MoU berhasil dibuat dan disimpan!');
+            
+            document.getElementById('formMou').reset();
+            document.getElementById('mouTTDP1').value = ''; document.getElementById('mouTTDP2').value = '';
+            document.getElementById('mouTTDP1Status').innerHTML = 'Belum ada TTD'; document.getElementById('mouTTDP1Status').className = 'text-muted small mt-1';
+            document.getElementById('mouTTDP2Status').innerHTML = 'Belum ada TTD'; document.getElementById('mouTTDP2Status').className = 'text-muted small mt-1';
+            document.getElementById('mouTanggal').valueAsDate = new Date();
+            
+        } catch(e) { hideLoad(); alert('Error membuat MoU: ' + e.message); console.error(e); }
     };
 
-    // LOAD DATA MoU
     window.loadMoUData = async () => {
         showLoad('Memuat Data MoU...');
         try {
@@ -661,20 +691,14 @@
             mouData = await resp.json();
             hideLoad();
             renderMoUTable();
-        } catch(e) {
-            hideLoad();
-            alert('Error loading data: ' + e.message);
-        }
+        } catch(e) { hideLoad(); alert('Error loading data: ' + e.message); }
     };
 
     window.renderMoUTable = () => {
         const search = document.getElementById('searchMou').value.toLowerCase();
         const filtered = mouData.filter(d => !search || (d['Nomor MoU']||'').toLowerCase().includes(search) || (d['Instansi Pihak 2']||'').toLowerCase().includes(search));
         const tbody = document.getElementById('tbodyMou');
-        if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Tidak ada data</td></tr>';
-            return;
-        }
+        if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center">Tidak ada data</td></tr>'; return; }
         tbody.innerHTML = filtered.map(d => `
             <tr>
                 <td><strong>${d['Nomor MoU']||'-'}</strong></td>
@@ -698,7 +722,6 @@
     window.regenerateMoUPDF = (nomor) => {
         const d = mouData.find(x => x['Nomor MoU'] === nomor);
         if (!d) return;
-        // Populate form
         document.getElementById('mouNomor').value = d['Nomor MoU'] || '';
         document.getElementById('mouTanggal').value = d['Tanggal'] || '';
         document.getElementById('mouTempat').value = d['Tempat'] || '';
@@ -707,16 +730,20 @@
         document.getElementById('mouP2Instansi').value = d['Instansi Pihak 2'] || '';
         document.getElementById('mouP2Nama').value = d['Nama Pihak 2'] || '';
         document.getElementById('mouP2Jabatan').value = d['Jabatan Pihak 2'] || '';
-        document.getElementById('mouTujuan').value = d['Maksud Tujuan'] || '';
-        document.getElementById('mouRuang').value = d['Ruang Lingkup'] || '';
-        document.getElementById('mouJangka').value = d['Jangka Waktu'] || '';
+        document.getElementById('mouPasal1').value = d['Maksud Tujuan'] || '';
+        document.getElementById('mouPasal2').value = d['Ruang Lingkup'] || '';
+        document.getElementById('mouPasal3').value = d['Hak Kewajiban Pihak 1'] || '';
+        document.getElementById('mouPasal4').value = d['Hak Kewajiban Pihak 2'] || '';
+        document.getElementById('mouPasal5').value = d['Harga Pembayaran'] || '';
+        document.getElementById('mouPasal6').value = d['Jangka Waktu'] || '';
+        document.getElementById('mouPasal7').value = d['Penyelesaian'] || '';
+        document.getElementById('mouPasal8').value = d['Penutup'] || '';
         document.getElementById('mouTTDP1').value = d['TTD Pihak 1'] !== '-' ? d['TTD Pihak 1'] : '';
         document.getElementById('mouTTDP2').value = d['TTD Pihak 2'] !== '-' ? d['TTD Pihak 2'] : '';
         document.getElementById('mouIncludeTTD').checked = !!(d['TTD Pihak 1'] !== '-' || d['TTD Pihak 2'] !== '-');
         document.getElementById('mouTTDSection').classList.toggle('hidden', !document.getElementById('mouIncludeTTD').checked);
-        
         switchTab('tabMou');
-        alert('Data MoU dimuat. Klik "Generate & Simpan PDF" untuk download ulang.');
+        alert('Data MoU dimuat. Klik "Generate PDF & Simpan" untuk download ulang.');
     };
 
     function formatDate(str) {
