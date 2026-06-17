@@ -258,17 +258,24 @@
     let currentUser = null;
     let sjData = [], mouData = [];
     let signPad = null, currentSignTarget = '';
-    let kopBase64 = null, stempelBase64 = null;
+    let kopBase64 = null;
 
-    // Load Images
+    // Load Images - FIXED: Convert to base64 properly
     async function loadAssets() {
         try {
+            // Load logo
             const kopResp = await fetch('kop-surat.png');
-            kopBase64 = await (await kopResp.blob()).arrayBuffer();
-            const stampResp = await fetch('stempel-raj.png');
-            stempelBase64 = await (await stampResp.blob()).arrayBuffer();
-            console.log('Assets loaded');
-        } catch(e) { console.error('Asset load error:', e); }
+            const kopBlob = await kopResp.blob();
+            kopBase64 = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(kopBlob);
+            });
+            console.log('Logo loaded successfully');
+        } catch(e) { 
+            console.error('Asset load error:', e); 
+            alert('Warning: kop-surat.png tidak ditemukan. PDF akan dibuat tanpa logo.');
+        }
     }
 
     onAuthStateChanged(auth, (user) => {
@@ -349,17 +356,26 @@
     // LOAD DATA SJ
     window.loadSJData = async () => {
         showLoad('Memuat Data SJ...');
-        const resp = await fetch(`${APPS_SCRIPT_URL}?sheet=Surat Jalan&t=${Date.now()}`);
-        sjData = await resp.json();
-        hideLoad();
-        renderSJTable();
+        try {
+            const resp = await fetch(`${APPS_SCRIPT_URL}?sheet=Surat Jalan&t=${Date.now()}`);
+            sjData = await resp.json();
+            hideLoad();
+            renderSJTable();
+        } catch(e) {
+            hideLoad();
+            alert('Error loading data: ' + e.message);
+        }
     };
 
     window.renderSJTable = () => {
         const search = document.getElementById('searchSJ').value.toLowerCase();
         const filtered = sjData.filter(d => !search || (d['No. Surat Jalan']||'').toLowerCase().includes(search) || (d['Nama PIC']||'').toLowerCase().includes(search));
         const tbody = document.getElementById('tbodySJ');
-        tbody.innerHTML = filtered.length ? filtered.map(d => `
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center">Tidak ada data</td></tr>';
+            return;
+        }
+        tbody.innerHTML = filtered.map(d => `
             <tr>
                 <td><strong>${d['No. Surat Jalan']||'-'}</strong></td>
                 <td>${formatDate(d['Tanggal'])}</td>
@@ -372,139 +388,287 @@
                     <button class="btn btn-sm btn-info" onclick="downloadSJPDF('${d['No. Surat Jalan']}')"><i class="fas fa-download"></i></button>
                 </td>
             </tr>
-        `).join('') : '<tr><td colspan="7" class="text-center">Tidak ada data</td></tr>';
+        `).join('');
     };
 
-    // SUBMIT / GENERATE MoU
+    // PDF Functions - FIXED
+    window.viewSJPDF = (no) => generateSJPDF(no, 'view');
+    window.downloadSJPDF = (no) => generateSJPDF(no, 'download');
+    
+    async function generateSJPDF(no, mode) {
+        const d = sjData.find(x => x['No. Surat Jalan'] === no);
+        if (!d) { alert('Data tidak ditemukan!'); return; }
+        
+        showLoad('Membuat PDF SJ...');
+        try {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            let y = 15;
+            
+            // Add logo if available
+            if (kopBase64) {
+                try {
+                    pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35);
+                } catch(e) {
+                    console.error('Logo error:', e);
+                }
+                y += 40;
+            }
+            
+            pdf.setDrawColor(27,94,32); 
+            pdf.setLineWidth(1.5); 
+            pdf.line(15, y, 195, y); 
+            y += 10;
+            
+            pdf.setFontSize(16); 
+            pdf.setFont(undefined, 'bold'); 
+            pdf.setTextColor(27,94,32);
+            pdf.text('SURAT JALAN', 105, y, {align:'center'}); 
+            y += 8;
+            
+            pdf.setFontSize(10); 
+            pdf.setTextColor(0,0,0); 
+            pdf.setFont(undefined, 'normal');
+            pdf.text(`No: ${d['No. Surat Jalan']}`, 105, y, {align:'center'}); 
+            y += 15;
+            
+            pdf.autoTable({
+                startY: y,
+                body: [
+                    ['Kode', d['Kode'] || '-'], 
+                    ['Tanggal', formatDate(d['Tanggal'])],
+                    ['Lokasi', d['Lokasi Customer'] || '-'], 
+                    ['Waste', d['Jenis Waste'] || '-'],
+                    ['Jumlah', (d['Jumlah (KG)'] || '0') + ' KG'], 
+                    ['Keterangan', d['Keterangan'] || '-']
+                ],
+                theme: 'grid', 
+                styles: { fontSize: 10 }
+            });
+            
+            y = pdf.lastAutoTable.finalY + 20;
+            
+            if (y > 200) { pdf.addPage(); y = 20; }
+            const signY = y;
+            pdf.text('PIC:', 20, signY); 
+            pdf.text('Customer:', 120, signY);
+            
+            if (d['TTD PIC'] && d['TTD PIC'] !== '-' && d['TTD PIC'].length > 100) {
+                try { pdf.addImage(d['TTD PIC'], 'PNG', 20, signY+5, 40, 20); } catch(e) {}
+            }
+            if (d['TTD Customer'] && d['TTD Customer'] !== '-' && d['TTD Customer'].length > 100) {
+                try { pdf.addImage(d['TTD Customer'], 'PNG', 120, signY+5, 40, 20); } catch(e) {}
+            }
+            
+            pdf.line(20, signY+30, 60, signY+30); 
+            pdf.line(120, signY+30, 160, signY+30);
+            pdf.text(d['Nama PIC']||'-', 40, signY+35, {align:'center'}); 
+            pdf.text(d['Nama Customer']||'-', 140, signY+35, {align:'center'});
+            
+            hideLoad();
+            if (mode === 'view') {
+                window.open(pdf.output('bloburl'), '_blank');
+            } else {
+                pdf.save(`${(d['No. Surat Jalan']||'SJ').replace(/\//g,'_')}.pdf`);
+            }
+        } catch(e) {
+            hideLoad();
+            alert('Error membuat PDF: ' + e.message);
+            console.error(e);
+        }
+    }
+
+    // GENERATE MoU PDF
     window.generateMoUPDF = async () => {
         if (document.getElementById('mouIncludeTTD').checked) {
-            if (!document.getElementById('mouTTDP1').value || !document.getElementById('mouTTDP2').value) { alert('Lengkapi tanda tangan!'); return; }
+            if (!document.getElementById('mouTTDP1').value || !document.getElementById('mouTTDP2').value) { 
+                alert('Lengkapi tanda tangan!'); 
+                return; 
+            }
         }
         showLoad('Membuat MoU PDF...');
         
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        pdf.setFont("times");
-        let y = 20;
+        try {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            let y = 20;
 
-        // Header
-        if (kopBase64) { pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); y += 40; }
-        
-        // Judul
-        pdf.setFontSize(14); pdf.setFont(undefined, 'bold'); pdf.setTextColor(27, 94, 32);
-        pdf.text('MEMORANDUM OF UNDERSTANDING (MoU)', 105, y, {align:'center'}); y += 6;
-        pdf.text('KERJA SAMA PENGUMPULAN MINYAK JELANTAH', 105, y, {align:'center'}); y += 10;
-        
-        const nomor = document.getElementById('mouNomor').value || '___/MoU/RAJ/___/2026';
-        pdf.setFontSize(10); pdf.setFont(undefined, 'normal'); pdf.setTextColor(0,0,0);
-        pdf.text(`Nomor: ${nomor}`, 105, y, {align:'center'}); y += 15;
-
-        const tgl = document.getElementById('mouTanggal').value;
-        const tempat = document.getElementById('mouTempat').value;
-        const fmtTgl = tgl ? formatDate(tgl) : '__________';
-        pdf.text(`Pada hari ini, __________ tanggal ${fmtTgl} bulan __________ tahun 2026, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman antara:`, 15, y, {maxWidth: 180}); y += 20;
-
-        // Pihak 1
-        pdf.setFont(undefined, 'bold'); pdf.text('PIHAK PERTAMA', 15, y); y += 6;
-        pdf.setFont(undefined, 'normal');
-        const p1Nama = document.getElementById('mouP1Nama').value;
-        const p1Jab = document.getElementById('mouP1Jabatan').value;
-        pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', 15, y); y += 6;
-        pdf.text(`Nama: ${p1Nama}`, 20, y); y += 6;
-        pdf.text(`Jabatan: ${p1Jab}`, 20, y); y += 6;
-        pdf.text('Selanjutnya disebut PIHAK PERTAMA.', 20, y); y += 12;
-
-        // Pihak 2
-        pdf.setFont(undefined, 'bold'); pdf.text('PIHAK KEDUA', 15, y); y += 6;
-        pdf.setFont(undefined, 'normal');
-        const p2Inst = document.getElementById('mouP2Instansi').value;
-        const p2Nama = document.getElementById('mouP2Nama').value;
-        const p2Jab = document.getElementById('mouP2Jabatan').value;
-        pdf.text(`${p2Inst}, diwakili oleh:`, 15, y); y += 6;
-        pdf.text(`Nama: ${p2Nama}`, 20, y); y += 6;
-        pdf.text(`Jabatan: ${p2Jab}`, 20, y); y += 6;
-        pdf.text('Selanjutnya disebut PIHAK KEDUA.', 20, y); y += 15;
-
-        // Pasal
-        const pasal = [
-            ['PASAL 1 - MAKSUD DAN TUJUAN', document.getElementById('mouTujuan').value],
-            ['PASAL 2 - RUANG LINGKUP', document.getElementById('mouRuang').value],
-            ['PASAL 3 - JANGKA WAKTU', `MoU berlaku selama ${document.getElementById('mouJangka').value}.`]
-        ];
-
-        pasal.forEach(([title, content]) => {
-            if (y > 250) { pdf.addPage(); if(kopBase64) { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } y = 60; }
-            pdf.setFont(undefined, 'bold'); pdf.text(title, 15, y); y += 6;
-            pdf.setFont(undefined, 'normal');
-            const lines = pdf.splitTextToSize(content, 180);
-            pdf.text(lines, 15, y); y += lines.length * 5 + 8;
-        });
-
-        // TTD
-        if (document.getElementById('mouIncludeTTD').checked) {
-            if (y > 220) { pdf.addPage(); y = 60; }
+            // Header
+            if (kopBase64) { 
+                try {
+                    pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); 
+                } catch(e) {}
+                y += 40; 
+            }
+            
+            // Judul
+            pdf.setFontSize(14); 
+            pdf.setFont(undefined, 'bold'); 
+            pdf.setTextColor(27, 94, 32);
+            pdf.text('MEMORANDUM OF UNDERSTANDING (MoU)', 105, y, {align:'center'}); 
+            y += 6;
+            pdf.text('KERJA SAMA PENGUMPULAN MINYAK JELANTAH', 105, y, {align:'center'}); 
             y += 10;
-            pdf.text(`Dibuat di: ${tempat}`, 15, y); y += 6;
-            pdf.text(`Tanggal: ${fmtTgl}`, 15, y); y += 20;
             
-            const signY = y;
-            pdf.setFont(undefined, 'bold'); pdf.text('PIHAK PERTAMA', 40, signY, {align:'center'});
-            pdf.text('PIHAK KEDUA', 155, signY, {align:'center'});
-            
-            const ttd1 = document.getElementById('mouTTDP1').value;
-            const ttd2 = document.getElementById('mouTTDP2').value;
-            if (ttd1) pdf.addImage(ttd1, 'PNG', 15, signY+5, 50, 25);
-            if (ttd2) pdf.addImage(ttd2, 'PNG', 130, signY+5, 50, 25);
-            
-            pdf.line(15, signY+35, 65, signY+35); pdf.line(130, signY+35, 180, signY+35);
-            pdf.text(p1Nama, 40, signY+41, {align:'center'}); pdf.text(p2Nama, 155, signY+41, {align:'center'});
+            const nomor = document.getElementById('mouNomor').value || '___/MoU/RAJ/___/2026';
+            pdf.setFontSize(10); 
+            pdf.setFont(undefined, 'normal'); 
+            pdf.setTextColor(0,0,0);
+            pdf.text(`Nomor: ${nomor}`, 105, y, {align:'center'}); 
+            y += 15;
+
+            const tgl = document.getElementById('mouTanggal').value;
+            const tempat = document.getElementById('mouTempat').value;
+            const fmtTgl = tgl ? formatDate(tgl) : '__________';
+            pdf.text(`Pada hari ini, __________ tanggal ${fmtTgl} bulan __________ tahun 2026, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman antara:`, 15, y, {maxWidth: 180}); 
+            y += 20;
+
+            // Pihak 1
+            pdf.setFont(undefined, 'bold'); 
+            pdf.text('PIHAK PERTAMA', 15, y); 
+            y += 6;
+            pdf.setFont(undefined, 'normal');
+            const p1Nama = document.getElementById('mouP1Nama').value;
+            const p1Jab = document.getElementById('mouP1Jabatan').value;
+            pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', 15, y); 
+            y += 6;
+            pdf.text(`Nama: ${p1Nama}`, 20, y); 
+            y += 6;
+            pdf.text(`Jabatan: ${p1Jab}`, 20, y); 
+            y += 6;
+            pdf.text('Selanjutnya disebut PIHAK PERTAMA.', 20, y); 
+            y += 12;
+
+            // Pihak 2
+            pdf.setFont(undefined, 'bold'); 
+            pdf.text('PIHAK KEDUA', 15, y); 
+            y += 6;
+            pdf.setFont(undefined, 'normal');
+            const p2Inst = document.getElementById('mouP2Instansi').value;
+            const p2Nama = document.getElementById('mouP2Nama').value;
+            const p2Jab = document.getElementById('mouP2Jabatan').value;
+            pdf.text(`${p2Inst}, diwakili oleh:`, 15, y); 
+            y += 6;
+            pdf.text(`Nama: ${p2Nama}`, 20, y); 
+            y += 6;
+            pdf.text(`Jabatan: ${p2Jab}`, 20, y); 
+            y += 6;
+            pdf.text('Selanjutnya disebut PIHAK KEDUA.', 20, y); 
+            y += 15;
+
+            // Pasal
+            const pasal = [
+                ['PASAL 1 - MAKSUD DAN TUJUAN', document.getElementById('mouTujuan').value],
+                ['PASAL 2 - RUANG LINGKUP', document.getElementById('mouRuang').value],
+                ['PASAL 3 - JANGKA WAKTU', `MoU berlaku selama ${document.getElementById('mouJangka').value}.`]
+            ];
+
+            pasal.forEach(([title, content]) => {
+                if (y > 250) { 
+                    pdf.addPage(); 
+                    if(kopBase64) { 
+                        try { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } catch(e) {}
+                    }
+                    y = 60; 
+                }
+                pdf.setFont(undefined, 'bold'); 
+                pdf.text(title, 15, y); 
+                y += 6;
+                pdf.setFont(undefined, 'normal');
+                const lines = pdf.splitTextToSize(content, 180);
+                pdf.text(lines, 15, y); 
+                y += lines.length * 5 + 8;
+            });
+
+            // TTD
+            if (document.getElementById('mouIncludeTTD').checked) {
+                if (y > 220) { pdf.addPage(); y = 60; }
+                y += 10;
+                pdf.text(`Dibuat di: ${tempat}`, 15, y); 
+                y += 6;
+                pdf.text(`Tanggal: ${fmtTgl}`, 15, y); 
+                y += 20;
+                
+                const signY = y;
+                pdf.setFont(undefined, 'bold'); 
+                pdf.text('PIHAK PERTAMA', 40, signY, {align:'center'});
+                pdf.text('PIHAK KEDUA', 155, signY, {align:'center'});
+                
+                const ttd1 = document.getElementById('mouTTDP1').value;
+                const ttd2 = document.getElementById('mouTTDP2').value;
+                if (ttd1 && ttd1.length > 100) {
+                    try { pdf.addImage(ttd1, 'PNG', 15, signY+5, 50, 25); } catch(e) {}
+                }
+                if (ttd2 && ttd2.length > 100) {
+                    try { pdf.addImage(ttd2, 'PNG', 130, signY+5, 50, 25); } catch(e) {}
+                }
+                
+                pdf.line(15, signY+35, 65, signY+35); 
+                pdf.line(130, signY+35, 180, signY+35);
+                pdf.text(p1Nama, 40, signY+41, {align:'center'}); 
+                pdf.text(p2Nama, 155, signY+41, {align:'center'});
+            }
+
+            // Footer
+            pdf.setFontSize(8); 
+            pdf.setTextColor(128,128,128);
+            pdf.line(15, 280, 195, 280);
+            pdf.text(`Dicetak: ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
+
+            // Save to Sheets
+            const params = new URLSearchParams();
+            params.append('type', 'mou');
+            params.append('nomorMou', nomor);
+            params.append('tanggal', tgl);
+            params.append('tempat', tempat);
+            params.append('namaPihak1', p1Nama);
+            params.append('jabatanPihak1', p1Jab);
+            params.append('namaPihak2', p2Nama);
+            params.append('jabatanPihak2', p2Jab);
+            params.append('instansiPihak2', p2Inst);
+            params.append('maksudTujuan', document.getElementById('mouTujuan').value);
+            params.append('ruangLingkup', document.getElementById('mouRuang').value);
+            params.append('jangkaWaktu', document.getElementById('mouJangka').value);
+            params.append('ttdPihak1', document.getElementById('mouTTDP1').value || '');
+            params.append('ttdPihak2', document.getElementById('mouTTDP2').value || '');
+            params.append('createdByName', currentUser.displayName || currentUser.email);
+            params.append('createdByEmail', currentUser.email);
+
+            await fetch(APPS_SCRIPT_URL, { method: 'POST', body: params });
+
+            hideLoad();
+            pdf.save(`MoU_${nomor.replace(/\//g,'_')}.pdf`);
+            alert('MoU berhasil dibuat dan disimpan!');
+        } catch(e) {
+            hideLoad();
+            alert('Error membuat MoU: ' + e.message);
+            console.error(e);
         }
-
-        // Footer
-        pdf.setFontSize(8); pdf.setTextColor(128,128,128);
-        pdf.line(15, 280, 195, 280);
-        pdf.text(`Dicetak: ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
-
-        // Save to Sheets
-        const params = new URLSearchParams();
-        params.append('type', 'mou');
-        params.append('nomorMou', nomor);
-        params.append('tanggal', tgl);
-        params.append('tempat', tempat);
-        params.append('namaPihak1', p1Nama);
-        params.append('jabatanPihak1', p1Jab);
-        params.append('namaPihak2', p2Nama);
-        params.append('jabatanPihak2', p2Jab);
-        params.append('instansiPihak2', p2Inst);
-        params.append('maksudTujuan', document.getElementById('mouTujuan').value);
-        params.append('ruangLingkup', document.getElementById('mouRuang').value);
-        params.append('jangkaWaktu', document.getElementById('mouJangka').value);
-        params.append('ttdPihak1', document.getElementById('mouTTDP1').value || '');
-        params.append('ttdPihak2', document.getElementById('mouTTDP2').value || '');
-        params.append('createdByName', currentUser.displayName || currentUser.email);
-        params.append('createdByEmail', currentUser.email);
-
-        await fetch(APPS_SCRIPT_URL, { method: 'POST', body: params });
-
-        hideLoad();
-        pdf.save(`MoU_${nomor.replace(/\//g,'_')}.pdf`);
-        alert('MoU berhasil dibuat dan disimpan!');
     };
 
     // LOAD DATA MoU
     window.loadMoUData = async () => {
         showLoad('Memuat Data MoU...');
-        const resp = await fetch(`${APPS_SCRIPT_URL}?sheet=MoU&t=${Date.now()}`);
-        mouData = await resp.json();
-        hideLoad();
-        renderMoUTable();
+        try {
+            const resp = await fetch(`${APPS_SCRIPT_URL}?sheet=MoU&t=${Date.now()}`);
+            mouData = await resp.json();
+            hideLoad();
+            renderMoUTable();
+        } catch(e) {
+            hideLoad();
+            alert('Error loading data: ' + e.message);
+        }
     };
 
     window.renderMoUTable = () => {
         const search = document.getElementById('searchMou').value.toLowerCase();
         const filtered = mouData.filter(d => !search || (d['Nomor MoU']||'').toLowerCase().includes(search) || (d['Instansi Pihak 2']||'').toLowerCase().includes(search));
         const tbody = document.getElementById('tbodyMou');
-        tbody.innerHTML = filtered.length ? filtered.map(d => `
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center">Tidak ada data</td></tr>';
+            return;
+        }
+        tbody.innerHTML = filtered.map(d => `
             <tr>
                 <td><strong>${d['Nomor MoU']||'-'}</strong></td>
                 <td>${formatDate(d['Tanggal'])}</td>
@@ -515,7 +679,7 @@
                     <button class="btn btn-sm btn-info" onclick="regenerateMoUPDF('${d['Nomor MoU']}')"><i class="fas fa-download"></i></button>
                 </td>
             </tr>
-        `).join('') : '<tr><td colspan="5" class="text-center">Tidak ada data</td></tr>';
+        `).join('');
     };
 
     window.viewMoUDetail = (nomor) => {
@@ -547,48 +711,6 @@
         switchTab('tabMou');
         alert('Data MoU dimuat. Klik "Generate & Simpan PDF" untuk download ulang.');
     };
-
-    // PDF SJ Functions (Simplified for length)
-    window.viewSJPDF = (no) => generateSJPDF(no, 'view');
-    window.downloadSJPDF = (no) => generateSJPDF(no, 'download');
-    
-    async function generateSJPDF(no, mode) {
-        const d = sjData.find(x => x['No. Surat Jalan'] === no);
-        if (!d) return;
-        showLoad('Membuat PDF SJ...');
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        let y = 15;
-        if (kopBase64) { pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); y += 40; }
-        pdf.setDrawColor(27,94,32); pdf.setLineWidth(1.5); pdf.line(15, y, 195, y); y += 10;
-        pdf.setFontSize(16); pdf.setFont(undefined, 'bold'); pdf.setTextColor(27,94,32);
-        pdf.text('SURAT JALAN', 105, y, {align:'center'}); y += 8;
-        pdf.setFontSize(10); pdf.setTextColor(0,0,0); pdf.setFont(undefined, 'normal');
-        pdf.text(`No: ${d['No. Surat Jalan']}`, 105, y, {align:'center'}); y += 15;
-        
-        pdf.autoTable({
-            startY: y,
-            body: [
-                ['Kode', d['Kode']], ['Tanggal', formatDate(d['Tanggal'])],
-                ['Lokasi', d['Lokasi Customer']], ['Waste', d['Jenis Waste']],
-                ['Jumlah', d['Jumlah (KG)'] + ' KG'], ['Keterangan', d['Keterangan']]
-            ],
-            theme: 'grid', styles: { fontSize: 10 }
-        });
-        y = pdf.lastAutoTable.finalY + 20;
-        
-        if (y > 200) { pdf.addPage(); y = 20; }
-        const signY = y;
-        pdf.text('PIC:', 20, signY); pdf.text('Customer:', 120, signY);
-        if (d['TTD PIC'] && d['TTD PIC'] !== '-') pdf.addImage(d['TTD PIC'], 'PNG', 20, signY+5, 40, 20);
-        if (d['TTD Customer'] && d['TTD Customer'] !== '-') pdf.addImage(d['TTD Customer'], 'PNG', 120, signY+5, 40, 20);
-        pdf.line(20, signY+30, 60, signY+30); pdf.line(120, signY+30, 160, signY+30);
-        pdf.text(d['Nama PIC']||'-', 40, signY+35, {align:'center'}); pdf.text(d['Nama Customer']||'-', 140, signY+35, {align:'center'});
-        
-        hideLoad();
-        if (mode === 'view') window.open(pdf.output('bloburl'), '_blank');
-        else pdf.save(`${d['No. Surat Jalan'].replace(/\//g,'_')}.pdf`);
-    }
 
     function formatDate(str) {
         if (!str) return '-';
