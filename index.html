@@ -522,7 +522,7 @@
         let currentUser = null, currentSigner = '', modalSignaturePad = null, currentSignatureType = '';
         let allTransactions = [], filteredTransactions = [];
         let allMoUData = [], filteredMoUData = [];
-        let logoBase64 = null, kopSuratBase64 = null, stempelBase64 = null;
+        let logoBase64 = null, kopBase64 = null, stempelBase64 = null;  // ✅ DEKLARASI VARIABEL
         let fotoLokasiBase64 = null, fotoLokasiNama = '', fotoArmadaBase64 = null, fotoArmadaNama = '';
 
         // ============ LOAD IMAGES ============
@@ -531,13 +531,13 @@
                 const logoResp = await fetch('logo-raj.png');
                 const logoBlob = await logoResp.blob();
                 const logoReader = new FileReader();
-                logoReader.onloadend = () => { logoBase64 = logoReader.result; };
+                logoReader.onloadend = () => { logoBase64 = logoReader.result; console.log('✅ Logo loaded'); };
                 logoReader.readAsDataURL(logoBlob);
                 
                 const kopResp = await fetch('kop-surat.png');
                 const kopBlob = await kopResp.blob();
                 const kopReader = new FileReader();
-                kopReader.onloadend = () => { kopSuratBase64 = kopReader.result; console.log('✅ Kop surat loaded'); };
+                kopReader.onloadend = () => { kopBase64 = kopReader.result; console.log('✅ Kop surat loaded'); };
                 kopReader.readAsDataURL(kopBlob);
 
                 try {
@@ -547,7 +547,10 @@
                     stempelReader.onloadend = () => { stempelBase64 = stempelReader.result; console.log('✅ Stempel loaded'); };
                     stempelReader.readAsDataURL(stempelBlob);
                 } catch(e) { console.log('Stempel tidak ada, skip'); }
-            } catch (error) { console.error('❌ Error loading images:', error); }
+            } catch (error) { 
+                console.error('❌ Error loading images:', error);
+                kopBase64 = null; // Fallback jika gagal load
+            }
         }
 
         // ============ AUTO GENERATE NOMOR SJ ============
@@ -580,8 +583,7 @@
                 document.getElementById('appSection').classList.remove('hidden');
                 document.getElementById('tanggal').valueAsDate = new Date();
                 updateNoSurat();
-                loadImages();
-                showAlert('success', 'Login berhasil!');
+                loadImages(); // Load images setelah login
             } else {
                 currentUser = null;
                 document.getElementById('appSection').classList.add('hidden');
@@ -592,10 +594,10 @@
         window.loginUser = async function() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-            if (!email || !password) { showAlert('error', 'Mohon isi email dan password!'); return; }
+            if (!email || !password) { alert('Mohon isi email dan password!'); return; }
             showLoading('Sedang login...');
             try { await signInWithEmailAndPassword(auth, email, password); hideLoading(); } 
-            catch (error) { hideLoading(); showAlert('error', 'Login gagal: ' + error.message); }
+            catch (error) { hideLoading(); alert('Login gagal: ' + error.message); }
         };
 
         window.registerUser = async function() {
@@ -603,23 +605,23 @@
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
             const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
-            if (!name || !email || !password || !passwordConfirm) { showAlert('error', 'Mohon lengkapi semua field!'); return; }
-            if (password !== passwordConfirm) { showAlert('error', 'Password tidak cocok!'); return; }
-            if (password.length < 6) { showAlert('error', 'Password minimal 6 karakter!'); return; }
+            if (!name || !email || !password || !passwordConfirm) { alert('Mohon lengkapi semua field!'); return; }
+            if (password !== passwordConfirm) { alert('Password tidak cocok!'); return; }
+            if (password.length < 6) { alert('Password minimal 6 karakter!'); return; }
             showLoading('Mendaftarkan akun...');
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(userCredential.user, { displayName: name });
                 hideLoading();
-                showAlert('success', 'Registrasi berhasil! Silakan login.');
+                alert('Registrasi berhasil! Silakan login.');
                 toggleAuthMode();
-            } catch (error) { hideLoading(); showAlert('error', 'Registrasi gagal: ' + error.message); }
+            } catch (error) { hideLoading(); alert('Registrasi gagal: ' + error.message); }
         };
 
         window.logoutUser = async function() {
             if (confirm('Yakin ingin logout?')) {
                 showLoading('Sedang logout...');
-                try { await signOut(auth); hideLoading(); } catch (error) { hideLoading(); showAlert('error', error.message); }
+                try { await signOut(auth); hideLoading(); } catch (error) { hideLoading(); alert(error.message); }
             }
         };
 
@@ -632,13 +634,6 @@
 
         function showLoading(text = 'Memuat...') { document.getElementById('loadingText').textContent = text; document.getElementById('loadingOverlay').classList.remove('hidden'); }
         function hideLoading() { document.getElementById('loadingOverlay').classList.add('hidden'); }
-        function showAlert(type, message) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-custom`;
-            alertDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
-            document.body.appendChild(alertDiv);
-            setTimeout(() => alertDiv.remove(), 3000);
-        }
 
         // ============ FOTO UPLOAD (SJ) ============
         window.handleFotoUpload = function(event, type) {
@@ -669,10 +664,10 @@
         // ============ SUBMIT SURAT JALAN (TIDAK DIUBAH) ============
         document.getElementById('siratForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            if (!currentUser) { showAlert('error', 'Anda harus login!'); return; }
+            if (!currentUser) { alert('Anda harus login!'); return; }
             const ttdPIC = document.getElementById('ttdPICData').value;
             const ttdCustomer = document.getElementById('ttdCustomerData').value;
-            if (!ttdPIC || !ttdCustomer) { showAlert('error', 'Harap lengkapi kedua tanda tangan!'); return; }
+            if (!ttdPIC || !ttdCustomer) { alert('Harap lengkapi kedua tanda tangan!'); return; }
             
             const stampPlacement = document.querySelector('input[name="stampPlacement"]:checked').value;
             const kode = document.getElementById('kode').value;
@@ -706,7 +701,7 @@
                 
                 await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
                 hideLoading();
-                showAlert('success', '✅ Data berhasil disimpan!');
+                alert('✅ Data berhasil disimpan!');
                 
                 document.getElementById('siratForm').reset();
                 document.getElementById('ttdPICData').value = '';
@@ -727,7 +722,7 @@
                 fotoArmadaBase64 = null; fotoArmadaNama = '';
                 updateNoSurat();
                 
-            } catch (error) { hideLoading(); showAlert('error', 'Gagal: ' + error.message); } 
+            } catch (error) { hideLoading(); alert('Gagal: ' + error.message); } 
             finally { btn.disabled = false; btn.innerHTML = originalText; }
         });
 
@@ -848,23 +843,23 @@
 
         window.viewSinglePDF = function(no) {
             const t = allTransactions.find(x => x['No. Surat Jalan'] === no);
-            if (!t) { showAlert('error', 'Data tidak ditemukan!'); return; }
+            if (!t) { alert('Data tidak ditemukan!'); return; }
             generatePDF([t], 'view');
         };
 
         window.downloadSinglePDF = function(no) {
             const t = allTransactions.find(x => x['No. Surat Jalan'] === no);
-            if (!t) { showAlert('error', 'Data tidak ditemukan!'); return; }
+            if (!t) { alert('Data tidak ditemukan!'); return; }
             generatePDF([t], 'download');
         };
 
         window.viewAllPDF = function() {
-            if (filteredTransactions.length === 0) { showAlert('error', 'Tidak ada data!'); return; }
+            if (filteredTransactions.length === 0) { alert('Tidak ada data!'); return; }
             generatePDF(filteredTransactions, 'view');
         };
 
         window.downloadAllPDF = function() {
-            if (filteredTransactions.length === 0) { showAlert('error', 'Tidak ada data!'); return; }
+            if (filteredTransactions.length === 0) { alert('Tidak ada data!'); return; }
             generatePDF(filteredTransactions, 'download');
         };
 
@@ -898,8 +893,8 @@
         }
 
         function addHeaderToPDF(pdf, yPos) {
-            if (kopSuratBase64) {
-                pdf.addImage(kopSuratBase64, 'PNG', 15, yPos, 180, 40);
+            if (kopBase64) {
+                pdf.addImage(kopBase64, 'PNG', 15, yPos, 180, 40);
             }
         }
 
@@ -930,7 +925,7 @@
         }
 
         async function generatePDF(transactions, mode) {
-            if (!kopSuratBase64) { showAlert('error', 'Kop surat belum dimuat.'); return; }
+            if (!kopBase64) { alert('Kop surat belum dimuat.'); return; }
             
             showLoading('Membuat PDF...');
             const { jsPDF } = window.jspdf;
@@ -1165,7 +1160,7 @@
         window.openSignatureModal = function(type) {
             currentSignatureType = type;
             const signerName = type === 'pic' ? document.getElementById('namaPIC').value : document.getElementById('namaCustomer').value;
-            if (!signerName) { showAlert('error', 'Isi nama ' + (type === 'pic' ? 'PIC' : 'Customer') + ' dulu!'); return; }
+            if (!signerName) { alert('Isi nama ' + (type === 'pic' ? 'PIC' : 'Customer') + ' dulu!'); return; }
             currentSigner = signerName;
             document.getElementById('modalSignerName').textContent = (type === 'pic' ? 'PIC: ' : 'Customer: ') + signerName;
             document.getElementById('signatureModal').classList.add('active');
@@ -1183,7 +1178,7 @@
         window.closeSignatureModal = function() { document.getElementById('signatureModal').classList.remove('active'); };
         window.clearModalSignature = function() { if (modalSignaturePad) modalSignaturePad.clear(); };
         window.saveModalSignature = function() {
-            if (!modalSignaturePad || modalSignaturePad.isEmpty()) { showAlert('error', 'Buat tanda tangan dulu!'); return; }
+            if (!modalSignaturePad || modalSignaturePad.isEmpty()) { alert('Buat tanda tangan dulu!'); return; }
             const signatureData = modalSignaturePad.toDataURL();
             if (currentSignatureType === 'pic') {
                 document.getElementById('ttdPICData').value = signatureData;
@@ -1258,8 +1253,8 @@
             // Validasi
             const p2Nama = document.getElementById('mouP2Nama').value.trim();
             const p2Inst = document.getElementById('mouP2Instansi').value.trim();
-            if (!p2Nama) { showAlert('error', 'Nama Perwakilan Pihak Kedua wajib diisi!'); return; }
-            if (!p2Inst) { showAlert('error', 'Nama Instansi Pihak Kedua wajib diisi!'); return; }
+            if (!p2Nama) { alert('Nama Perwakilan Pihak Kedua wajib diisi!'); return; }
+            if (!p2Inst) { alert('Nama Instansi Pihak Kedua wajib diisi!'); return; }
 
             showLoading('Membuat MoU PDF...');
             
@@ -1273,10 +1268,28 @@
                 
                 let y = 20;
 
-                // HEADER KOP SURAT
-                if (kopSuratBase64) { 
-                    try { pdf.addImage(kopSuratBase64, 'PNG', 15, y, 180, 35); } catch(e) {} 
+                // HEADER KOP SURAT - dengan check jika null
+                if (kopBase64) { 
+                    try { 
+                        pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); 
+                    } catch(e) { 
+                        console.log('Kop surat tidak bisa ditampilkan');
+                    }
                     y += 40; 
+                } else {
+                    // Fallback: Tampilkan teks jika kop surat tidak ada
+                    pdf.setFontSize(16);
+                    pdf.setFont(undefined, 'bold');
+                    pdf.text('CV REZEKI AMANAH JAYA GROUP', 105, y, {align:'center'});
+                    y += 10;
+                    pdf.setFontSize(10);
+                    pdf.setFont(undefined, 'normal');
+                    pdf.text('SUPPLIER & WASTE SOLUTION PARTNER', 105, y, {align:'center'});
+                    y += 10;
+                    pdf.setDrawColor(0, 0, 0);
+                    pdf.setLineWidth(0.5);
+                    pdf.line(15, y, 195, y);
+                    y += 8;
                 }
                 
                 // GARIS PEMISAH
@@ -1454,7 +1467,7 @@
 
                 hideLoading();
                 pdf.save(`MoU_${nomor.replace(/\//g,'_')}.pdf`);
-                showAlert('success', '✅ MoU berhasil dibuat dan disimpan!');
+                alert('✅ MoU berhasil dibuat dan disimpan!');
                 
                 // Reset form
                 document.getElementById('mouForm').reset();
@@ -1464,7 +1477,7 @@
                 document.getElementById('mouP1Nama').value = 'Sidik Dwi Kuncahyo';
                 document.getElementById('mouP1Jabatan').value = 'Direktur CV Rezeki Amanah Jaya';
                 
-            } catch(e) { hideLoading(); showAlert('error', 'Error membuat MoU: ' + e.message); console.error(e); }
+            } catch(e) { hideLoading(); alert('Error membuat MoU: ' + e.message); console.error(e); }
         };
 
         // ============ LOAD DATA MoU ============
@@ -1556,7 +1569,7 @@
             // Pindah ke tab MoU
             const tab = new bootstrap.Tab(document.querySelector('[data-bs-target="#mou"]'));
             tab.show();
-            showAlert('success', 'Data MoU dimuat. Klik "Generate PDF & Simpan" untuk download ulang.');
+            alert('Data MoU dimuat. Klik "Generate PDF & Simpan" untuk download ulang.');
         };
     </script>
 </body>
