@@ -149,7 +149,7 @@
 
             <div class="tab-content" id="myTabContent">
                 
-                <!-- ==================== FORM SURAT JALAN ==================== -->
+                <!-- FORM SURAT JALAN -->
                 <div class="tab-pane fade show active" id="form">
                     <div class="card-custom">
                         <div class="card-header-custom"><i class="fas fa-plus-circle"></i> Form Surat Jalan</div>
@@ -161,12 +161,10 @@
                                     <p><i class="fas fa-map-marker-alt"></i> Cluster Puri Flamingo FLA 06/19 Sukamantri Pasarkemis Kab Tangerang</p>
                                     <p><i class="fas fa-phone"></i> HP. 081296580968</p>
                                 </div>
-
                                 <div class="no-surat-display">
                                     <div class="text-muted" style="font-size: 12px;">No. Surat Jalan (Otomatis)</div>
                                     <strong id="noSuratDisplay">SJP/---/RAJ/-/----</strong>
                                 </div>
-
                                 <div class="section-title"><i class="fas fa-info-circle"></i> Informasi Transaksi</div>
                                 <div class="row mb-3">
                                     <div class="col-md-6 mb-2 mb-md-0">
@@ -181,7 +179,6 @@
                                         <input type="text" class="form-control" id="lokasiCustomer" placeholder="Alamat/Tempat pengambilan waste" required>
                                     </div>
                                 </div>
-
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold">Tanggal</label>
@@ -196,7 +193,6 @@
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="section-title"><i class="fas fa-recycle"></i> Detail Waste</div>
                                 <div class="row mb-3">
                                     <div class="col-md-8 mb-2 mb-md-0">
@@ -208,12 +204,10 @@
                                         <input type="number" class="form-control" id="jumlah" placeholder="0" step="0.1" required>
                                     </div>
                                 </div>
-
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Keterangan</label>
                                     <textarea class="form-control" id="keterangan" rows="3" placeholder="Tambahkan keterangan jika diperlukan"></textarea>
                                 </div>
-
                                 <div class="section-title"><i class="fas fa-camera"></i> Dokumentasi Foto</div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
@@ -233,7 +227,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="section-title"><i class="fas fa-signature"></i> Tanda Tangan Digital</div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
@@ -251,7 +244,6 @@
                                         <input type="hidden" id="ttdCustomerData">
                                     </div>
                                 </div>
-
                                 <div class="stamp-option">
                                     <label class="form-label fw-bold mb-2"><i class="fas fa-stamp"></i> Penempatan Stempel:</label>
                                     <div class="form-check form-check-inline">
@@ -267,14 +259,13 @@
                                         <label class="form-check-label" for="stampNone">Tanpa Stempel</label>
                                     </div>
                                 </div>
-
                                 <div class="mt-4"><button type="submit" class="btn btn-submit" id="btnSubmit"><i class="fas fa-save"></i> Simpan</button></div>
                             </form>
                         </div>
                     </div>
                 </div>
 
-                <!-- ==================== FORM MoU (13 PASAL) ==================== -->
+                <!-- FORM MoU -->
                 <div class="tab-pane fade" id="mou">
                     <div class="card-custom">
                         <div class="card-header-custom"><i class="fas fa-file-contract"></i> Pembuatan MoU</div>
@@ -297,7 +288,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="mou-section">
                                     <h6 class="fw-bold" style="color: var(--primary-green);"><i class="fas fa-user-tie"></i> PIHAK PERTAMA</h6>
                                     <div class="row">
@@ -315,7 +305,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="mou-section">
                                     <h6 class="fw-bold" style="color: var(--primary-green);"><i class="fas fa-building"></i> PIHAK KEDUA</h6>
                                     <div class="row">
@@ -337,15 +326,12 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="mou-section">
                                     <h6 class="fw-bold" style="color: var(--primary-green);"><i class="fas fa-file-alt"></i> Isi MoU (13 Pasal)</h6>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 1 - MAKSUD DAN TUJUAN</label>
                                         <textarea class="form-control" id="mouPasal1" rows="2">Kerja sama pengumpulan dan pengelolaan minyak jelantah dari operasional PIHAK KEDUA guna mendukung pengelolaan limbah yang ramah lingkungan dan bernilai ekonomi.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 2 - RUANG LINGKUP KERJA SAMA</label>
                                         <textarea class="form-control" id="mouPasal2" rows="4">1. Penyerahan minyak jelantah dari PIHAK KEDUA kepada PIHAK PERTAMA.
@@ -353,7 +339,6 @@
 3. Pengelolaan dan penyaluran minyak jelantah ke industri pengolahan/biodiesel yang sesuai ketentuan.
 4. Berlaku untuk seluruh lokasi yang disepakati.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 3 - HAK DAN KEWAJIBAN PIHAK PERTAMA</label>
                                         <textarea class="form-control" id="mouPasal3" rows="8">PIHAK PERTAMA BERHAK:
@@ -365,7 +350,6 @@ PIHAK PERTAMA BERKEWAJIBAN:
 2. Melakukan penjemputan sesuai jadwal.
 3. Membayar hasil pembelian sesuai berat timbangan yang disepakati.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 4 - HAK DAN KEWAJIBAN PIHAK KEDUA</label>
                                         <textarea class="form-control" id="mouPasal4" rows="8">PIHAK KEDUA BERHAK:
@@ -377,17 +361,14 @@ PIHAK KEDUA BERKEWAJIBAN:
 2. Menyediakan minyak jelantah yang berasal dari kegiatan operasionalnya.
 3. Menyiapkan minyak jelantah untuk proses pengambilan.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 5 - HARGA DAN PEMBAYARAN</label>
                                         <textarea class="form-control" id="mouPasal5" rows="2">Harga pembelian mengikuti kesepakatan dan kondisi pasar. Pembayaran dilakukan sesuai mekanisme yang disepakati kedua belah pihak.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 6 - JANGKA WAKTU</label>
                                         <textarea class="form-control" id="mouPasal6" rows="2">MoU berlaku selama 1 (satu) tahun sejak ditandatangani dan dapat diperpanjang berdasarkan kesepakatan kedua belah pihak.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 7 - EKSKLUSIVITAS KERJA SAMA</label>
                                         <textarea class="form-control" id="mouPasal7" rows="5">1. Selama Perjanjian Kerja Sama ini berlaku, PIHAK KEDUA sepakat untuk mengutamakan penjualan minyak jelantah yang dihasilkan dari kegiatan operasionalnya kepada PIHAK PERTAMA.
@@ -395,44 +376,37 @@ PIHAK KEDUA BERKEWAJIBAN:
 3. Ketentuan eksklusivitas sebagaimana dimaksud dalam pasal ini berlaku sepanjang PIHAK PERTAMA tetap melaksanakan kewajibannya sesuai dengan perjanjian, termasuk melakukan penjemputan dan pembayaran tepat waktu.
 4. Apabila PIHAK PERTAMA tidak dapat melakukan pengambilan selama lebih dari 14 (empat belas) hari sejak jadwal yang telah disepakati tanpa alasan yang dapat diterima oleh PIHAK KEDUA, maka PIHAK KEDUA berhak menjual minyak jelantah tersebut kepada pihak lain setelah memberitahukan PIHAK PERTAMA.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 8 - KERAHASIAAN</label>
                                         <textarea class="form-control" id="mouPasal8" rows="3">1. PARA PIHAK sepakat untuk menjaga kerahasiaan informasi yang diperoleh selama pelaksanaan kerja sama ini.
 2. Informasi yang bersifat rahasia meliputi data operasional, data transaksi, harga khusus, serta informasi lain yang disepakati oleh PARA PIHAK.
 3. Kewajiban menjaga kerahasiaan tetap berlaku meskipun perjanjian ini telah berakhir.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 9 - KEADAAN KAHAR (FORCE MAJEURE)</label>
                                         <textarea class="form-control" id="mouPasal9" rows="4">1. Yang dimaksud dengan Force Majeure adalah keadaan di luar kemampuan dan kehendak PARA PIHAK yang menyebabkan sebagian atau seluruh kewajiban dalam perjanjian ini tidak dapat dilaksanakan.
 2. Keadaan Force Majeure meliputi namun tidak terbatas pada bencana alam, kebakaran, banjir, gempa bumi, wabah penyakit, kerusuhan, perang, perubahan kebijakan pemerintah, dan gangguan transportasi yang signifikan.
 3. Pihak yang mengalami Force Majeure wajib memberitahukan secara tertulis kepada pihak lainnya paling lambat 7 (tujuh) hari sejak terjadinya keadaan tersebut.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 10 - DOKUMENTASI DAN PUBLIKASI</label>
                                         <textarea class="form-control" id="mouPasal10" rows="3">1. PIHAK PERTAMA dapat menggunakan dokumentasi kegiatan kerja sama berupa foto, video, atau informasi umum untuk keperluan laporan dan promosi perusahaan.
 2. Penggunaan logo, merek dagang, atau identitas PIHAK KEDUA untuk keperluan publikasi harus mendapatkan persetujuan terlebih dahulu dari PIHAK KEDUA.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 11 - PENGAKHIRAN PERJANJIAN</label>
                                         <textarea class="form-control" id="mouPasal11" rows="3">1. Salah satu pihak dapat mengakhiri perjanjian dengan pemberitahuan tertulis minimal 30 (tiga puluh) hari sebelumnya.
 2. Pengakhiran perjanjian tidak menghapus kewajiban yang masih harus diselesaikan oleh masing-masing pihak.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 12 - PENYELESAIAN PERSELISIHAN</label>
                                         <textarea class="form-control" id="mouPasal12" rows="2">Apabila terjadi perselisihan dalam pelaksanaan perjanjian ini, PARA PIHAK sepakat untuk menyelesaikannya secara musyawarah dan mufakat. Apabila tidak tercapai kesepakatan, maka penyelesaiannya dilakukan sesuai ketentuan hukum yang berlaku di Republik Indonesia.</textarea>
                                     </div>
-                                    
                                     <div class="mb-2">
                                         <label class="form-label fw-bold">PASAL 13 - PENUTUP</label>
                                         <textarea class="form-control" id="mouPasal13" rows="2">MoU dibuat dalam rangkap dua dan mempunyai kekuatan hukum yang sama.</textarea>
                                     </div>
                                 </div>
-
                                 <div class="mt-4">
                                     <button type="button" onclick="generateMoUPDF()" class="btn btn-submit" id="btnMouSubmit">
                                         <i class="fas fa-file-pdf"></i> Generate PDF & Simpan
@@ -443,7 +417,7 @@ PIHAK KEDUA BERKEWAJIBAN:
                     </div>
                 </div>
 
-                <!-- ==================== DATA TRANSAKSI SJ ==================== -->
+                <!-- DATA TRANSAKSI SJ -->
                 <div class="tab-pane fade" id="data">
                     <div class="card-custom">
                         <div class="card-header-custom d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -499,7 +473,7 @@ PIHAK KEDUA BERKEWAJIBAN:
                     </div>
                 </div>
 
-                <!-- ==================== DATA MoU ==================== -->
+                <!-- DATA MoU -->
                 <div class="tab-pane fade" id="dataMou">
                     <div class="card-custom">
                         <div class="card-header-custom d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -589,7 +563,6 @@ PIHAK KEDUA BERKEWAJIBAN:
         let logoBase64 = null, kopBase64 = null, stempelBase64 = null;
         let fotoLokasiBase64 = null, fotoLokasiNama = '', fotoArmadaBase64 = null, fotoArmadaNama = '';
 
-        // ============ LOAD IMAGES ============
         async function loadImages() {
             try {
                 const logoResp = await fetch('logo-raj.png');
@@ -617,7 +590,6 @@ PIHAK KEDUA BERKEWAJIBAN:
             }
         }
 
-        // ============ AUTO GENERATE NOMOR SJ ============
         window.updateNoSurat = function() {
             const now = new Date();
             const tahun = now.getFullYear();
@@ -638,7 +610,6 @@ PIHAK KEDUA BERKEWAJIBAN:
             }
         };
 
-        // ============ AUTH ============
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
@@ -699,7 +670,6 @@ PIHAK KEDUA BERKEWAJIBAN:
         function showLoading(text = 'Memuat...') { document.getElementById('loadingText').textContent = text; document.getElementById('loadingOverlay').classList.remove('hidden'); }
         function hideLoading() { document.getElementById('loadingOverlay').classList.add('hidden'); }
 
-        // ============ FOTO UPLOAD (SJ) ============
         window.handleFotoUpload = function(event, type) {
             const file = event.target.files[0];
             if (!file) return;
@@ -725,7 +695,6 @@ PIHAK KEDUA BERKEWAJIBAN:
             reader.readAsDataURL(file);
         };
 
-        // ============ SUBMIT SURAT JALAN ============
         document.getElementById('siratForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             if (!currentUser) { alert('Anda harus login!'); return; }
@@ -790,7 +759,6 @@ PIHAK KEDUA BERKEWAJIBAN:
             finally { btn.disabled = false; btn.innerHTML = originalText; }
         });
 
-        // ============ TAB SWITCHING ============
         document.addEventListener('DOMContentLoaded', function() {
             const dataTabEl = document.getElementById('data-tab');
             if (dataTabEl) dataTabEl.addEventListener('shown.bs.tab', function(event) { loadData(); });
@@ -807,7 +775,6 @@ PIHAK KEDUA BERKEWAJIBAN:
             event.currentTarget.classList.add('active');
         };
 
-        // ============ LOAD DATA SJ ============
         window.loadData = async function() {
             const tbody = document.getElementById('tableBody');
             try {
@@ -927,7 +894,6 @@ PIHAK KEDUA BERKEWAJIBAN:
             generatePDF(filteredTransactions, 'download');
         };
 
-        // ============ PDF SJ FUNCTIONS ============
         function getDriveDirectUrl(url) {
             if (!url || url === '-') return null;
             const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -1220,7 +1186,6 @@ PIHAK KEDUA BERKEWAJIBAN:
             }
         }
 
-        // ============ SIGNATURE MODAL (SJ) ============
         window.openSignatureModal = function(type) {
             currentSignatureType = type;
             const signerName = type === 'pic' ? document.getElementById('namaPIC').value : document.getElementById('namaCustomer').value;
@@ -1259,7 +1224,6 @@ PIHAK KEDUA BERKEWAJIBAN:
         };
         document.getElementById('signatureModal').addEventListener('click', function(e) { if (e.target === this) closeSignatureModal(); });
 
-        // ============ FORMAT TANGGAL ============
         function formatDate(str) { 
             if (!str) return '-'; 
             const s = str.toString();
@@ -1280,7 +1244,6 @@ PIHAK KEDUA BERKEWAJIBAN:
             return `${hariList[d.getDay()]}, ${d.getDate()} ${bulanList[d.getMonth()]} ${d.getFullYear()}`;
         }
 
-        // ============ INISIALISASI FORM MoU ============
         function initMoUForm() {
             if (!document.getElementById('mouTanggal').value) {
                 document.getElementById('mouTanggal').valueAsDate = new Date();
@@ -1290,7 +1253,6 @@ PIHAK KEDUA BERKEWAJIBAN:
             }
         }
 
-        // ============ GENERATE NOMOR MoU OTOMATIS ============
         function generateMoUNumber() {
             const now = new Date();
             const year = now.getFullYear();
@@ -1311,14 +1273,135 @@ PIHAK KEDUA BERKEWAJIBAN:
             return `MoU/${num}/RAJ/${romanMonth}/${year}`;
         }
 
-        // ============ GENERATE MoU PDF (13 PASAL) ============
+        // ============ GENERATE MoU PDF (SAVE TANPA DOWNLOAD) ============
         window.generateMoUPDF = async function() {
             const p2Nama = document.getElementById('mouP2Nama').value.trim();
             const p2Inst = document.getElementById('mouP2Instansi').value.trim();
             if (!p2Nama) { alert('Nama Perwakilan Pihak Kedua wajib diisi!'); return; }
             if (!p2Inst) { alert('Nama Instansi Pihak Kedua wajib diisi!'); return; }
 
-            showLoading('Membuat MoU PDF...');
+            showLoading('Menyimpan MoU ke Spreadsheet...');
+            
+            try {
+                const nomor = document.getElementById('mouNomor').value || generateMoUNumber();
+                const tgl = document.getElementById('mouTanggal').value;
+                const tempat = document.getElementById('mouTempat').value || 'Kota Tangerang';
+                const p1Nama = document.getElementById('mouP1Nama').value || 'Sidik Dwi Kuncahyo';
+                const p1NIK = document.getElementById('mouP1NIK').value || '________________';
+                const p1Jab = document.getElementById('mouP1Jabatan').value || 'Direktur CV Rezeki Amanah Jaya';
+                const p2NIK = document.getElementById('mouP2NIK').value || '________________';
+                const p2Jab = document.getElementById('mouP2Jabatan').value || '____________________';
+
+                const mouDataObj = {
+                    type: 'mou', nomorMou: nomor, tanggal: tgl, tempat: tempat,
+                    namaPihak1: p1Nama, nikPihak1: p1NIK, jabatanPihak1: p1Jab, 
+                    namaPihak2: p2Nama, nikPihak2: p2NIK, jabatanPihak2: p2Jab, instansiPihak2: p2Inst,
+                    maksudTujuan: document.getElementById('mouPasal1').value, 
+                    ruangLingkup: document.getElementById('mouPasal2').value,
+                    hakKewajibanP1: document.getElementById('mouPasal3').value, 
+                    hakKewajibanP2: document.getElementById('mouPasal4').value,
+                    hargaPembayaran: document.getElementById('mouPasal5').value, 
+                    jangkaWaktu: document.getElementById('mouPasal6').value,
+                    eksklusivitas: document.getElementById('mouPasal7').value, 
+                    kerahasiaan: document.getElementById('mouPasal8').value,
+                    forceMajeure: document.getElementById('mouPasal9').value, 
+                    dokumentasi: document.getElementById('mouPasal10').value,
+                    pengakhiran: document.getElementById('mouPasal11').value, 
+                    penyelesaian: document.getElementById('mouPasal12').value,
+                    penutup: document.getElementById('mouPasal13').value,
+                    ttdPihak1: '-',
+                    ttdPihak2: '-',
+                    createdByName: currentUser.displayName || currentUser.email, 
+                    createdByEmail: currentUser.email
+                };
+
+                await fetch(APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(mouDataObj) });
+
+                hideLoading();
+                alert('✅ MoU berhasil disimpan ke spreadsheet! Silakan lihat di tab "Data MoU" untuk preview atau download PDF.');
+                
+                document.getElementById('mouForm').reset();
+                document.getElementById('mouNomor').value = generateMoUNumber();
+                document.getElementById('mouTanggal').valueAsDate = new Date();
+                document.getElementById('mouTempat').value = 'Kota Tangerang';
+                document.getElementById('mouP1Nama').value = 'Sidik Dwi Kuncahyo';
+                document.getElementById('mouP1Jabatan').value = 'Direktur CV Rezeki Amanah Jaya';
+                
+            } catch(e) { hideLoading(); alert('Error menyimpan MoU: ' + e.message); console.error(e); }
+        };
+
+        // ============ LOAD DATA MoU ============
+        window.loadMoUData = async function() {
+            const tbody = document.getElementById('tableMoUBody');
+            try {
+                showLoading('Memuat Data MoU...');
+                const resp = await fetch(`${APPS_SCRIPT_URL}?sheet=MoU&t=${Date.now()}`);
+                allMoUData = await resp.json();
+                filteredMoUData = allMoUData;
+                hideLoading();
+                renderMoUTable(allMoUData);
+            } catch(e) { 
+                hideLoading(); 
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Gagal memuat data.</td></tr>'; 
+            }
+        };
+
+        function renderMoUTable(data) {
+            const tbody = document.getElementById('tableMoUBody');
+            const info = document.getElementById('resultMoUInfo');
+            tbody.innerHTML = '';
+            
+            if (!data || data.length === 0) { 
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Tidak ada data MoU.</td></tr>';
+                info.innerHTML = '';
+                return; 
+            }
+            
+            info.innerHTML = `<i class="fas fa-info-circle"></i> Menampilkan <strong>${data.length}</strong> dari <strong>${allMoUData.length}</strong> MoU`;
+            
+            data.forEach(d => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${d['Nomor MoU']||'-'}</strong></td>
+                    <td>${formatDate(d['Tanggal'])}</td>
+                    <td>${d['Nama Pihak 1']||'-'}</td>
+                    <td>${d['Instansi Pihak 2']||'-'}</td>
+                    <td>
+                        <button class="btn-action btn-view-pdf" onclick="viewMoUPDF('${d['Nomor MoU']}')" title="Lihat PDF"><i class="fas fa-eye"></i></button>
+                        <button class="btn-action btn-download-pdf" onclick="downloadMoUPDF('${d['Nomor MoU']}')" title="Download PDF"><i class="fas fa-download"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        window.filterMoUData = function() {
+            const search = document.getElementById('searchMouInput').value.toLowerCase();
+            filteredMoUData = allMoUData.filter(d => !search || 
+                (d['Nomor MoU']||'').toLowerCase().includes(search) || 
+                (d['Instansi Pihak 2']||'').toLowerCase().includes(search) ||
+                (d['Nama Pihak 2']||'').toLowerCase().includes(search));
+            renderMoUTable(filteredMoUData);
+        };
+
+        window.resetMoUFilter = function() {
+            document.getElementById('searchMouInput').value = '';
+            filteredMoUData = allMoUData;
+            renderMoUTable(allMoUData);
+        };
+
+        window.viewMoUDetail = function(nomor) {
+            const d = allMoUData.find(x => x['Nomor MoU'] === nomor);
+            if (!d) return;
+            alert(`Detail MoU:\n\nNomor: ${d['Nomor MoU']}\nTanggal: ${formatTanggalLengkap(d['Tanggal'])}\nTempat: ${d['Tempat']}\n\nPihak 1: ${d['Nama Pihak 1']} (NIK: ${d['NIK Pihak 1']||'-'})\nJabatan: ${d['Jabatan Pihak 1']}\n\nPihak 2: ${d['Nama Pihak 2']}\nNIK: ${d['NIK Pihak 2']||'-'}\nInstansi: ${d['Instansi Pihak 2']}\nJabatan: ${d['Jabatan Pihak 2']}\n\nJangka Waktu: ${d['Jangka Waktu']}`);
+        };
+
+        // ============ LIHAT PDF MoU (PREVIEW TANPA SAVE & TANPA DOWNLOAD) ============
+        window.viewMoUPDF = async function(nomor) {
+            const d = allMoUData.find(x => x['Nomor MoU'] === nomor);
+            if (!d) { alert('Data MoU tidak ditemukan!'); return; }
+            
+            showLoading('Membuka PDF...');
             
             try {
                 const { jsPDF } = window.jspdf;
@@ -1365,16 +1448,15 @@ PIHAK KEDUA BERKEWAJIBAN:
                 pdf.text('KERJA SAMA PENGUMPULAN MINYAK JELANTAH', 105, y, {align:'center'});
                 y += 10;
                 
-                const nomor = document.getElementById('mouNomor').value || generateMoUNumber();
+                const nomorMoU = d['Nomor MoU'] || '_____/MoU/RAJ/_____/2026';
                 pdf.setFontSize(10);
                 pdf.setFont(undefined, 'normal');
-                pdf.text(`Nomor: ${nomor}`, 105, y, {align:'center'});
+                pdf.text(`Nomor: ${nomorMoU}`, 105, y, {align:'center'});
                 y += 12;
                 
-                const tgl = document.getElementById('mouTanggal').value;
-                const tempat = document.getElementById('mouTempat').value || 'Kota Tangerang';
+                const tgl = d['Tanggal'];
+                const tempat = d['Tempat'] || 'Kota Tangerang';
                 const fmtTglLengkap = formatTanggalLengkap(tgl);
-                const tahun = tgl ? new Date(tgl).getFullYear() : 2026;
                 
                 pdf.setFontSize(10);
                 const pembukaan = `Pada hari ini, ${fmtTglLengkap}, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman (Memorandum of Understanding/MoU) antara:`;
@@ -1387,25 +1469,21 @@ PIHAK KEDUA BERKEWAJIBAN:
                 y += 6;
                 
                 pdf.setFont(undefined, 'normal');
-                const p1Nama = document.getElementById('mouP1Nama').value || 'Sidik Dwi Kuncahyo';
-                const p1NIK = document.getElementById('mouP1NIK').value || '________________';
-                const p1Jab = document.getElementById('mouP1Jabatan').value || 'Direktur CV Rezeki Amanah Jaya';
+                const p1Nama = d['Nama Pihak 1'] || 'Sidik Dwi Kuncahyo';
+                const p1NIK = d['NIK Pihak 1'] || '________________';
+                const p1Jab = d['Jabatan Pihak 1'] || 'Direktur CV Rezeki Amanah Jaya';
                 
                 pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', MARGIN_LEFT, y);
                 y += 6;
-                
                 pdf.text('Nama', MARGIN_LEFT, y);
                 pdf.text(':  ' + p1Nama, MARGIN_LEFT + 25, y);
                 y += 5;
-                
                 pdf.text('NIK', MARGIN_LEFT, y);
                 pdf.text(':  ' + p1NIK, MARGIN_LEFT + 25, y);
                 y += 5;
-                
                 pdf.text('Jabatan', MARGIN_LEFT, y);
                 pdf.text(':  ' + p1Jab, MARGIN_LEFT + 25, y);
                 y += 6;
-                
                 pdf.text('Selanjutnya disebut PIHAK PERTAMA.', MARGIN_LEFT, y);
                 y += 10;
 
@@ -1414,42 +1492,39 @@ PIHAK KEDUA BERKEWAJIBAN:
                 y += 6;
                 
                 pdf.setFont(undefined, 'normal');
-                const p2NIK = document.getElementById('mouP2NIK').value || '________________';
-                const p2Jab = document.getElementById('mouP2Jabatan').value || '____________________';
+                const p2Inst = d['Instansi Pihak 2'] || '';
+                const p2Nama = d['Nama Pihak 2'] || '____________________';
+                const p2NIK = d['NIK Pihak 2'] || '________________';
+                const p2Jab = d['Jabatan Pihak 2'] || '____________________';
                 
                 pdf.text(`${p2Inst}, diwakili oleh:`, MARGIN_LEFT, y);
                 y += 6;
-                
                 pdf.text('Nama', MARGIN_LEFT, y);
                 pdf.text(':  ' + p2Nama, MARGIN_LEFT + 25, y);
                 y += 5;
-                
                 pdf.text('NIK', MARGIN_LEFT, y);
                 pdf.text(':  ' + p2NIK, MARGIN_LEFT + 25, y);
                 y += 5;
-                
                 pdf.text('Jabatan', MARGIN_LEFT, y);
                 pdf.text(':  ' + p2Jab, MARGIN_LEFT + 25, y);
                 y += 6;
-                
                 pdf.text('Selanjutnya disebut PIHAK KEDUA.', MARGIN_LEFT, y);
                 y += 10;
 
-                // 13 PASAL
                 const pasal = [
-                    ['PASAL 1', 'MAKSUD DAN TUJUAN', document.getElementById('mouPasal1').value],
-                    ['PASAL 2', 'RUANG LINGKUP KERJA SAMA', document.getElementById('mouPasal2').value],
-                    ['PASAL 3', 'HAK DAN KEWAJIBAN PIHAK PERTAMA', document.getElementById('mouPasal3').value],
-                    ['PASAL 4', 'HAK DAN KEWAJIBAN PIHAK KEDUA', document.getElementById('mouPasal4').value],
-                    ['PASAL 5', 'HARGA DAN PEMBAYARAN', document.getElementById('mouPasal5').value],
-                    ['PASAL 6', 'JANGKA WAKTU', document.getElementById('mouPasal6').value],
-                    ['PASAL 7', 'EKSKLUSIVITAS KERJA SAMA', document.getElementById('mouPasal7').value],
-                    ['PASAL 8', 'KERAHASIAAN', document.getElementById('mouPasal8').value],
-                    ['PASAL 9', 'KEADAAN KAHAR (FORCE MAJEURE)', document.getElementById('mouPasal9').value],
-                    ['PASAL 10', 'DOKUMENTASI DAN PUBLIKASI', document.getElementById('mouPasal10').value],
-                    ['PASAL 11', 'PENGAKHIRAN PERJANJIAN', document.getElementById('mouPasal11').value],
-                    ['PASAL 12', 'PENYELESAIAN PERSELISIHAN', document.getElementById('mouPasal12').value],
-                    ['PASAL 13', 'PENUTUP', document.getElementById('mouPasal13').value]
+                    ['PASAL 1', 'MAKSUD DAN TUJUAN', d['Maksud Tujuan'] || ''],
+                    ['PASAL 2', 'RUANG LINGKUP KERJA SAMA', d['Ruang Lingkup'] || ''],
+                    ['PASAL 3', 'HAK DAN KEWAJIBAN PIHAK PERTAMA', d['Hak Kewajiban P1'] || ''],
+                    ['PASAL 4', 'HAK DAN KEWAJIBAN PIHAK KEDUA', d['Hak Kewajiban P2'] || ''],
+                    ['PASAL 5', 'HARGA DAN PEMBAYARAN', d['Harga Pembayaran'] || ''],
+                    ['PASAL 6', 'JANGKA WAKTU', d['Jangka Waktu'] || ''],
+                    ['PASAL 7', 'EKSKLUSIVITAS KERJA SAMA', d['Eksklusivitas'] || ''],
+                    ['PASAL 8', 'KERAHASIAAN', d['Kerahasiaan'] || ''],
+                    ['PASAL 9', 'KEADAAN KAHAR (FORCE MAJEURE)', d['Force Majeure'] || ''],
+                    ['PASAL 10', 'DOKUMENTASI DAN PUBLIKASI', d['Dokumentasi'] || ''],
+                    ['PASAL 11', 'PENGAKHIRAN PERJANJIAN', d['Pengakhiran'] || ''],
+                    ['PASAL 12', 'PENYELESAIAN PERSELISIHAN', d['Penyelesaian'] || ''],
+                    ['PASAL 13', 'PENUTUP', d['Penutup'] || '']
                 ];
 
                 pasal.forEach(([pasalNum, pasalTitle, content]) => {
@@ -1511,141 +1586,217 @@ PIHAK KEDUA BERKEWAJIBAN:
                 pdf.line(15, 280, 195, 280);
                 pdf.text(`Dicetak: ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
 
-                const mouDataObj = {
-                    type: 'mou', nomorMou: nomor, tanggal: tgl, tempat: tempat,
-                    namaPihak1: p1Nama, nikPihak1: p1NIK, jabatanPihak1: p1Jab, 
-                    namaPihak2: p2Nama, nikPihak2: p2NIK, jabatanPihak2: p2Jab, instansiPihak2: p2Inst,
-                    maksudTujuan: document.getElementById('mouPasal1').value, 
-                    ruangLingkup: document.getElementById('mouPasal2').value,
-                    hakKewajibanP1: document.getElementById('mouPasal3').value, 
-                    hakKewajibanP2: document.getElementById('mouPasal4').value,
-                    hargaPembayaran: document.getElementById('mouPasal5').value, 
-                    jangkaWaktu: document.getElementById('mouPasal6').value,
-                    eksklusivitas: document.getElementById('mouPasal7').value, 
-                    kerahasiaan: document.getElementById('mouPasal8').value,
-                    forceMajeure: document.getElementById('mouPasal9').value, 
-                    dokumentasi: document.getElementById('mouPasal10').value,
-                    pengakhiran: document.getElementById('mouPasal11').value, 
-                    penyelesaian: document.getElementById('mouPasal12').value,
-                    penutup: document.getElementById('mouPasal13').value,
-                    ttdPihak1: '-',
-                    ttdPihak2: '-',
-                    createdByName: currentUser.displayName || currentUser.email, 
-                    createdByEmail: currentUser.email
-                };
-
-                await fetch(APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(mouDataObj) });
-
                 hideLoading();
-                pdf.save(`MoU_${nomor.replace(/\//g,'_')}.pdf`);
-                alert('✅ MoU berhasil dibuat dan disimpan!');
+                const pdfBlob = pdf.output('blob');
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+                window.open(pdfUrl, '_blank');
                 
-                document.getElementById('mouForm').reset();
-                document.getElementById('mouNomor').value = generateMoUNumber();
-                document.getElementById('mouTanggal').valueAsDate = new Date();
-                document.getElementById('mouTempat').value = 'Kota Tangerang';
-                document.getElementById('mouP1Nama').value = 'Sidik Dwi Kuncahyo';
-                document.getElementById('mouP1Jabatan').value = 'Direktur CV Rezeki Amanah Jaya';
-                
-            } catch(e) { hideLoading(); alert('Error membuat MoU: ' + e.message); console.error(e); }
-        };
-
-        // ============ LOAD DATA MoU ============
-        window.loadMoUData = async function() {
-            const tbody = document.getElementById('tableMoUBody');
-            try {
-                showLoading('Memuat Data MoU...');
-                const resp = await fetch(`${APPS_SCRIPT_URL}?sheet=MoU&t=${Date.now()}`);
-                allMoUData = await resp.json();
-                filteredMoUData = allMoUData;
-                hideLoading();
-                renderMoUTable(allMoUData);
             } catch(e) { 
                 hideLoading(); 
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Gagal memuat data.</td></tr>'; 
+                alert('Error membuka PDF: ' + e.message); 
+                console.error(e); 
             }
         };
 
-        function renderMoUTable(data) {
-            const tbody = document.getElementById('tableMoUBody');
-            const info = document.getElementById('resultMoUInfo');
-            tbody.innerHTML = '';
+        // ============ DOWNLOAD PDF MoU (TANPA SAVE ULANG) ============
+        window.downloadMoUPDF = async function(nomor) {
+            const d = allMoUData.find(x => x['Nomor MoU'] === nomor);
+            if (!d) { alert('Data MoU tidak ditemukan!'); return; }
             
-            if (!data || data.length === 0) { 
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Tidak ada data MoU.</td></tr>';
-                info.innerHTML = '';
-                return; 
+            showLoading('Menyiapkan PDF...');
+            
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.setFont("times");
+                
+                const MARGIN_LEFT = 20;
+                const PAGE_WIDTH = 170;
+                
+                let y = 20;
+
+                if (kopBase64) { 
+                    try { pdf.addImage(kopBase64, 'PNG', 15, y, 180, 35); } catch(e) {} 
+                    y += 40; 
+                } else {
+                    pdf.setFontSize(16);
+                    pdf.setFont(undefined, 'bold');
+                    pdf.text('CV REZEKI AMANAH JAYA GROUP', 105, y, {align:'center'});
+                    y += 10;
+                    pdf.setFontSize(10);
+                    pdf.setFont(undefined, 'normal');
+                    pdf.text('SUPPLIER & WASTE SOLUTION PARTNER', 105, y, {align:'center'});
+                    y += 10;
+                    pdf.setDrawColor(0, 0, 0);
+                    pdf.setLineWidth(0.5);
+                    pdf.line(15, y, 195, y);
+                    y += 8;
+                }
+                
+                pdf.setDrawColor(0, 0, 0);
+                pdf.setLineWidth(1.2);
+                pdf.line(15, y, 195, y);
+                pdf.setLineWidth(0.5);
+                pdf.line(15, y+1, 195, y+1);
+                y += 8;
+                
+                pdf.setFontSize(14);
+                pdf.setFont(undefined, 'bold');
+                pdf.setTextColor(0, 0, 0);
+                pdf.text('MEMORANDUM OF UNDERSTANDING (MoU)', 105, y, {align:'center'});
+                y += 6;
+                
+                pdf.setFontSize(11);
+                pdf.text('KERJA SAMA PENGUMPULAN MINYAK JELANTAH', 105, y, {align:'center'});
+                y += 10;
+                
+                const nomorMoU = d['Nomor MoU'] || '_____/MoU/RAJ/_____/2026';
+                pdf.setFontSize(10);
+                pdf.setFont(undefined, 'normal');
+                pdf.text(`Nomor: ${nomorMoU}`, 105, y, {align:'center'});
+                y += 12;
+                
+                const tgl = d['Tanggal'];
+                const tempat = d['Tempat'] || 'Kota Tangerang';
+                const fmtTglLengkap = formatTanggalLengkap(tgl);
+                
+                pdf.setFontSize(10);
+                const pembukaan = `Pada hari ini, ${fmtTglLengkap}, bertempat di ${tempat}, telah dibuat dan disepakati Nota Kesepahaman (Memorandum of Understanding/MoU) antara:`;
+                const pembukaanLines = pdf.splitTextToSize(pembukaan, PAGE_WIDTH);
+                pdf.text(pembukaanLines, MARGIN_LEFT, y);
+                y += pembukaanLines.length * 5 + 10;
+
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PIHAK PERTAMA', 105, y, {align:'center'});
+                y += 6;
+                
+                pdf.setFont(undefined, 'normal');
+                const p1Nama = d['Nama Pihak 1'] || 'Sidik Dwi Kuncahyo';
+                const p1NIK = d['NIK Pihak 1'] || '________________';
+                const p1Jab = d['Jabatan Pihak 1'] || 'Direktur CV Rezeki Amanah Jaya';
+                
+                pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', MARGIN_LEFT, y);
+                y += 6;
+                pdf.text('Nama', MARGIN_LEFT, y);
+                pdf.text(':  ' + p1Nama, MARGIN_LEFT + 25, y);
+                y += 5;
+                pdf.text('NIK', MARGIN_LEFT, y);
+                pdf.text(':  ' + p1NIK, MARGIN_LEFT + 25, y);
+                y += 5;
+                pdf.text('Jabatan', MARGIN_LEFT, y);
+                pdf.text(':  ' + p1Jab, MARGIN_LEFT + 25, y);
+                y += 6;
+                pdf.text('Selanjutnya disebut PIHAK PERTAMA.', MARGIN_LEFT, y);
+                y += 10;
+
+                pdf.setFont(undefined, 'bold');
+                pdf.text('PIHAK KEDUA', 105, y, {align:'center'});
+                y += 6;
+                
+                pdf.setFont(undefined, 'normal');
+                const p2Inst = d['Instansi Pihak 2'] || '';
+                const p2Nama = d['Nama Pihak 2'] || '____________________';
+                const p2NIK = d['NIK Pihak 2'] || '________________';
+                const p2Jab = d['Jabatan Pihak 2'] || '____________________';
+                
+                pdf.text(`${p2Inst}, diwakili oleh:`, MARGIN_LEFT, y);
+                y += 6;
+                pdf.text('Nama', MARGIN_LEFT, y);
+                pdf.text(':  ' + p2Nama, MARGIN_LEFT + 25, y);
+                y += 5;
+                pdf.text('NIK', MARGIN_LEFT, y);
+                pdf.text(':  ' + p2NIK, MARGIN_LEFT + 25, y);
+                y += 5;
+                pdf.text('Jabatan', MARGIN_LEFT, y);
+                pdf.text(':  ' + p2Jab, MARGIN_LEFT + 25, y);
+                y += 6;
+                pdf.text('Selanjutnya disebut PIHAK KEDUA.', MARGIN_LEFT, y);
+                y += 10;
+
+                const pasal = [
+                    ['PASAL 1', 'MAKSUD DAN TUJUAN', d['Maksud Tujuan'] || ''],
+                    ['PASAL 2', 'RUANG LINGKUP KERJA SAMA', d['Ruang Lingkup'] || ''],
+                    ['PASAL 3', 'HAK DAN KEWAJIBAN PIHAK PERTAMA', d['Hak Kewajiban P1'] || ''],
+                    ['PASAL 4', 'HAK DAN KEWAJIBAN PIHAK KEDUA', d['Hak Kewajiban P2'] || ''],
+                    ['PASAL 5', 'HARGA DAN PEMBAYARAN', d['Harga Pembayaran'] || ''],
+                    ['PASAL 6', 'JANGKA WAKTU', d['Jangka Waktu'] || ''],
+                    ['PASAL 7', 'EKSKLUSIVITAS KERJA SAMA', d['Eksklusivitas'] || ''],
+                    ['PASAL 8', 'KERAHASIAAN', d['Kerahasiaan'] || ''],
+                    ['PASAL 9', 'KEADAAN KAHAR (FORCE MAJEURE)', d['Force Majeure'] || ''],
+                    ['PASAL 10', 'DOKUMENTASI DAN PUBLIKASI', d['Dokumentasi'] || ''],
+                    ['PASAL 11', 'PENGAKHIRAN PERJANJIAN', d['Pengakhiran'] || ''],
+                    ['PASAL 12', 'PENYELESAIAN PERSELISIHAN', d['Penyelesaian'] || ''],
+                    ['PASAL 13', 'PENUTUP', d['Penutup'] || '']
+                ];
+
+                pasal.forEach(([pasalNum, pasalTitle, content]) => {
+                    if (y > 235) { 
+                        pdf.addPage(); 
+                        if(kopBase64) { try { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } catch(e) {} }
+                        y = 60;
+                    }
+                    
+                    pdf.setFont(undefined, 'bold');
+                    pdf.setFontSize(10);
+                    pdf.text(`${pasalNum} - ${pasalTitle}`, 105, y, {align:'center'});
+                    y += 6;
+                    
+                    pdf.setFont(undefined, 'normal');
+                    pdf.setFontSize(10);
+                    const contentLines = pdf.splitTextToSize(content, PAGE_WIDTH);
+                    pdf.text(contentLines, MARGIN_LEFT, y);
+                    y += contentLines.length * 5 + 6;
+                });
+
+                if (y > 200) { 
+                    pdf.addPage(); 
+                    y = 60; 
+                }
+                
+                y += 5;
+                
+                pdf.setFont(undefined, 'normal');
+                pdf.setFontSize(10);
+                pdf.text(`Dibuat di: ${tempat}`, MARGIN_LEFT, y);
+                y += 5;
+                pdf.text(`Tanggal: ${fmtTglLengkap}`, MARGIN_LEFT, y);
+                y += 30;
+                
+                const signY = y;
+                const leftColX = 40;
+                const rightColX = 140;
+                
+                pdf.setFont(undefined, 'bold');
+                pdf.text(p1Nama, leftColX, signY, {align:'center'});
+                pdf.text(p2Nama, rightColX, signY, {align:'center'});
+                
+                pdf.setDrawColor(0, 0, 0);
+                pdf.setLineWidth(0.3);
+                pdf.line(leftColX - 25, signY + 5, leftColX + 25, signY + 5);
+                pdf.line(rightColX - 25, signY + 5, rightColX + 25, signY + 5);
+                
+                pdf.setFont(undefined, 'normal');
+                pdf.setFontSize(9);
+                pdf.text(p1Jab, leftColX, signY + 12, {align:'center'});
+                pdf.text(p2Jab, rightColX, signY + 12, {align:'center'});
+
+                pdf.setFontSize(8);
+                pdf.setFont(undefined, 'normal');
+                pdf.setTextColor(128, 128, 128);
+                pdf.setDrawColor(200, 200, 200);
+                pdf.setLineWidth(0.3);
+                pdf.line(15, 280, 195, 280);
+                pdf.text(`Dicetak: ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
+
+                hideLoading();
+                const safeName = nomorMoU.replace(/\//g,'_').replace(/:/g,'-');
+                pdf.save(`MoU_${safeName}.pdf`);
+                
+            } catch(e) { 
+                hideLoading(); 
+                alert('Error download PDF: ' + e.message); 
+                console.error(e); 
             }
-            
-            info.innerHTML = `<i class="fas fa-info-circle"></i> Menampilkan <strong>${data.length}</strong> dari <strong>${allMoUData.length}</strong> MoU`;
-            
-            data.forEach(d => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${d['Nomor MoU']||'-'}</strong></td>
-                    <td>${formatDate(d['Tanggal'])}</td>
-                    <td>${d['Nama Pihak 1']||'-'}</td>
-                    <td>${d['Instansi Pihak 2']||'-'}</td>
-                    <td>
-                        <button class="btn-action btn-view-pdf" onclick="viewMoUDetail('${d['Nomor MoU']}')" title="Detail"><i class="fas fa-eye"></i></button>
-                        <button class="btn-action btn-download-pdf" onclick="regenerateMoUPDF('${d['Nomor MoU']}')" title="Download PDF"><i class="fas fa-download"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        window.filterMoUData = function() {
-            const search = document.getElementById('searchMouInput').value.toLowerCase();
-            filteredMoUData = allMoUData.filter(d => !search || 
-                (d['Nomor MoU']||'').toLowerCase().includes(search) || 
-                (d['Instansi Pihak 2']||'').toLowerCase().includes(search) ||
-                (d['Nama Pihak 2']||'').toLowerCase().includes(search));
-            renderMoUTable(filteredMoUData);
-        };
-
-        window.resetMoUFilter = function() {
-            document.getElementById('searchMouInput').value = '';
-            filteredMoUData = allMoUData;
-            renderMoUTable(allMoUData);
-        };
-
-        window.viewMoUDetail = function(nomor) {
-            const d = allMoUData.find(x => x['Nomor MoU'] === nomor);
-            if (!d) return;
-            alert(`Detail MoU:\n\nNomor: ${d['Nomor MoU']}\nTanggal: ${formatTanggalLengkap(d['Tanggal'])}\nTempat: ${d['Tempat']}\n\nPihak 1: ${d['Nama Pihak 1']} (NIK: ${d['NIK Pihak 1']||'-'})\nJabatan: ${d['Jabatan Pihak 1']}\n\nPihak 2: ${d['Nama Pihak 2']}\nNIK: ${d['NIK Pihak 2']||'-'}\nInstansi: ${d['Instansi Pihak 2']}\nJabatan: ${d['Jabatan Pihak 2']}\n\nJangka Waktu: ${d['Jangka Waktu']}`);
-        };
-
-        window.regenerateMoUPDF = function(nomor) {
-            const d = allMoUData.find(x => x['Nomor MoU'] === nomor);
-            if (!d) return;
-            document.getElementById('mouNomor').value = d['Nomor MoU'] || '';
-            document.getElementById('mouTanggal').value = d['Tanggal'] || '';
-            document.getElementById('mouTempat').value = d['Tempat'] || '';
-            document.getElementById('mouP1Nama').value = d['Nama Pihak 1'] || '';
-            document.getElementById('mouP1NIK').value = d['NIK Pihak 1'] || '';
-            document.getElementById('mouP1Jabatan').value = d['Jabatan Pihak 1'] || '';
-            document.getElementById('mouP2Instansi').value = d['Instansi Pihak 2'] || '';
-            document.getElementById('mouP2Nama').value = d['Nama Pihak 2'] || '';
-            document.getElementById('mouP2NIK').value = d['NIK Pihak 2'] || '';
-            document.getElementById('mouP2Jabatan').value = d['Jabatan Pihak 2'] || '';
-            document.getElementById('mouPasal1').value = d['Maksud Tujuan'] || '';
-            document.getElementById('mouPasal2').value = d['Ruang Lingkup'] || '';
-            document.getElementById('mouPasal3').value = d['Hak Kewajiban P1'] || '';
-            document.getElementById('mouPasal4').value = d['Hak Kewajiban P2'] || '';
-            document.getElementById('mouPasal5').value = d['Harga Pembayaran'] || '';
-            document.getElementById('mouPasal6').value = d['Jangka Waktu'] || '';
-            document.getElementById('mouPasal7').value = d['Eksklusivitas'] || '';
-            document.getElementById('mouPasal8').value = d['Kerahasiaan'] || '';
-            document.getElementById('mouPasal9').value = d['Force Majeure'] || '';
-            document.getElementById('mouPasal10').value = d['Dokumentasi'] || '';
-            document.getElementById('mouPasal11').value = d['Pengakhiran'] || '';
-            document.getElementById('mouPasal12').value = d['Penyelesaian'] || '';
-            document.getElementById('mouPasal13').value = d['Penutup'] || '';
-            
-            const tab = new bootstrap.Tab(document.querySelector('[data-bs-target="#mou"]'));
-            tab.show();
-            alert('Data MoU dimuat. Klik "Generate PDF & Simpan" untuk download ulang.');
         };
     </script>
 </body>
