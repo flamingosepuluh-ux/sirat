@@ -274,7 +274,7 @@
                     </div>
                 </div>
 
-                <!-- ==================== FORM MoU (BARU) ==================== -->
+                <!-- ==================== FORM MoU (DENGAN NIK) ==================== -->
                 <div class="tab-pane fade" id="mou">
                     <div class="card-custom">
                         <div class="card-header-custom"><i class="fas fa-file-contract"></i> Pembuatan MoU</div>
@@ -306,6 +306,10 @@
                                             <input type="text" class="form-control" id="mouP1Nama" value="Sidik Dwi Kuncahyo">
                                         </div>
                                         <div class="col-md-6 mb-2">
+                                            <label class="form-label fw-bold">NIK</label>
+                                            <input type="text" class="form-control" id="mouP1NIK" placeholder="Masukkan NIK (16 digit)" maxlength="16">
+                                        </div>
+                                        <div class="col-md-12 mb-2">
                                             <label class="form-label fw-bold">Jabatan</label>
                                             <input type="text" class="form-control" id="mouP1Jabatan" value="Direktur CV Rezeki Amanah Jaya">
                                         </div>
@@ -324,6 +328,10 @@
                                             <input type="text" class="form-control" id="mouP2Nama" placeholder="Masukkan nama lengkap">
                                         </div>
                                         <div class="col-md-6 mb-2">
+                                            <label class="form-label fw-bold">NIK</label>
+                                            <input type="text" class="form-control" id="mouP2NIK" placeholder="Masukkan NIK (16 digit)" maxlength="16">
+                                        </div>
+                                        <div class="col-md-12 mb-2">
                                             <label class="form-label fw-bold">Jabatan</label>
                                             <input type="text" class="form-control" id="mouP2Jabatan" placeholder="Masukkan jabatan">
                                         </div>
@@ -435,7 +443,7 @@
                     </div>
                 </div>
 
-                <!-- ==================== DATA MoU (BARU) ==================== -->
+                <!-- ==================== DATA MoU ==================== -->
                 <div class="tab-pane fade" id="dataMou">
                     <div class="card-custom">
                         <div class="card-header-custom d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -1248,7 +1256,7 @@
             return `MoU/${num}/RAJ/${romanMonth}/${year}`;
         }
 
-        // ============ GENERATE MoU PDF ============
+        // ============ GENERATE MoU PDF (DENGAN NIK) ============
         window.generateMoUPDF = async function() {
             // Validasi
             const p2Nama = document.getElementById('mouP2Nama').value.trim();
@@ -1325,13 +1333,14 @@
                 pdf.text(pembukaanLines, MARGIN_LEFT, y);
                 y += pembukaanLines.length * 5 + 10;
 
-                // PIHAK PERTAMA - CENTER
+                // PIHAK PERTAMA - CENTER + NIK
                 pdf.setFont(undefined, 'bold');
                 pdf.text('PIHAK PERTAMA', 105, y, {align:'center'});
                 y += 6;
                 
                 pdf.setFont(undefined, 'normal');
                 const p1Nama = document.getElementById('mouP1Nama').value || 'Sidik Dwi Kuncahyo';
+                const p1NIK = document.getElementById('mouP1NIK').value || '________________';
                 const p1Jab = document.getElementById('mouP1Jabatan').value || 'Direktur CV Rezeki Amanah Jaya';
                 
                 pdf.text('CV REZEKI AMANAH JAYA, diwakili oleh:', MARGIN_LEFT, y);
@@ -1341,6 +1350,10 @@
                 pdf.text(':  ' + p1Nama, MARGIN_LEFT + 25, y);
                 y += 5;
                 
+                pdf.text('NIK', MARGIN_LEFT, y);
+                pdf.text(':  ' + p1NIK, MARGIN_LEFT + 25, y);
+                y += 5;
+                
                 pdf.text('Jabatan', MARGIN_LEFT, y);
                 pdf.text(':  ' + p1Jab, MARGIN_LEFT + 25, y);
                 y += 6;
@@ -1348,12 +1361,13 @@
                 pdf.text('Selanjutnya disebut PIHAK PERTAMA.', MARGIN_LEFT, y);
                 y += 10;
 
-                // PIHAK KEDUA - CENTER
+                // PIHAK KEDUA - CENTER + NIK
                 pdf.setFont(undefined, 'bold');
                 pdf.text('PIHAK KEDUA', 105, y, {align:'center'});
                 y += 6;
                 
                 pdf.setFont(undefined, 'normal');
+                const p2NIK = document.getElementById('mouP2NIK').value || '________________';
                 const p2Jab = document.getElementById('mouP2Jabatan').value || '____________________';
                 
                 pdf.text(`${p2Inst}, diwakili oleh:`, MARGIN_LEFT, y);
@@ -1361,6 +1375,10 @@
                 
                 pdf.text('Nama', MARGIN_LEFT, y);
                 pdf.text(':  ' + p2Nama, MARGIN_LEFT + 25, y);
+                y += 5;
+                
+                pdf.text('NIK', MARGIN_LEFT, y);
+                pdf.text(':  ' + p2NIK, MARGIN_LEFT + 25, y);
                 y += 5;
                 
                 pdf.text('Jabatan', MARGIN_LEFT, y);
@@ -1386,12 +1404,12 @@
                     if (y > 235) { 
                         pdf.addPage(); 
                         if(kopBase64) { try { pdf.addImage(kopBase64, 'PNG', 15, 15, 180, 35); } catch(e) {} }
-                        y = 60;  // ✅ FIXED: Y position setelah header
+                        y = 60;
                     }
                     
                     pdf.setFont(undefined, 'bold');
                     pdf.setFontSize(10);
-                    pdf.text(`${pasalNum} - ${pasalTitle}`, 105, y, {align:'center'});  // ✅ CENTER
+                    pdf.text(`${pasalNum} - ${pasalTitle}`, 105, y, {align:'center'});
                     y += 6;
                     
                     pdf.setFont(undefined, 'normal');
@@ -1446,10 +1464,11 @@
                 pdf.line(15, 280, 195, 280);
                 pdf.text(`Dicetak: ${new Date().toLocaleString('id-ID')}`, 105, 286, {align:'center'});
 
-                // SIMPAN KE SPREADSHEET
+                // SIMPAN KE SPREADSHEET (dengan NIK)
                 const mouDataObj = {
                     type: 'mou', nomorMou: nomor, tanggal: tgl, tempat: tempat,
-                    namaPihak1: p1Nama, jabatanPihak1: p1Jab, namaPihak2: p2Nama, jabatanPihak2: p2Jab, instansiPihak2: p2Inst,
+                    namaPihak1: p1Nama, nikPihak1: p1NIK, jabatanPihak1: p1Jab, 
+                    namaPihak2: p2Nama, nikPihak2: p2NIK, jabatanPihak2: p2Jab, instansiPihak2: p2Inst,
                     maksudTujuan: document.getElementById('mouPasal1').value, ruangLingkup: document.getElementById('mouPasal2').value,
                     hakKewajiban1: document.getElementById('mouPasal3').value, hakKewajiban2: document.getElementById('mouPasal4').value,
                     hargaPembayaran: document.getElementById('mouPasal5').value, jangkaWaktu: document.getElementById('mouPasal6').value,
@@ -1539,7 +1558,7 @@
         window.viewMoUDetail = function(nomor) {
             const d = allMoUData.find(x => x['Nomor MoU'] === nomor);
             if (!d) return;
-            alert(`Detail MoU:\n\nNomor: ${d['Nomor MoU']}\nTanggal: ${formatTanggalLengkap(d['Tanggal'])}\nTempat: ${d['Tempat']}\n\nPihak 1: ${d['Nama Pihak 1']} (${d['Jabatan Pihak 1']})\nPihak 2: ${d['Nama Pihak 2']} - ${d['Instansi Pihak 2']} (${d['Jabatan Pihak 2']})\n\nJangka Waktu: ${d['Jangka Waktu']}`);
+            alert(`Detail MoU:\n\nNomor: ${d['Nomor MoU']}\nTanggal: ${formatTanggalLengkap(d['Tanggal'])}\nTempat: ${d['Tempat']}\n\nPihak 1: ${d['Nama Pihak 1']} (NIK: ${d['NIK Pihak 1']||'-'})\nJabatan: ${d['Jabatan Pihak 1']}\n\nPihak 2: ${d['Nama Pihak 2']}\nNIK: ${d['NIK Pihak 2']||'-'}\nInstansi: ${d['Instansi Pihak 2']}\nJabatan: ${d['Jabatan Pihak 2']}\n\nJangka Waktu: ${d['Jangka Waktu']}`);
         };
 
         window.regenerateMoUPDF = function(nomor) {
@@ -1549,9 +1568,11 @@
             document.getElementById('mouTanggal').value = d['Tanggal'] || '';
             document.getElementById('mouTempat').value = d['Tempat'] || '';
             document.getElementById('mouP1Nama').value = d['Nama Pihak 1'] || '';
+            document.getElementById('mouP1NIK').value = d['NIK Pihak 1'] || '';
             document.getElementById('mouP1Jabatan').value = d['Jabatan Pihak 1'] || '';
             document.getElementById('mouP2Instansi').value = d['Instansi Pihak 2'] || '';
             document.getElementById('mouP2Nama').value = d['Nama Pihak 2'] || '';
+            document.getElementById('mouP2NIK').value = d['NIK Pihak 2'] || '';
             document.getElementById('mouP2Jabatan').value = d['Jabatan Pihak 2'] || '';
             document.getElementById('mouPasal1').value = d['Maksud Tujuan'] || '';
             document.getElementById('mouPasal2').value = d['Ruang Lingkup'] || '';
